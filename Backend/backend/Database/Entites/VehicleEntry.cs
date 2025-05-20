@@ -7,10 +7,8 @@
         Cancelled,
     }
 
-    public class VehicleEntry
+    public class VehicleEntry : BaseEntity<Guid>
     {
-        public string Id { get; set; } = Guid.NewGuid().ToString();
-
         public DateTime ReceptionDate { get; set; } = DateTime.UtcNow;
         public DateTime? DeliveryDate { get; set; }
 
@@ -24,14 +22,14 @@
         public double Presupuest { get; set; }
         public double FinalAmount { get; set; }
 
-        public string CustomerId { get; set; }
+        public Guid CustomerId { get; set; }
         public Customer Customer { get; set; }
 
-        public string? VehicleId { get; set; }
+        public Guid? VehicleId { get; set; }
 
         public Vehicle? Vehicle { get; set; }
 
-        public required string WorkShopId { get; set; }
+        public required Guid WorkShopId { get; set; }
         public WorkShop WorkShop { get; set; }
     }
 }

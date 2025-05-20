@@ -1,4 +1,4 @@
-﻿using backend.Database.Entites;
+﻿using System.Text.Json.Serialization;
 
 namespace backend.Modules.VehicleEntryModule.Dtos
 {
@@ -15,6 +15,12 @@ namespace backend.Modules.VehicleEntryModule.Dtos
 
         public string? VehicleId { get; set; }
 
-        public required string WorkShopId { get; set; }
+        [JsonIgnore]
+        public Guid WorkshopId { get; set; }
+
+        public void SetWorkshopId(Guid workshopId)
+        {
+            WorkshopId = workshopId;
+        }
     }
 }

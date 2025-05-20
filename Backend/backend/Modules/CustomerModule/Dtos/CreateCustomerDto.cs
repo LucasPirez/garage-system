@@ -1,4 +1,6 @@
-﻿using backend.Database.Entites;
+﻿using System.Text.Json.Serialization;
+using Microsoft.AspNetCore.Mvc;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace backend.Modules.CustomerModule.Dtos
 {
@@ -16,6 +18,12 @@ namespace backend.Modules.CustomerModule.Dtos
 
         public string? Dni { get; set; }
 
-        public required string WorkShopId { get; set; }
+        [JsonIgnore]
+        public Guid WorkshopId { get; set; }
+
+        public void SetWorkshopId(Guid workshopId)
+        {
+            WorkshopId = workshopId;
+        }
     }
 }

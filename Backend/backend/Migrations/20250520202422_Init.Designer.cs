@@ -12,7 +12,7 @@ using backend.Database;
 namespace backend.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250516185223_Init")]
+    [Migration("20250520202422_Init")]
     partial class Init
     {
         /// <inheritdoc />
@@ -27,14 +27,17 @@ namespace backend.Migrations
 
             modelBuilder.Entity("backend.Database.Entites.Customer", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("text");
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
 
                     b.Property<string>("Address")
                         .HasColumnType("text");
 
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
                     b.Property<string>("Dni")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string[]>("Email")
@@ -53,33 +56,63 @@ namespace backend.Migrations
                         .IsRequired()
                         .HasColumnType("text[]");
 
-                    b.Property<string>("WorkShopId")
-                        .IsRequired()
-                        .HasColumnType("text");
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid>("WorkShopId")
+                        .HasColumnType("uuid");
 
                     b.HasKey("Id");
 
                     b.HasIndex("WorkShopId");
 
                     b.ToTable("Customers");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("cccccccc-cccc-cccc-cccc-cccccccccccc"),
+                            CreatedAt = new DateTime(2025, 5, 20, 20, 24, 21, 495, DateTimeKind.Utc).AddTicks(3019),
+                            Email = new[] { "lucaspirez42@gmail.com" },
+                            FirstName = "Juan ",
+                            LastName = "Perez",
+                            PhoneNumber = new[] { "3424388239" },
+                            WorkShopId = new Guid("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa")
+                        },
+                        new
+                        {
+                            Id = new Guid("dddddddd-dddd-dddd-dddd-dddddddddddd"),
+                            CreatedAt = new DateTime(2025, 5, 20, 20, 24, 21, 495, DateTimeKind.Utc).AddTicks(3031),
+                            Email = new string[0],
+                            FirstName = "Maria ",
+                            LastName = "Lopez",
+                            PhoneNumber = new string[0],
+                            WorkShopId = new Guid("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa")
+                        });
                 });
 
             modelBuilder.Entity("backend.Database.Entites.Payment", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("text");
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
 
                     b.Property<decimal>("Amount")
                         .HasColumnType("numeric");
 
-                    b.Property<string>("CustomerId")
-                        .IsRequired()
-                        .HasColumnType("text");
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid>("CustomerId")
+                        .HasColumnType("uuid");
 
                     b.Property<string>("Method")
                         .HasColumnType("text");
 
                     b.Property<DateTime>("PaymentDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Id");
@@ -91,15 +124,18 @@ namespace backend.Migrations
 
             modelBuilder.Entity("backend.Database.Entites.Vehicle", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("text");
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
 
                     b.Property<string>("Color")
                         .HasColumnType("text");
 
-                    b.Property<string>("CustomerId")
-                        .IsRequired()
-                        .HasColumnType("text");
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid>("CustomerId")
+                        .HasColumnType("uuid");
 
                     b.Property<string>("Model")
                         .HasColumnType("text");
@@ -107,6 +143,9 @@ namespace backend.Migrations
                     b.Property<string>("Plate")
                         .IsRequired()
                         .HasColumnType("text");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Id");
 
@@ -117,16 +156,19 @@ namespace backend.Migrations
 
             modelBuilder.Entity("backend.Database.Entites.VehicleEntry", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("text");
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
 
                     b.Property<string>("Cause")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("CustomerId")
-                        .IsRequired()
-                        .HasColumnType("text");
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid>("CustomerId")
+                        .HasColumnType("uuid");
 
                     b.Property<DateTime?>("DeliveryDate")
                         .HasColumnType("timestamp with time zone");
@@ -151,12 +193,14 @@ namespace backend.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("VehicleId")
-                        .HasColumnType("text");
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
 
-                    b.Property<string>("WorkShopId")
-                        .IsRequired()
-                        .HasColumnType("text");
+                    b.Property<Guid?>("VehicleId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("WorkShopId")
+                        .HasColumnType("uuid");
 
                     b.HasKey("Id");
 
@@ -171,16 +215,37 @@ namespace backend.Migrations
 
             modelBuilder.Entity("backend.Database.Entites.WorkShop", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("text");
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
                     b.HasKey("Id");
 
                     b.ToTable("WorkShops");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa"),
+                            CreatedAt = new DateTime(2025, 5, 20, 20, 24, 21, 495, DateTimeKind.Utc).AddTicks(2915),
+                            Name = "Taller Jesuita"
+                        },
+                        new
+                        {
+                            Id = new Guid("bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb"),
+                            CreatedAt = new DateTime(2025, 5, 20, 20, 24, 21, 495, DateTimeKind.Utc).AddTicks(2935),
+                            Name = "Taller Silvana"
+                        });
                 });
 
             modelBuilder.Entity("backend.Database.Entites.Customer", b =>

@@ -1,8 +1,7 @@
 ﻿namespace backend.Database.Entites
 {
-    public class Customer
+    public class Customer : BaseEntity<Guid>
     {
-        public string Id { get; set; } = Guid.NewGuid().ToString();
         public required string FirstName { get; set; }
 
         public required string LastName { get; set; }
@@ -17,7 +16,7 @@
 
         public ICollection<Vehicle> Vehicle { get; set; } = new List<Vehicle>();
 
-        public required string WorkShopId { get; set; }
+        public required Guid WorkShopId { get; set; }
 
         public WorkShop WorkShop { get; set; }
     }

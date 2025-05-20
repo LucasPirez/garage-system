@@ -1,9 +1,17 @@
 using System.Reflection;
+using backend.Common.Middlewares;
 using backend.Database;
 using backend.Modules.CustomerModule;
+using backend.Modules.CustomerModule.Interfaces;
 using backend.Modules.VehicleEntryModule;
+using backend.Modules.VehicleEntryModule.Interfaces;
 using backend.Modules.VehicleModule;
+using backend.Modules.VehicleModule.Interfaces;
+using backend.Swagger;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Models;
+using Swashbuckle.AspNetCore.Filters;
+using static backend.Swagger.DefaultWorksShopIdFilter;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,18 +19,25 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new OpenApiInfo { Title = "Mechanical API", Version = "v1" });
+    c.ExampleFilters();
+    c.EnableAnnotations();
+    c.OperationFilter<SwaggerDefaultWorkshopIdFilter>();
+});
+
+builder.Services.AddSwaggerExamplesFromAssemblyOf<CreateCustomerDtoExample>();
 
 var connection = builder.Configuration.GetConnectionString("DefaultConnection");
 
 builder.Services.AddDbContext<AppDbContext>(options => options.UseNpgsql(connection));
 builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
 
-builder.Services.AddScoped<VehicleService>();
-builder.Services.AddScoped<VehicleEntryService>();
-builder.Services.AddScoped<CustomerService>();
+builder.Services.AddScoped<IVehicleService, VehicleService>();
+builder.Services.AddScoped<IVehicleEntryService, VehicleEntryService>();
+builder.Services.AddScoped<ICustomerService, CustomerService>();
 
 var app = builder.Build();
 
@@ -30,7 +45,10 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseSwaggerUI(c =>
+    {
+        c.SwaggerEndpoint("/swagger/v1/swagger.json", "Mi API Mecánica v1");
+    });
 }
 
 app.UseHttpsRedirection();
@@ -38,5 +56,6 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+app.UseMiddleware<ExceptionHandlingMiddleware>();
 
 app.Run();

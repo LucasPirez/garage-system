@@ -26,15 +26,21 @@ namespace backend.Database
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<VehicleEntry>().Property(k => k.Status).HasConversion<string>();
-            var workshopId1 = Guid.NewGuid().ToString();
-            var workshopId2 = Guid.NewGuid().ToString();
             modelBuilder
                 .Entity<WorkShop>()
                 .HasData(
                     new List<WorkShop>()
                     {
-                        new WorkShop() { Id = workshopId1, Name = "Taller Jesuita" },
-                        new WorkShop() { Id = workshopId2, Name = "Taller Silvana" },
+                        new WorkShop()
+                        {
+                            Id = new Guid(SeedData.workshopAId),
+                            Name = "Taller Jesuita",
+                        },
+                        new WorkShop()
+                        {
+                            Id = new Guid(SeedData.workshopBId),
+                            Name = "Taller Silvana",
+                        },
                     }
                 );
 
@@ -45,19 +51,19 @@ namespace backend.Database
                     {
                         new Customer()
                         {
-                            Id = Guid.NewGuid().ToString(),
+                            Id = new Guid(SeedData.customerAId),
                             FirstName = "Juan ",
                             LastName = "Perez",
-                            WorkShopId = workshopId1,
+                            WorkShopId = new Guid(SeedData.workshopAId),
                             PhoneNumber = new List<string>() { "3424388239" },
                             Email = new List<string>() { "lucaspirez42@gmail.com" },
                         },
                         new Customer()
                         {
-                            Id = Guid.NewGuid().ToString(),
+                            Id = new Guid(SeedData.customerBId),
                             FirstName = "Maria ",
                             LastName = "Lopez",
-                            WorkShopId = workshopId1,
+                            WorkShopId = new Guid(SeedData.workshopAId),
                         },
                     }
                 );

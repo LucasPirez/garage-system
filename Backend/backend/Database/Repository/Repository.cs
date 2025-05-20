@@ -38,52 +38,18 @@ namespace backend.Database.Repository
 
         public async Task<T> Add(T entity)
         {
-            try
-            {
-                var response = await _dbSet.AddAsync(entity);
+            var response = await _dbSet.AddAsync(entity);
 
-                await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync();
 
-                return response.Entity;
-            }
-            catch (DbUpdateException dbEx)
-            {
-                throw new InvalidOperationException(
-                    "Error creating entity in the database, ",
-                    dbEx
-                );
-            }
-            catch (Exception ex)
-            {
-                throw new InvalidOperationException(
-                    "An unexpected error occurred while creating the entity, ",
-                    ex
-                );
-            }
+            return response.Entity;
         }
 
         public async Task<List<T>> Add(List<T> entities)
         {
-            try
-            {
-                await _dbSet.AddRangeAsync(entities);
-                await _context.SaveChangesAsync();
-                return entities;
-            }
-            catch (DbUpdateException dbEx)
-            {
-                throw new InvalidOperationException(
-                    "Error creating entities in the database, ",
-                    dbEx
-                );
-            }
-            catch (Exception ex)
-            {
-                throw new InvalidOperationException(
-                    "An unexpected error occurred while creating the entities, ",
-                    ex
-                );
-            }
+            await _dbSet.AddRangeAsync(entities);
+            await _context.SaveChangesAsync();
+            return entities;
         }
 
         public async Task Delete(T entity)
@@ -99,20 +65,10 @@ namespace backend.Database.Repository
             await _context.SaveChangesAsync();
         }
 
-        public async Task<T?> GetById(int id)
+        public async Task<T?> GetById(Guid id)
         {
-            try
-            {
-                var entity = await _dbSet.FindAsync(id);
-                return entity;
-            }
-            catch (Exception ex)
-            {
-                throw new InvalidOperationException(
-                    "An unexpected error occurred while retrieving the entity by ID, ",
-                    ex
-                );
-            }
+            var entity = await _dbSet.FindAsync(id);
+            return entity;
         }
 
         public async Task<List<T>> GetAll(params Expression<Func<T, object>>[] includes)
@@ -151,6 +107,28 @@ namespace backend.Database.Repository
             catch (Exception ex)
             {
                 throw new Exception("An unexpected error occurred while updating the entity, ", ex);
+            }
+        }
+
+        public async Task<List<T>> GetAll(Expression<Func<T, bool>>? where)
+        {
+            try
+            {
+                IQueryable<T> query = _dbSet;
+
+                if (where != null)
+                {
+                    query = query.Where(where);
+                }
+
+                return await query.ToListAsync();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(
+                    "An unexpected error occurred while retrieving all entities, ",
+                    ex
+                );
             }
         }
     }
