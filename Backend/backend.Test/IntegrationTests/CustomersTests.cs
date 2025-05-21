@@ -33,9 +33,7 @@ namespace backend.Test.IntegrationTests
         public async Task GetById_Returns200AndCustomer()
         {
             // Act
-            var response = await _client.GetAsync(
-                $"workshops/{SeedData.workshopAId}/customers/{SeedData.customerAId}"
-            );
+            var response = await _client.GetAsync($"customer/{SeedData.customerAId}");
 
             // Assert
             response.EnsureSuccessStatusCode();
@@ -55,12 +53,10 @@ namespace backend.Test.IntegrationTests
                 Email = new List<string> { "ana@email.com" },
                 Address = "Calle nueva 456",
                 Dni = "87654321",
+                WorkshopId = SeedData.workshopAId,
             };
             // Act
-            var response = await _client.PostAsJsonAsync(
-                $"workshops/{SeedData.workshopAId}/customers",
-                dto
-            );
+            var response = await _client.PostAsJsonAsync($"customer", dto);
             // Assert
             Assert.Equal(System.Net.HttpStatusCode.Created, response.StatusCode);
             //Assert.NotNull(response.Headers.Location);
@@ -80,7 +76,7 @@ namespace backend.Test.IntegrationTests
 
             // Act
             var response = await _client.PatchAsJsonAsync(
-                $"workshops/{SeedData.workshopAId}/customers/{SeedData.customerBId}",
+                $"customer/{SeedData.customerBId}",
                 updateDto
             );
 

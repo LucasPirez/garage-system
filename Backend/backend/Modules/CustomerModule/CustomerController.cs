@@ -23,8 +23,7 @@ namespace backend.Modules.CustomerModule
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(string id)
         {
-            Guid g = new Guid(workshopId);
-            var result = await _customerService.GetAllAsync(Guid.Parse(workshopId));
+            var result = await _customerService.GetByIdAsync(Guid.Parse(id));
 
             return Ok(result);
         }
