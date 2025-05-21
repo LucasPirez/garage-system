@@ -35,12 +35,12 @@ namespace backend.Modules.CustomerModule
             return customer;
         }
 
-        public Task UpdateAsync(Customer entity)
+        public async Task UpdateAsync(Customer entity)
         {
-            throw new NotImplementedException();
+            await Update(entity);
         }
 
-        public Task DeleteAsync(Guid id)
+        public async Task DeleteAsync(Guid id)
         {
             throw new NotImplementedException();
         }
