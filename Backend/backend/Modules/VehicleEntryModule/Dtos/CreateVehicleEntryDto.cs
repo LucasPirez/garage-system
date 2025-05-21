@@ -15,12 +15,6 @@ namespace backend.Modules.VehicleEntryModule.Dtos
 
         public string? VehicleId { get; set; }
 
-        [JsonIgnore]
-        public Guid WorkshopId { get; set; }
-
-        public void SetWorkshopId(Guid workshopId)
-        {
-            WorkshopId = workshopId;
-        }
+        public string WorkshopId { get; set; }
     }
 }

@@ -1,4 +1,4 @@
-﻿using backend.Database;
+using backend.Database;
 using backend.Database.Entites;
 using backend.Modules.CustomerModule.Dtos;
 using backend.Modules.CustomerModule.Interfaces;
@@ -10,7 +10,7 @@ using Swashbuckle.AspNetCore.Filters;
 namespace backend.Modules.CustomerModule
 {
     [ApiController]
-    [Route("workshops/{workshopId}/customers")]
+    [Route("customer")]
     public class CustomerController : ControllerBase
     {
         private readonly ICustomerService _customerService;
@@ -20,8 +20,8 @@ namespace backend.Modules.CustomerModule
             _customerService = customerService;
         }
 
-        [HttpGet]
-        public async Task<IActionResult> GetAll([FromRoute] string workshopId)
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetById(string id)
         {
             Guid g = new Guid(workshopId);
             var result = await _customerService.GetAllAsync(Guid.Parse(workshopId));
@@ -29,22 +29,10 @@ namespace backend.Modules.CustomerModule
             return Ok(result);
         }
 
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetById(string id)
-        {
-            var result = await _customerService.GetByIdAsync(Guid.Parse(id));
-
-            return Ok(result);
-        }
-
         [SwaggerRequestExample(typeof(CreateCustomerDto), typeof(CreateCustomerDtoExample))]
         [HttpPost]
-        public async Task<IActionResult> Create(
-            CreateCustomerDto customerDto,
-            [FromRoute] string workshopId
-        )
+        public async Task<IActionResult> Create(CreateCustomerDto customerDto)
         {
-            customerDto.SetWorkshopId(Guid.Parse(workshopId));
             var result = await _customerService.CreateAsync(customerDto);
 
             return StatusCode(StatusCodes.Status201Created, result);

@@ -16,12 +16,6 @@ namespace backend.Modules.CustomerModule.Dtos
 
         public string? Dni { get; set; }
 
-        [JsonIgnore]
-        public Guid WorkshopId { get; set; }
-
-        public void SetWorkshopId(Guid workshopId)
-        {
-            WorkshopId = workshopId;
-        }
+        public string WorkshopId { get; set; }
     }
 }
