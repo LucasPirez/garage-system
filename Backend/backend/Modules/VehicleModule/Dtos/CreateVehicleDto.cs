@@ -1,7 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc.ModelBinding;
-using Swashbuckle.AspNetCore.Annotations;
-
-namespace backend.Modules.VehicleModule.Dtos
+﻿namespace backend.Modules.VehicleModule.Dtos
 {
     public class CreateVehicleDto
     {

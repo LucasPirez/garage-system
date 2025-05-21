@@ -7,7 +7,7 @@ using Swashbuckle.AspNetCore.Filters;
 namespace backend.Modules.VehicleModule
 {
     [ApiController]
-    [Route("workshops/{workshopId}/vehicle")]
+    [Route("vehicle")]
     public class VehicleController : ControllerBase
     {
         private readonly IVehicleService _vehicleService;
@@ -15,14 +15,6 @@ namespace backend.Modules.VehicleModule
         public VehicleController(IVehicleService vehicleService)
         {
             _vehicleService = vehicleService;
-        }
-
-        [HttpGet]
-        public async Task<IActionResult> GetAll([FromRoute] string workshopId)
-        {
-            var result = await _vehicleService.GetAllAsync(Guid.Parse(workshopId));
-
-            return Ok(result);
         }
 
         [SwaggerRequestExample(typeof(CreateVehicleDto), typeof(CreateVehicleDtoExample))]

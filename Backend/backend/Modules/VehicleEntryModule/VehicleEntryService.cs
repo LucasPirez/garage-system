@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using backend.Common.Exceptions;
 using backend.Database;
 using backend.Database.Entites;
 using backend.Database.Repository;
@@ -27,9 +28,11 @@ namespace backend.Modules.VehicleEntryModule
             return await GetAll(k => k.WorkShopId == workShopId);
         }
 
-        public Task<VehicleEntry> GetByIdAsync(Guid id)
+        public async Task<VehicleEntry> GetByIdAsync(Guid id)
         {
-            throw new NotImplementedException();
+            var response = await GetById(id) ?? throw new NotFoundException("Vehicle not found");
+
+            return response;
         }
 
         public Task UpdateAsync(VehicleEntry entity)

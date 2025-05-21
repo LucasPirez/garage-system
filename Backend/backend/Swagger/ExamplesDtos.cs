@@ -11,6 +11,7 @@ namespace backend.Swagger
         public CreateCustomerDto GetExamples() =>
             new()
             {
+                WorkshopId = SeedData.workshopAId.ToString(),
                 FirstName = "Juan",
                 LastName = "Pérez",
                 PhoneNumber = new List<string>() { "3422548239" },
@@ -25,6 +26,7 @@ namespace backend.Swagger
         public CreateVehicleEntryDto GetExamples() =>
             new()
             {
+                WorkshopId = SeedData.workshopAId.ToString(),
                 CustomerId = SeedData.customerAId,
                 Cause = "Cambio de aceite",
                 Details = "Cambio de aceite y filtro",
