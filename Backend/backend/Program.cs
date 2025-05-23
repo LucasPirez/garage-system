@@ -28,6 +28,14 @@ builder.Services.AddSwaggerGen(c =>
     c.OperationFilter<SwaggerDefaultWorkshopIdFilter>();
 });
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(
+        "AllowAll",
+        builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader()
+    );
+});
+
 builder.Services.AddSwaggerExamplesFromAssemblyOf<CreateCustomerDtoExample>();
 
 var connection = builder.Configuration.GetConnectionString("DefaultConnection");
@@ -54,6 +62,7 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
+app.UseCors("AllowAll");
 
 app.MapControllers();
 app.UseMiddleware<ExceptionHandlingMiddleware>();

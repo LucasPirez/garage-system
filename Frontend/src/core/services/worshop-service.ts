@@ -1,7 +1,7 @@
 import { AxiosInstance } from 'axios'
-import { CustomerResponseDto } from './dtos/customer/customer-response.dto'
-import { VehicleResponseDto } from './dtos/vehicle/vehicle-response.dto'
-import { VehicleEntryResponseDto } from './dtos/vehicleEntry/vehicleEntry-response.dto'
+import { type CustomerResponseDto } from '../dtos/customer/customer-response.dto'
+import { type VehicleResponseDto } from '../dtos/vehicle/vehicle-response.dto'
+import { type JobsResponseDto } from '../dtos/vehicleEntry/jobs-response.dto'
 
 const getWorkshopId = () => {
   return 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa'
@@ -18,6 +18,8 @@ export class WorkshopService {
 
   private async get<T>(url: string): Promise<T> {
     const { data } = await this.client.get<T>(url)
+    console.log(data)
+
     return data
   }
 
@@ -29,7 +31,7 @@ export class WorkshopService {
     return await this.get(this.PATHS.VEHICLES(getWorkshopId()))
   }
 
-  async getAllVehicleEntries(): Promise<VehicleEntryResponseDto> {
+  async getAllVehicleEntries(): Promise<JobsResponseDto[]> {
     return await this.get(this.PATHS.VEHICLE_ENTRIES(getWorkshopId()))
   }
 }

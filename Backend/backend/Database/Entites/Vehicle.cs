@@ -12,4 +12,6 @@
 
         public ICollection<VehicleEntry> VehicleEntries { get; set; } = new List<VehicleEntry>();
     }
+
+   
 }

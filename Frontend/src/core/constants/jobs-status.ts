@@ -1,5 +1,5 @@
 export const JOBS_STATUS = {
-  PENDING: 'Pendiente',
-  CANCELLED: 'Cancelado',
-  REALIZED: 'Realizado',
+  PENDING: 'InProgress',
+  CANCELLED: 'Cancelled',
+  REALIZED: 'Completed',
 } as const

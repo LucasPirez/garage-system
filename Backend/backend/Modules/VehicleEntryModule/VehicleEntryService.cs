@@ -5,6 +5,7 @@ using backend.Database.Entites;
 using backend.Database.Repository;
 using backend.Modules.VehicleEntryModule.Dtos;
 using backend.Modules.VehicleEntryModule.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace backend.Modules.VehicleEntryModule
 {
@@ -23,9 +24,40 @@ namespace backend.Modules.VehicleEntryModule
             throw new NotImplementedException();
         }
 
-        public async Task<IEnumerable<VehicleEntry>> GetAllAsync(Guid workShopId)
+        public async Task<IEnumerable<ListJobsDto>> GetAllAsync(Guid workShopId)
         {
-            return await GetAll(k => k.WorkShopId == workShopId);
+            IQueryable<ListJobsDto> listJobs = _dbSet
+                .Where(k => k.WorkShopId == workShopId)
+                .Include(k => k.Vehicle)
+                .Include(k => k.Customer)
+                .Select(k => new ListJobsDto()
+                {
+                    Id = k.Id,
+                    Cause = k.Cause,
+                    Details = k.Details,
+                    NotificationSent = k.NotifycationSent,
+                    budget = k.Presupuest,
+                    ReceptionDate = k.ReceptionDate,
+                    DeliveryDate = k.DeliveryDate,
+                    Status = k.Status.ToString(),
+                    FinalAmount = k.FinalAmount,
+                    Vehicle = new ListJobsVehicleDto()
+                    {
+                        Id = k.Vehicle.Id,
+                        Plate = k.Vehicle.Plate,
+                        Model = k.Vehicle.Model,
+                    },
+                    Client = new ListJobsClientDto()
+                    {
+                        Id = k.Customer.Id,
+                        FirstName = k.Customer.FirstName,
+                        LastName = k.Customer.LastName,
+                        PhoneNumber = k.Customer.PhoneNumber,
+                        Email = k.Customer.Email,
+                    },
+                });
+
+            return await listJobs.ToListAsync();
         }
 
         public async Task<VehicleEntry> GetByIdAsync(Guid id)
@@ -36,6 +68,14 @@ namespace backend.Modules.VehicleEntryModule
         }
 
         public Task UpdateAsync(VehicleEntry entity)
+        {
+            throw new NotImplementedException();
+        }
+
+        Task<IEnumerable<VehicleEntry>> IServiceBase<
+            VehicleEntry,
+            CreateVehicleEntryDto
+        >.GetAllAsync(Guid workshopId)
         {
             throw new NotImplementedException();
         }

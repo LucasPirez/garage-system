@@ -1,1 +1,3 @@
-export interface VehicleResponseDto {}
+export interface VehicleResponseDto {
+  hola: string
+}
