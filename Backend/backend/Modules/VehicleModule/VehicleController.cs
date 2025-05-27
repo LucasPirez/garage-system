@@ -23,7 +23,7 @@ namespace backend.Modules.VehicleModule
         {
             var result = await _vehicleService.CreateAsync(createDto);
 
-            return Ok(result);
+            return StatusCode(StatusCodes.Status201Created, result);
         }
     }
 }

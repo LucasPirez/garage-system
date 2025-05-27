@@ -29,7 +29,7 @@ namespace backend.Modules.VehicleEntryModule
             IQueryable<ListJobsDto> listJobs = _dbSet
                 .Where(k => k.WorkShopId == workShopId)
                 .Include(k => k.Vehicle)
-                .Include(k => k.Customer)
+                .ThenInclude(k => k.Customer)
                 .Select(k => new ListJobsDto()
                 {
                     Id = k.Id,
@@ -49,11 +49,11 @@ namespace backend.Modules.VehicleEntryModule
                     },
                     Client = new ListJobsClientDto()
                     {
-                        Id = k.Customer.Id,
-                        FirstName = k.Customer.FirstName,
-                        LastName = k.Customer.LastName,
-                        PhoneNumber = k.Customer.PhoneNumber,
-                        Email = k.Customer.Email,
+                        Id = k.Vehicle.Customer.Id,
+                        FirstName = k.Vehicle.Customer.FirstName,
+                        LastName = k.Vehicle.Customer.LastName,
+                        PhoneNumber = k.Vehicle.Customer.PhoneNumber,
+                        Email = k.Vehicle.Customer.Email,
                     },
                 });
 

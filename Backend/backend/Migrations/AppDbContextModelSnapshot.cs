@@ -69,7 +69,7 @@ namespace backend.Migrations
                         new
                         {
                             Id = new Guid("cccccccc-cccc-cccc-cccc-cccccccccccc"),
-                            CreatedAt = new DateTime(2025, 5, 20, 20, 24, 21, 495, DateTimeKind.Utc).AddTicks(3019),
+                            CreatedAt = new DateTime(2025, 5, 24, 21, 31, 10, 407, DateTimeKind.Utc).AddTicks(2976),
                             Email = new[] { "lucaspirez42@gmail.com" },
                             FirstName = "Juan ",
                             LastName = "Perez",
@@ -79,7 +79,7 @@ namespace backend.Migrations
                         new
                         {
                             Id = new Guid("dddddddd-dddd-dddd-dddd-dddddddddddd"),
-                            CreatedAt = new DateTime(2025, 5, 20, 20, 24, 21, 495, DateTimeKind.Utc).AddTicks(3031),
+                            CreatedAt = new DateTime(2025, 5, 24, 21, 31, 10, 407, DateTimeKind.Utc).AddTicks(2996),
                             Email = new string[0],
                             FirstName = "Maria ",
                             LastName = "Lopez",
@@ -164,9 +164,6 @@ namespace backend.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<Guid>("CustomerId")
-                        .HasColumnType("uuid");
-
                     b.Property<DateTime?>("DeliveryDate")
                         .HasColumnType("timestamp with time zone");
 
@@ -186,6 +183,10 @@ namespace backend.Migrations
                     b.Property<DateTime>("ReceptionDate")
                         .HasColumnType("timestamp with time zone");
 
+                    b.Property<string[]>("SpareParts")
+                        .IsRequired()
+                        .HasColumnType("text[]");
+
                     b.Property<string>("Status")
                         .IsRequired()
                         .HasColumnType("text");
@@ -193,15 +194,13 @@ namespace backend.Migrations
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<Guid?>("VehicleId")
+                    b.Property<Guid>("VehicleId")
                         .HasColumnType("uuid");
 
                     b.Property<Guid>("WorkShopId")
                         .HasColumnType("uuid");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("CustomerId");
 
                     b.HasIndex("VehicleId");
 
@@ -234,13 +233,13 @@ namespace backend.Migrations
                         new
                         {
                             Id = new Guid("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa"),
-                            CreatedAt = new DateTime(2025, 5, 20, 20, 24, 21, 495, DateTimeKind.Utc).AddTicks(2915),
+                            CreatedAt = new DateTime(2025, 5, 24, 21, 31, 10, 407, DateTimeKind.Utc).AddTicks(2849),
                             Name = "Taller Jesuita"
                         },
                         new
                         {
                             Id = new Guid("bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb"),
-                            CreatedAt = new DateTime(2025, 5, 20, 20, 24, 21, 495, DateTimeKind.Utc).AddTicks(2935),
+                            CreatedAt = new DateTime(2025, 5, 24, 21, 31, 10, 407, DateTimeKind.Utc).AddTicks(2877),
                             Name = "Taller Silvana"
                         });
                 });
@@ -280,23 +279,17 @@ namespace backend.Migrations
 
             modelBuilder.Entity("backend.Database.Entites.VehicleEntry", b =>
                 {
-                    b.HasOne("backend.Database.Entites.Customer", "Customer")
-                        .WithMany()
-                        .HasForeignKey("CustomerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("backend.Database.Entites.Vehicle", "Vehicle")
                         .WithMany("VehicleEntries")
-                        .HasForeignKey("VehicleId");
+                        .HasForeignKey("VehicleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("backend.Database.Entites.WorkShop", "WorkShop")
                         .WithMany("VehicleEntries")
                         .HasForeignKey("WorkShopId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Customer");
 
                     b.Navigation("Vehicle");
 

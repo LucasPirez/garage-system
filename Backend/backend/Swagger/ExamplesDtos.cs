@@ -27,11 +27,12 @@ namespace backend.Swagger
             new()
             {
                 WorkshopId = SeedData.workshopAId.ToString(),
-                CustomerId = SeedData.customerAId,
                 Cause = "Cambio de aceite",
                 Details = "Cambio de aceite y filtro",
                 ReceptionDate = DateTime.UtcNow,
                 Presupuest = 1000,
+                SpareParts = new List<string>() { "Aceite", "Filtro" },
+                VehicleId = "",
             };
     }
 

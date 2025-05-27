@@ -22,12 +22,11 @@
         public double Presupuest { get; set; }
         public double FinalAmount { get; set; }
 
-        public Guid CustomerId { get; set; }
-        public Customer Customer { get; set; }
+        public IList<string> SpareParts { get; set; } = new List<string>();
 
-        public Guid? VehicleId { get; set; }
+        public Guid VehicleId { get; set; }
 
-        public Vehicle? Vehicle { get; set; }
+        public Vehicle Vehicle { get; set; }
 
         public required Guid WorkShopId { get; set; }
         public WorkShop WorkShop { get; set; }

@@ -17,6 +17,7 @@ namespace backend.Modules.VehicleEntryModule.Dtos
         public string Details { get; set; } = string.Empty;
         public double budget { get; set; }
         public double FinalAmount { get; set; }
+        public IList<string> SpareParts { get; set; } = new List<string>();
 
         public required ListJobsVehicleDto Vehicle { get; set; }
 

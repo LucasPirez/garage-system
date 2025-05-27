@@ -26,7 +26,7 @@ namespace backend.Modules.VehicleEntryModule
         public async Task<IActionResult> Create([FromBody] CreateVehicleEntryDto createDto)
         {
             var result = await _vehicleEntryService.CreateAsync(createDto);
-            return new OkObjectResult(result);
+            return StatusCode(StatusCodes.Status201Created, result);
         }
     }
 }

@@ -112,8 +112,8 @@ namespace backend.Migrations
                     Details = table.Column<string>(type: "text", nullable: false),
                     Presupuest = table.Column<double>(type: "double precision", nullable: false),
                     FinalAmount = table.Column<double>(type: "double precision", nullable: false),
-                    CustomerId = table.Column<Guid>(type: "uuid", nullable: false),
-                    VehicleId = table.Column<Guid>(type: "uuid", nullable: true),
+                    SpareParts = table.Column<string[]>(type: "text[]", nullable: false),
+                    VehicleId = table.Column<Guid>(type: "uuid", nullable: false),
                     WorkShopId = table.Column<Guid>(type: "uuid", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true)
@@ -122,16 +122,11 @@ namespace backend.Migrations
                 {
                     table.PrimaryKey("PK_VehicleEntries", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_VehicleEntries_Customers_CustomerId",
-                        column: x => x.CustomerId,
-                        principalTable: "Customers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
                         name: "FK_VehicleEntries_Vehicles_VehicleId",
                         column: x => x.VehicleId,
                         principalTable: "Vehicles",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_VehicleEntries_WorkShops_WorkShopId",
                         column: x => x.WorkShopId,
@@ -145,8 +140,8 @@ namespace backend.Migrations
                 columns: new[] { "Id", "CreatedAt", "Name", "UpdatedAt" },
                 values: new object[,]
                 {
-                    { new Guid("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa"), new DateTime(2025, 5, 20, 20, 24, 21, 495, DateTimeKind.Utc).AddTicks(2915), "Taller Jesuita", null },
-                    { new Guid("bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb"), new DateTime(2025, 5, 20, 20, 24, 21, 495, DateTimeKind.Utc).AddTicks(2935), "Taller Silvana", null }
+                    { new Guid("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa"), new DateTime(2025, 5, 24, 21, 31, 10, 407, DateTimeKind.Utc).AddTicks(2849), "Taller Jesuita", null },
+                    { new Guid("bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb"), new DateTime(2025, 5, 24, 21, 31, 10, 407, DateTimeKind.Utc).AddTicks(2877), "Taller Silvana", null }
                 });
 
             migrationBuilder.InsertData(
@@ -154,8 +149,8 @@ namespace backend.Migrations
                 columns: new[] { "Id", "Address", "CreatedAt", "Dni", "Email", "FirstName", "LastName", "PhoneNumber", "UpdatedAt", "WorkShopId" },
                 values: new object[,]
                 {
-                    { new Guid("cccccccc-cccc-cccc-cccc-cccccccccccc"), null, new DateTime(2025, 5, 20, 20, 24, 21, 495, DateTimeKind.Utc).AddTicks(3019), null, new[] { "lucaspirez42@gmail.com" }, "Juan ", "Perez", new[] { "3424388239" }, null, new Guid("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa") },
-                    { new Guid("dddddddd-dddd-dddd-dddd-dddddddddddd"), null, new DateTime(2025, 5, 20, 20, 24, 21, 495, DateTimeKind.Utc).AddTicks(3031), null, new string[0], "Maria ", "Lopez", new string[0], null, new Guid("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa") }
+                    { new Guid("cccccccc-cccc-cccc-cccc-cccccccccccc"), null, new DateTime(2025, 5, 24, 21, 31, 10, 407, DateTimeKind.Utc).AddTicks(2976), null, new[] { "lucaspirez42@gmail.com" }, "Juan ", "Perez", new[] { "3424388239" }, null, new Guid("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa") },
+                    { new Guid("dddddddd-dddd-dddd-dddd-dddddddddddd"), null, new DateTime(2025, 5, 24, 21, 31, 10, 407, DateTimeKind.Utc).AddTicks(2996), null, new string[0], "Maria ", "Lopez", new string[0], null, new Guid("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa") }
                 });
 
             migrationBuilder.CreateIndex(
@@ -166,11 +161,6 @@ namespace backend.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_Payments_CustomerId",
                 table: "Payments",
-                column: "CustomerId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_VehicleEntries_CustomerId",
-                table: "VehicleEntries",
                 column: "CustomerId");
 
             migrationBuilder.CreateIndex(
