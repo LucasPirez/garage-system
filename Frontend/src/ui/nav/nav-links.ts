@@ -3,7 +3,7 @@ export const navLinks: { href: string; label: string }[] = [
   { href: '/clientes', label: 'Clientes' },
   {
     href: '/vehiculos',
-    label: 'Vehiculos',
+    label: 'Registrar',
   },
-  { href: '/contact', label: 'Contact' },
+  // { href: '/contact', label: 'Contact' },
 ] as const

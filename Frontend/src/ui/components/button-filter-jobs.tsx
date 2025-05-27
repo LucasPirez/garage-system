@@ -8,6 +8,12 @@ interface Props {
   label: JobsFilterType
 }
 
+const label_traduction = {
+  [FILTER.ALL]: 'Todos',
+  [FILTER.PENDING]: 'En Progreso',
+  [FILTER.REALIZED]: 'Completado',
+}
+
 export const ButtonFilterJobs = ({ onClick, status, label }: Props) => {
   return (
     <button
@@ -16,14 +22,14 @@ export const ButtonFilterJobs = ({ onClick, status, label }: Props) => {
         status === label
           ? 'bg-blue-600 text-white'
           : 'bg-white text-gray-700 hover:bg-gray-50'
-      } border-t border-b border-r border-gray-300 ${
+      } border-t border-b border-r border-l border-gray-300 ${
         label === FILTER.ALL
           ? 'rounded-l-lg'
           : label === FILTER.REALIZED
           ? 'rounded-r-lg'
           : ''
       }`}>
-      {label}
+      {label_traduction[label]}
     </button>
   )
 }

@@ -2,9 +2,10 @@ import { AxiosInstance } from 'axios'
 import { type CustomerResponseDto } from '../dtos/customer/customer-response.dto'
 import { type VehicleResponseDto } from '../dtos/vehicle/vehicle-response.dto'
 import { type JobsResponseDto } from '../dtos/vehicleEntry/jobs-response.dto'
+import { workshopId } from '../constants/workshopId'
 
 const getWorkshopId = () => {
-  return 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa'
+  return workshopId
 }
 
 export class WorkshopService {

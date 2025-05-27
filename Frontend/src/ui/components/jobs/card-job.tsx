@@ -20,8 +20,6 @@ export const CardJob = ({ job }: { job: JobsResponseDto }) => {
                       ? 'bg-green-100 text-green-800'
                       : job.status === FILTER.PENDING
                       ? 'bg-yellow-100 text-yellow-800'
-                      : job.status === FILTER.CANCELLED
-                      ? 'bg-blue-100 text-blue-800'
                       : 'bg-purple-100 text-purple-800'
                   }`}>
                   {job.status}
@@ -50,7 +48,9 @@ export const CardJob = ({ job }: { job: JobsResponseDto }) => {
           {/* <Calendar className="w-5 h-5 text-gray-500 mr-2 mt-0.5" /> */}
           <div>
             <p className="text-xs text-gray-500">Fecha de ingreso</p>
-            <p className="text-sm">{job.receptionDate.toLocaleString()}</p>
+            <p className="text-sm">
+              {job.receptionDate.toLocaleString().split('T')[0]}
+            </p>
           </div>
         </div>
 
