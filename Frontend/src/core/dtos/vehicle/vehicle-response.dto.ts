@@ -1,3 +1,6 @@
 export interface VehicleResponseDto {
-  hola: string
+  plate: string
+  model: string
+  color: string
+  id: string
 }

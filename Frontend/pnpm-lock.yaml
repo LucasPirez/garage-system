@@ -8,9 +8,6 @@ importers:
 
   .:
     dependencies:
-      '@heroicons/react':
-        specifier: 2.1.4
-        version: 2.1.4(react@18.2.0)
       axios:
         specifier: 1.7.2
         version: 1.7.2
@@ -23,6 +20,9 @@ importers:
       react-router-dom:
         specifier: 6.23.1
         version: 6.23.1(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+      zustand:
+        specifier: ^5.0.5
+        version: 5.0.5(@types/react@18.2.55)(react@18.2.0)
     devDependencies:
       '@types/react':
         specifier: 18.2.55
@@ -225,11 +225,6 @@ packages:
   '@eslint/js@8.56.0':
     resolution: {integrity: sha512-gMsVel9D7f2HLkBma9VbtzZRehRogVRfbr++f06nL2vnCGCNlzOD+/MUov/F4p8myyAHspEhVobgjpX64q5m6A==}
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
-
-  '@heroicons/react@2.1.4':
-    resolution: {integrity: sha512-ju0wj0wwrUTMQ2Yceyrma7TKuI3BpSjp+qKqV81K9KGcUHdvTMdiwfRc2cwXBp3uXtKuDZkh0v03nWOQnJFv2Q==}
-    peerDependencies:
-      react: '>= 16'
 
   '@humanwhocodes/config-array@0.11.14':
     resolution: {integrity: sha512-3T8LkOmg45BV5FICb15QQMsyUSWrQ8AygVfC7ZG32zOalnqrilm018ZVCw0eapXux8FtA33q8PSRSstjee3jSg==}
@@ -1505,6 +1500,24 @@ packages:
     resolution: {integrity: sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q==}
     engines: {node: '>=10'}
 
+  zustand@5.0.5:
+    resolution: {integrity: sha512-mILtRfKW9xM47hqxGIxCv12gXusoY/xTSHBYApXozR0HmQv299whhBeeAcRy+KrPPybzosvJBCOmVjq6x12fCg==}
+    engines: {node: '>=12.20.0'}
+    peerDependencies:
+      '@types/react': '>=18.0.0'
+      immer: '>=9.0.6'
+      react: '>=18.0.0'
+      use-sync-external-store: '>=1.2.0'
+    peerDependenciesMeta:
+      '@types/react':
+        optional: true
+      immer:
+        optional: true
+      react:
+        optional: true
+      use-sync-external-store:
+        optional: true
+
 snapshots:
 
   '@alloc/quick-lru@5.2.0': {}
@@ -1600,10 +1613,6 @@ snapshots:
       - supports-color
 
   '@eslint/js@8.56.0': {}
-
-  '@heroicons/react@2.1.4(react@18.2.0)':
-    dependencies:
-      react: 18.2.0
 
   '@humanwhocodes/config-array@0.11.14':
     dependencies:
@@ -2818,3 +2827,8 @@ snapshots:
   yaml@2.8.0: {}
 
   yocto-queue@0.1.0: {}
+
+  zustand@5.0.5(@types/react@18.2.55)(react@18.2.0):
+    optionalDependencies:
+      '@types/react': 18.2.55
+      react: 18.2.0
