@@ -5,6 +5,7 @@ using backend.Database.Entites;
 using backend.Database.Repository;
 using backend.Modules.CustomerModule.Dtos;
 using backend.Modules.CustomerModule.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace backend.Modules.CustomerModule
 {
@@ -20,7 +21,10 @@ namespace backend.Modules.CustomerModule
 
         public async Task<IEnumerable<Customer>> GetAllAsync(Guid workshopId)
         {
-            return await GetAll(k => k.WorkShopId == workshopId);
+            return await _dbSet
+                .Where(k => k.WorkShopId == workshopId)
+                .Include(k => k.Vehicle)
+                .ToListAsync();
         }
 
         public async Task<Customer> GetByIdAsync(Guid id)

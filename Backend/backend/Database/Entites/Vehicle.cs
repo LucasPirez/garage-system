@@ -1,4 +1,6 @@
-﻿namespace backend.Database.Entites
+﻿using System.Text.Json.Serialization;
+
+namespace backend.Database.Entites
 {
     public class Vehicle : BaseEntity<Guid>
     {
@@ -8,10 +10,9 @@
 
         public required Guid CustomerId { get; set; }
 
+        [JsonIgnore]
         public Customer Customer { get; set; }
 
         public ICollection<VehicleEntry> VehicleEntries { get; set; } = new List<VehicleEntry>();
     }
-
-   
 }
