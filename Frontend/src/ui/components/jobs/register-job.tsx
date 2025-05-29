@@ -40,7 +40,12 @@ const FormInitialState: FormDataType = {
 
 export const RegisterJob = () => {
   const [formData, setFormData] = useState<FormDataType>(FormInitialState)
-  const { clientSelected, handleClientSelect } = useRegisterJobContext()
+  const {
+    clientSelected,
+    handleClientSelect,
+    vehicleSelected,
+    handleVehicleSelect,
+  } = useRegisterJobContext()
 
   const handleChange = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
@@ -65,25 +70,38 @@ export const RegisterJob = () => {
       receptionDate,
     } = formData
     try {
-      const customerResponse = await customerService.create({
-        email: [email],
-        firstName,
-        lastName,
-        phoneNumber: [phoneNumber],
-      })
+      let customerId: string | undefined = clientSelected?.id
+      let vehicleId: string | undefined = vehicleSelected?.id
 
-      const vehicleResponse = await vehicleService.create({
-        color,
-        customerId: customerResponse,
-        model,
-        plate,
-      })
+      if (!clientSelected?.firstName) {
+        const customerResponse = await customerService.create({
+          email: [email],
+          firstName,
+          lastName,
+          phoneNumber: [phoneNumber],
+        })
+        customerId = customerResponse
+      }
+
+      if (!customerId) throw new Error('Id del customer es' + typeof vehicleId)
+
+      if (!vehicleSelected) {
+        const vehicleResponse = await vehicleService.create({
+          color,
+          customerId: customerId,
+          model,
+          plate,
+        })
+        vehicleId = vehicleResponse
+      }
+
+      if (!vehicleId) throw new Error('Id del vehiculo es' + typeof vehicleId)
 
       await jobService.create({
         cause,
         details,
         receptionDate: new Date(receptionDate).toISOString(),
-        vehicleId: vehicleResponse,
+        vehicleId,
       })
 
       setFormData(FormInitialState)
@@ -131,14 +149,23 @@ export const RegisterJob = () => {
               <h2 className="text-xl font-semibold text-gray-800">Vehículo</h2>
             </div>
 
-            {clientSelected?.vehicle.length ? (
+            {vehicleSelected ? (
               <>
-                <span>{clientSelected.vehicle[0]?.plate}</span>
-                <span>{clientSelected.vehicle[0]?.model}</span>
+                {clientSelected?.vehicle.map((vehicle) => (
+                  <div
+                    className={`${
+                      vehicleSelected?.id === vehicle.id ? 'bg-gray-200' : ''
+                    } mb-1 border-2 p-2 rounded-md  w-64 cursor-pointer hover:bg-slate-100`}
+                    onClick={() => handleVehicleSelect(vehicle)}>
+                    <span>{vehicle.plate}</span>
+                    <span>{vehicle.model}</span>
+                  </div>
+                ))}
                 <button
                   className="inline-flex items-center justify-center p-2 rounded-md text-gray-700 hover:text-gray-900 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500"
                   aria-expanded="false"
-                  onClick={() => handleClientSelect(null)}>
+                  type="button"
+                  onClick={() => handleVehicleSelect(null)}>
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     viewBox="0 0 20 20"

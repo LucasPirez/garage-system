@@ -9,7 +9,8 @@ interface Props {
 }
 
 export const Body = ({ data }: Props) => {
-  const { handleClientSelect, handleVisibility } = useRegisterJobContext()
+  const { handleClientSelect, handleVisibility, handleVehicleSelect } =
+    useRegisterJobContext()
 
   if (!data?.length) {
     return (
@@ -27,6 +28,10 @@ export const Body = ({ data }: Props) => {
 
   const handleClient = (client: ClientAndVehicleType) => {
     handleClientSelect(client)
+
+    if (client?.vehicle?.length) {
+      handleVehicleSelect(client.vehicle[0])
+    }
 
     handleVisibility(false)
   }
