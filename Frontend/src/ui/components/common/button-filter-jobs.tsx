@@ -1,6 +1,6 @@
 import { MouseEvent } from 'react'
-import { JobsFilterType } from '../../core/type/jobs-filter'
-import { FILTER } from '../../core/constants/filter-jobs-status'
+import { JobsFilterType } from '../../../core/type/jobs-filter'
+import { FILTER } from '../../../core/constants/filter-jobs-status'
 
 interface Props {
   onClick: (e: MouseEvent<HTMLButtonElement>) => void

@@ -2,7 +2,7 @@ import { create } from 'zustand'
 import { VehicleType } from '../type/vehicle'
 import { CustomerType } from '../type/customer'
 
-type ClientAndVehicleType = CustomerType & { vehicle: VehicleType[] }
+export type ClientAndVehicleType = CustomerType & { vehicle: VehicleType[] }
 
 export interface ClientsAndVehiclesStoreType {
   clients: ClientAndVehicleType[]

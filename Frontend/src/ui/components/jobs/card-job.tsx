@@ -5,7 +5,7 @@ export const CardJob = ({ job }: { job: JobsResponseDto }) => {
   return (
     <div
       key={job.id}
-      className="bg-gray-100 rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow w-[370px]">
+      className="bg-gray-100 rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow w-[340px]">
       <div className="p-4 border-b border-gray-100">
         <div className="flex justify-between items-start">
           <div>
