@@ -121,13 +121,31 @@ export const RegisterJob = () => {
               <h2 className="text-xl font-semibold text-gray-800">Cliente</h2>
             </div>
             {clientSelected?.firstName ? (
-              <div>
-                <span>{clientSelected.firstName}</span>{' '}
-                <span>{clientSelected.lastName}</span>
+              <div className="inline-flex items-center gap-3 bg-white border border-gray-200 rounded-lg px-4 py-3 shadow-sm hover:shadow-md">
+                <div className="flex items-center gap-2">
+                  <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
+                    <span className="text-blue-600 font-medium text-sm">
+                      {clientSelected.firstName[0]}
+                      {clientSelected.lastName[0]}
+                    </span>
+                  </div>
+                  <div className="flex flex-col">
+                    <span className="text-gray-900 font-medium text-sm">
+                      {clientSelected.firstName} {clientSelected.lastName}
+                    </span>
+                    <span className="text-gray-500 text-xs">
+                      {clientSelected?.phoneNumber}
+                    </span>
+                  </div>
+                </div>
+
                 <button
-                  className="inline-flex items-center justify-center p-2 rounded-md text-gray-700 hover:text-gray-900 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500"
-                  aria-expanded="false"
-                  onClick={() => handleClientSelect(null)}>
+                  className="ml-2 p-1 rounded-full text-gray-400 hover:text-gray-600 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-1 transition-colors duration-150"
+                  onClick={() => {
+                    handleClientSelect(null)
+                    handleVehicleSelect(null)
+                  }}
+                  aria-label="Deseleccionar cliente">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     viewBox="0 0 20 20"
@@ -147,20 +165,7 @@ export const RegisterJob = () => {
             <div className="flex items-center mb-4">
               <span className="text-2xl mr-3">🚙</span>
               <h2 className="text-xl font-semibold text-gray-800">Vehículo</h2>
-            </div>
-
-            {vehicleSelected ? (
-              <>
-                {clientSelected?.vehicle.map((vehicle) => (
-                  <div
-                    className={`${
-                      vehicleSelected?.id === vehicle.id ? 'bg-gray-200' : ''
-                    } mb-1 border-2 p-2 rounded-md  w-64 cursor-pointer hover:bg-slate-100`}
-                    onClick={() => handleVehicleSelect(vehicle)}>
-                    <span>{vehicle.plate}</span>
-                    <span>{vehicle.model}</span>
-                  </div>
-                ))}
+              {vehicleSelected && (
                 <button
                   className="inline-flex items-center justify-center p-2 rounded-md text-gray-700 hover:text-gray-900 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500"
                   aria-expanded="false"
@@ -174,7 +179,48 @@ export const RegisterJob = () => {
                     <path d="M6.28 5.22a.75.75 0 0 0-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 1 0 1.06 1.06L10 11.06l3.72 3.72a.75.75 0 1 0 1.06-1.06L11.06 10l3.72-3.72a.75.75 0 0 0-1.06-1.06L10 8.94 6.28 5.22Z" />
                   </svg>
                 </button>
-              </>
+              )}
+            </div>
+
+            {vehicleSelected ? (
+              <div className="flex gap-2 flex-wrap ">
+                {clientSelected?.vehicle.map((vehicle) => (
+                  <div
+                    key={vehicle.id}
+                    className={`
+                      relative p-4 rounded-lg border-2 cursor-pointer w-[210px]  
+                      ${
+                        vehicleSelected?.id === vehicle.id
+                          ? 'border-blue-500 bg-blue-50'
+                          : 'border-gray-200 bg-white'
+                      }
+                    `}
+                    onClick={() => handleVehicleSelect(vehicle)}>
+                    <div className="flex items-center gap-3 ">
+                      <div
+                        className={`
+                        p-2 rounded-full
+                        ${
+                          vehicleSelected?.id === vehicle.id
+                            ? 'bg-blue-400 text-blue-600'
+                            : 'bg-gray-100 text-gray-600'
+                        }
+                      `}></div>
+
+                      <div className="flex-1 min-w-0">
+                        <p className="font-medium text-gray-900">
+                          {vehicle.model}
+                        </p>
+                        <div className="flex items-center gap-2 mb-1">
+                          <span className="font-semibold  text-lg text-gray-600 ">
+                            {vehicle.plate}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
             ) : (
               <InputsFormVehicle state={formData} onChange={handleChange} />
             )}
