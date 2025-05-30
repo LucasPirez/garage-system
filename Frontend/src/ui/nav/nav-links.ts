@@ -5,5 +5,4 @@ export const NAV_LINKS: { href: string; label: string }[] = [
     href: '/registrar',
     label: 'Registrar',
   },
-  // { href: '/contact', label: 'Contact' },
-] as const
+]
