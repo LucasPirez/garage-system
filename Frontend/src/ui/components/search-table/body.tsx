@@ -2,16 +2,21 @@ import {
   ClientAndVehicleType,
   ClientsAndVehiclesStoreType,
 } from '../../../core/store/clients-vehicles-store'
-import { useRegisterJobContext } from '../../context/register-job-context'
+import { VehicleType } from '../../../core/type/vehicle'
 
 interface Props {
   data: ClientsAndVehiclesStoreType['clients']
+  onVisibilityChange: (visible: boolean) => void
+  handleClientSelect?: (clientSelected: ClientAndVehicleType | null) => void
+  handleVehicleSelect?: (vehicle: VehicleType | null) => void
 }
 
-export const Body = ({ data }: Props) => {
-  const { handleClientSelect, handleVisibility, handleVehicleSelect } =
-    useRegisterJobContext()
-
+export const Body = ({
+  data,
+  onVisibilityChange,
+  handleClientSelect,
+  handleVehicleSelect,
+}: Props) => {
   if (!data?.length) {
     return (
       <tbody>
@@ -27,13 +32,13 @@ export const Body = ({ data }: Props) => {
   }
 
   const handleClient = (client: ClientAndVehicleType) => {
-    handleClientSelect(client)
+    handleClientSelect?.(client)
 
     if (client?.vehicle?.length) {
-      handleVehicleSelect(client.vehicle[0])
+      handleVehicleSelect?.(client.vehicle[0])
     }
 
-    handleVisibility(false)
+    onVisibilityChange(false)
   }
 
   return (

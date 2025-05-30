@@ -1,5 +1,5 @@
 import { Outlet } from 'react-router-dom'
-import { MovileNav } from './mobile-nav'
+import { MobileNav } from './mobile-nav'
 import { TabletNav } from './tablet-nav'
 import { DesktopNav } from './desktop-nav'
 
@@ -21,7 +21,7 @@ export const Navbar = () => {
         </nav>
 
         <nav className="md:hidden bg-white shadow-md">
-          <MovileNav />
+          <MobileNav />
         </nav>
 
         <section className="p-4 w-full">

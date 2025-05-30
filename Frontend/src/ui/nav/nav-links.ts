@@ -1,8 +1,8 @@
-export const navLinks: { href: string; label: string }[] = [
+export const NAV_LINKS: { href: string; label: string }[] = [
   { href: '/trabajos', label: 'Trabajos' },
   { href: '/clientes', label: 'Clientes' },
   {
-    href: '/vehiculos',
+    href: '/registrar',
     label: 'Registrar',
   },
   // { href: '/contact', label: 'Contact' },

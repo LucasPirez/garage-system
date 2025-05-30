@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { navLinks } from './nav-links'
+import { NAV_LINKS } from './nav-links'
 
 export const TabletNav = () => {
   return (
@@ -12,7 +12,7 @@ export const TabletNav = () => {
         </div>
 
         <div className="flex items-center space-x-4">
-          {navLinks.map((link) => (
+          {NAV_LINKS.map((link) => (
             <Link
               key={link.href}
               to={link.href}

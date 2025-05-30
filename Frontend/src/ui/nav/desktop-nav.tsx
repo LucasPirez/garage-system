@@ -1,10 +1,10 @@
 import { Link } from 'react-router-dom'
-import { navLinks } from './nav-links'
+import { NAV_LINKS } from './nav-links'
 
 export const DesktopNav = () => {
   return (
     <ul className="space-y-2">
-      {navLinks.map((link) => (
+      {NAV_LINKS.map((link) => (
         <li key={link.href}>
           <Link
             to={link.href}

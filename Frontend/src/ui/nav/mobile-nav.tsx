@@ -1,8 +1,8 @@
 import { useState } from 'react'
-import { navLinks } from './nav-links'
+import { NAV_LINKS } from './nav-links'
 import { Link } from 'react-router-dom'
 
-export const MovileNav = () => {
+export const MobileNav = () => {
   const [isOpen, setIsOpen] = useState(false)
 
   const toggleMenu = () => {
@@ -52,7 +52,7 @@ export const MovileNav = () => {
 
       <div className={`${isOpen ? 'block' : 'hidden'}`}>
         <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-          {navLinks.map((link) => (
+          {NAV_LINKS.map((link) => (
             <Link
               key={link.href}
               to={link.href}

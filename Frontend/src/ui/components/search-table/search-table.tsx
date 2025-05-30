@@ -2,14 +2,26 @@ import { ChangeEvent, useEffect, useState } from 'react'
 import { Head } from './head'
 import { Body } from './body'
 import {
+  ClientAndVehicleType,
   ClientsAndVehiclesStoreType,
   useStoreClientsAndVehicles,
 } from '../../../core/store/clients-vehicles-store'
 import { workshopService } from '../../../core/services'
-import { useRegisterJobContext } from '../../context/register-job-context'
+import { VehicleType } from '../../../core/type/vehicle'
 
-export const SearchTable = () => {
-  // const [searchTerm, setSearchTerm] = useState('')
+interface Props {
+  onVisibilityChange: (visible: boolean) => void
+  isVisible: boolean
+  handleClientSelect?: (clientSelected: ClientAndVehicleType | null) => void
+  handleVehicleSelect?: (vehicle: VehicleType | null) => void
+}
+
+export const SearchTable = ({
+  isVisible,
+  onVisibilityChange,
+  handleClientSelect,
+  handleVehicleSelect,
+}: Props) => {
   const [clientsSearch, setClientsSearch] = useState<
     ClientsAndVehiclesStoreType['clients']
   >([])
@@ -17,8 +29,6 @@ export const SearchTable = () => {
   const setStoreClients = useStoreClientsAndVehicles(
     (clients) => clients.setClients
   )
-
-  const { searchTable, handleVisibility } = useRegisterJobContext()
 
   useEffect(() => {
     // eslint-disable-next-line no-extra-semi
@@ -38,10 +48,10 @@ export const SearchTable = () => {
     const { value } = event.target
 
     if (!value.trim()?.length) {
-      handleVisibility(false)
+      onVisibilityChange(false)
       return
     }
-    handleVisibility(true)
+    onVisibilityChange(true)
 
     const filteredClients = clients.filter((client) => {
       const fullName = `${client.firstName} ${client.lastName}`.toLowerCase()
@@ -85,10 +95,15 @@ export const SearchTable = () => {
         <div className="overflow-x-auto">
           <table
             className={`min-w-full divide-y divide-gray-200  ${
-              searchTable ? '' : 'hidden'
+              isVisible ? '' : 'hidden'
             }`}>
             <Head />
-            <Body data={clientsSearch} />
+            <Body
+              data={clientsSearch}
+              onVisibilityChange={onVisibilityChange}
+              handleClientSelect={handleClientSelect}
+              handleVehicleSelect={handleVehicleSelect}
+            />
           </table>
         </div>
       </div>
