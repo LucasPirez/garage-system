@@ -5,8 +5,8 @@ import { VehicleType } from '../../core/type/vehicle'
 interface RegisterJobContextType {
   searchTable: boolean
   handleVisibility: (state: boolean) => void
-  clientSelected: ClientAndVehicleType | null
-  handleClientSelect: (clientSelected: ClientAndVehicleType | null) => void
+  customerSelected: ClientAndVehicleType | null
+  handleCustomerSelect: (clientSelected: ClientAndVehicleType | null) => void
   vehicleSelected: VehicleType | null
   handleVehicleSelect: (vehicle: VehicleType | null) => void
 }
@@ -18,9 +18,9 @@ type Props = {
 const initialState: RegisterJobContextType = {
   searchTable: false,
   handleVisibility: () => {},
-  clientSelected: null,
+  customerSelected: null,
   vehicleSelected: null,
-  handleClientSelect: () => {},
+  handleCustomerSelect: () => {},
   handleVehicleSelect: () => {},
 }
 
@@ -28,7 +28,7 @@ const RegisterJobContext = createContext<RegisterJobContextType>(initialState)
 
 export const RegisterJobProvider: React.FC<Props> = ({ children }) => {
   const [searchTable, setSearchTable] = useState(false)
-  const [clientSelected, setClientSelected] =
+  const [customerSelected, setCustomerSelected] =
     useState<ClientAndVehicleType | null>(null)
   const [vehicleSelected, setVehicleSelected] = useState<VehicleType | null>(
     null
@@ -38,8 +38,8 @@ export const RegisterJobProvider: React.FC<Props> = ({ children }) => {
     setSearchTable(state)
   }
 
-  const handleClientSelect = (client: ClientAndVehicleType | null) => {
-    setClientSelected(client)
+  const handleCustomerSelect = (client: ClientAndVehicleType | null) => {
+    setCustomerSelected(client)
   }
 
   const handleVehicleSelect = (vehicle: VehicleType | null) => {
@@ -49,8 +49,8 @@ export const RegisterJobProvider: React.FC<Props> = ({ children }) => {
   const value = {
     searchTable,
     handleVisibility,
-    clientSelected,
-    handleClientSelect,
+    customerSelected,
+    handleCustomerSelect,
     vehicleSelected,
     handleVehicleSelect,
   }

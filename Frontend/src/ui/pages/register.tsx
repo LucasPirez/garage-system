@@ -20,7 +20,7 @@ export const RegisterService = () => {
   const {
     searchTable,
     handleVisibility,
-    handleClientSelect,
+    handleCustomerSelect,
     handleVehicleSelect,
   } = useRegisterJobContext()
 
@@ -30,7 +30,7 @@ export const RegisterService = () => {
         <SearchTable
           isVisible={searchTable}
           onVisibilityChange={handleVisibility}
-          handleClientSelect={handleClientSelect}
+          handleClientSelect={handleCustomerSelect}
           handleVehicleSelect={handleVehicleSelect}
         />
       </section>
