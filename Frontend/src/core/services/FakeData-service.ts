@@ -1,38 +1,4 @@
-import {
-  AxiosDefaults,
-  AxiosHeaderValue,
-  AxiosInstance,
-  AxiosInterceptorManager,
-  AxiosRequestConfig,
-  AxiosResponse,
-  HeadersDefaults,
-  InternalAxiosRequestConfig,
-} from 'axios'
-import { type CustomerResponseDto } from '../dtos/customer/customer-response.dto'
-import { type VehicleResponseDto } from '../dtos/vehicle/vehicle-response.dto'
-import { type JobsResponseDto } from '../dtos/vehicleEntry/jobs-response.dto'
-import { workshopId } from '../constants/workshopId'
-
-const getWorkshopId = () => {
-  return workshopId
-}
-
-export class WorkshopService {
-  private readonly PATHS = {
-    VEHICLES: (workshopId: string) => `workshops/${workshopId}/vehicles`,
-    CUSTOMERS: (workshopId: string) => `workshops/${workshopId}/customers`,
-    VEHICLE_ENTRIES: (workshopId: string) =>
-      `workshops/${workshopId}/vehicles-entries`,
-  }
-  constructor(private readonly client: AxiosInstance) {}
-
-  private async get<T>(url: string): Promise<T> {
-    const { data } = await this.client.get<T>(url)
-    console.log(data)
-
-    return data
-  }
-
+export class FakeDataService {
   data: unknown = [
     {
       firstName: '',
@@ -505,7 +471,7 @@ export class WorkshopService {
     },
   ]
 
-  dataJobs: unknown = [
+  dataJobs: unknown[] = [
     {
       id: '6c96c790-b0df-4132-8671-7444869b61c7',
       receptionDate: '2025-05-24T21:33:51.181157Z',
@@ -604,19 +570,7 @@ export class WorkshopService {
     },
   ]
 
-  async getAllCustomers(): Promise<CustomerResponseDto[]> {
-    // return await this.get(this.PATHS.CUSTOMERS(getWorkshopId()))
-
-    return this.data as CustomerResponseDto[]
-  }
-
-  async getAllVehicles(): Promise<VehicleResponseDto> {
-    return await this.get(this.PATHS.VEHICLES(getWorkshopId()))
-  }
-
-  async getAllVehicleEntries(): Promise<JobsResponseDto[]> {
-    // return await this.get(this.PATHS.VEHICLE_ENTRIES(getWorkshopId()))
-
-    return this.dataJobs as JobsResponseDto[]
+  addJob(job: unknown) {
+    this.dataJobs.push(job)
   }
 }

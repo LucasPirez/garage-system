@@ -1,4 +1,5 @@
 import { axiosInstance } from './axios-service'
+import { FakeDataService } from './FakeData-service'
 import { CustomerService, JobsService, VehicleService } from './jobs-service'
 import { WorkshopService } from './worshop-service'
 
@@ -10,4 +11,12 @@ const vehicleService = new VehicleService(axiosInstance)
 
 const jobService = new JobsService(axiosInstance)
 
-export { workshopService, customerService, vehicleService, jobService }
+const fakeData = new FakeDataService()
+
+export {
+  workshopService,
+  customerService,
+  vehicleService,
+  jobService,
+  fakeData,
+}
