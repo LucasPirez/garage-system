@@ -1,7 +1,7 @@
 export interface JobsResponseDto {
   id: string
-  receptionDate: Date
-  deliveryDate: Date | null
+  receptionDate: string
+  deliveryDate: string | null
   notificationSent: boolean
   status: 'InProgress' | 'Completed' | 'Cancelled'
   cause: string
@@ -17,7 +17,5 @@ export interface JobsResponseDto {
     id: string
     firstName: string
     lastName: string
-    phoneNumber: number[]
-    email: string[]
   }
 }

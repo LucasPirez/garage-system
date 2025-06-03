@@ -3,7 +3,7 @@ import {
   RegisterJobProvider,
   useRegisterJobContext,
 } from '../context/register-job-context'
-import { RegisterJob } from '../components/jobs/register-job'
+import { RegisterJob } from '../components/jobs/create/register-job'
 
 export const classNameInput =
   'w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200'

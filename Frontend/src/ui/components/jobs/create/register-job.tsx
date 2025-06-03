@@ -3,17 +3,17 @@ import {
   CustomerCreateDto,
   JobCreateDto,
   VehicleCreateDto,
-} from '../../../core/services/jobs-service'
-import { InputsFormCustomer } from '../inputs-form-customer'
-import { InputsFormVehicle } from '../inputs-form-vehicle'
-import { InputsFormJob } from '../inputs-form-job'
+} from '../../../../core/services/jobs-service'
+import { InputsFormCustomer } from '../../inputs-form-customer'
+import { InputsFormVehicle } from '../../inputs-form-vehicle'
+import { InputsFormJob } from '../../inputs-form-job'
 import {
   customerService,
   jobService,
   vehicleService,
-} from '../../../core/services'
-import { useRegisterJobContext } from '../../context/register-job-context'
-import { ButtonClose } from '../common/button-close-icon'
+} from '../../../../core/services'
+import { useRegisterJobContext } from '../../../context/register-job-context'
+import { ButtonClose } from '../../common/button-close-icon'
 import { VehicleItem } from './vehicle-item'
 import { CustomerItem } from './customer-item'
 
@@ -134,7 +134,7 @@ export const RegisterJob = () => {
               <InputsFormCustomer state={formData} onChange={handleChange} />
             )}
           </div>
-          <div className="border-t border-gray-500 my-8"></div>
+          <div className="border-t border-gray-500 mt-3 mb-4"></div>
 
           <div className="mb-4">
             <div className="flex items-center mb-4">
@@ -160,10 +160,10 @@ export const RegisterJob = () => {
             )}
           </div>
 
-          <div className="border-t border-gray-500 my-8"></div>
+          <div className="border-t border-gray-500 mt-3 mb-4"></div>
 
-          <div className="mb-8">
-            <div className="flex items-center mb-6">
+          <div className="mb-3">
+            <div className="flex items-center mb-5">
               <span className="text-2xl mr-3">🔧</span>
               <h2 className="text-xl font-semibold text-gray-800">Servicio</h2>
             </div>
@@ -171,26 +171,24 @@ export const RegisterJob = () => {
             <InputsFormJob state={formData} onChange={handleChange} />
           </div>
 
-          <div className="bg-gray-50 -mx-8 -mb-8 px-8 py-6 border-t border-gray-200">
-            <div className="flex flex-col sm:flex-row gap-4 justify-end">
-              <button
-                type="reset"
-                onClick={() => setFormData(FormInitialState)}
-                className="px-6 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition duration-200 font-medium">
-                🗑️ Limpiar Formulario
-              </button>
+          <div className="flex flex-col sm:flex-row gap-4 justify-end">
+            <button
+              type="reset"
+              onClick={() => setFormData(FormInitialState)}
+              className="px-6 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50   font-medium active:scale-95">
+              🗑️ Limpiar Formulario
+            </button>
 
-              <button
-                type="submit"
-                className="px-8 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition duration-200 font-medium shadow-sm">
-                ✅ Registrar Servicio
-              </button>
-            </div>
+            <button
+              type="submit"
+              className="px-8 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-medium shadow-sm active:scale-95">
+              ✅ Registrar Servicio
+            </button>
           </div>
         </form>
       </div>
 
-      <div className="text-center mt-6 text-sm text-gray-500">
+      <div className="text-center text-sm text-gray-500">
         <p>Los campos marcados con * son obligatorios</p>
       </div>
     </>

@@ -1,4 +1,4 @@
-import { CustomerType } from '../../../core/type/customer'
+import { CustomerType } from '../../../../core/type/customer'
 
 interface Props {
   customer: CustomerType
