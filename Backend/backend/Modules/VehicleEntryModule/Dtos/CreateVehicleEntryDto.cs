@@ -1,4 +1,4 @@
-﻿using System.Text.Json.Serialization;
+﻿using backend.Database.Entites;
 
 namespace backend.Modules.VehicleEntryModule.Dtos
 {
@@ -15,6 +15,6 @@ namespace backend.Modules.VehicleEntryModule.Dtos
 
         public required string WorkshopId { get; set; }
 
-        public IList<string>? SpareParts { get; set; } = new List<string>();
+        public IList<SpareParts>? SpareParts { get; set; } = new List<SpareParts>();
     }
 }

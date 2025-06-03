@@ -1,4 +1,7 @@
-﻿namespace backend.Database.Entites
+﻿using System.Text.Json.Serialization;
+using Microsoft.EntityFrameworkCore;
+
+namespace backend.Database.Entites
 {
     public enum VehicleStatus
     {
@@ -22,7 +25,7 @@
         public double Presupuest { get; set; }
         public double FinalAmount { get; set; }
 
-        public IList<string> SpareParts { get; set; } = new List<string>();
+        public IList<SpareParts> SpareParts { get; set; } = new List<SpareParts>();
 
         public Guid VehicleId { get; set; }
 
@@ -30,5 +33,14 @@
 
         public required Guid WorkShopId { get; set; }
         public WorkShop WorkShop { get; set; }
+    }
+
+    [Owned]
+    public class SpareParts
+    {
+        public string Name { get; set; } = string.Empty;
+        public double Price { get; set; }
+
+        public int Quantity { get; set; } = 1;
     }
 }

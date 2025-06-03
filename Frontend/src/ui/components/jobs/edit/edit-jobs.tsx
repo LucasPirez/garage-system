@@ -1,8 +1,12 @@
 import { useEffect, useState } from 'react'
 import { useLocation } from 'react-router-dom'
 import { JobType } from '../../../../core/type/job'
+import { SparePart } from '../../../../core/dtos/vehicleEntry/jobs-response.dto'
+import { SpareParts } from './spare-parts'
 
-const initialData: JobType = {
+export type FormDataType = Omit<JobType, 'client' | 'vehicle' | 'id'>
+
+const initialData: FormDataType = {
   receptionDate: '',
   deliveryDate: null,
   status: 'InProgress',
@@ -10,42 +14,22 @@ const initialData: JobType = {
   details: '',
   budget: 1000,
   finalAmount: 0,
-  client: {
-    firstName: '',
-    id: '',
-    lastName: '',
-  },
-  id: '',
   notificationSent: false,
-  vehicle: {
-    id: '',
-    model: '',
-    plate: '',
-  },
-  // spareParts: [
-  //   { name: 'Aceite', price: 500 },
-  //   { name: 'Filtro', price: 300 },
-  // ],
+  spareParts: [],
 }
-// interface SparePart {
-//   name: string
-//   price: number
-// }
 
 export const EditJob = () => {
   const location = useLocation()
-  const [formData, setFormData] = useState<Omit<
-    JobType,
-    'client' | 'vehicle' | 'id'
-  > | null>(initialData)
-  const [newSparePart, setNewSparePart] = useState<{
-    name: string
-    price: number
-  }>({ name: '', price: 0 })
+  const [formData, setFormData] = useState<FormDataType | null>(initialData)
 
   useEffect(() => {
     if (location.state) {
-      setFormData(location.state)
+      const {
+        client: _,
+        vehicle: _ignored,
+        ...rest
+      } = location.state as JobType
+      setFormData(rest)
     }
   }, [])
 
@@ -53,7 +37,7 @@ export const EditJob = () => {
 
   const handleInputChange = (
     field: keyof typeof formData,
-    value: string | number | null
+    value: string | number | null | SparePart[]
   ) => {
     setFormData((prev) => {
       if (!prev) return prev
@@ -65,41 +49,10 @@ export const EditJob = () => {
     })
   }
 
-  // const addSparePart = () => {
-  //   if (newSparePart.name.trim()) {
-  //     const exists = formData.spareParts.some(
-  //       (part) =>
-  //         part.name.toLowerCase() === newSparePart.name.toLowerCase().trim()
-  //     )
-  //     if (!exists) {
-  //       setFormData((prev) => ({
-  //         ...prev,
-  //         spareParts: [
-  //           ...prev.spareParts,
-  //           {
-  //             name: newSparePart.name.trim(),
-  //             price: newSparePart.price,
-  //           },
-  //         ],
-  //       }))
-  //       setNewSparePart({ name: '', price: 0 })
-  //     }
-  //   }
-  // }
-
-  // const removeSparePart = (index: number) => {
-  //   setFormData((prev) => ({
-  //     ...prev,
-  //     spareParts: prev.spareParts.filter((_, i) => i !== index),
-  //   }))
-  // }
-
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     console.log('Datos del formulario:', formData)
   }
-
-  console.log(formData)
 
   const classNameInput =
     'w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500'
@@ -234,100 +187,18 @@ export const EditJob = () => {
           <div className="space-y-2">
             <label className={classNameLabel}>Repuestos</label>
             <div className="space-y-2">
-              {/* {formData.spareParts.map((part, index) => (
-                <div key={index} className="flex items-center gap-2">
-                  <input
-                    type="text"
-                    value={part.name}
-                    readOnly
-                    className="flex-1 px-3 py-2 border border-gray-300 rounded-md shadow-sm bg-gray-50 text-gray-700"
-                  />
-                  <div className="w-32">
-                    <input
-                      type="number"
-                      min="0"
-                      step="0.01"
-                      value={part.price}
-                      onChange={(e) => {
-                        // const updatedParts = [...formData.spareParts]
-                        // updatedParts[index].price = Number(e.target.value) || 0
-                        // handleInputChange('spareParts', updatedParts)
-                      }}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-right"
-                    />
-                  </div>
-                  <button
-                    type="button"
-                    // onClick={() => removeSparePart(index)}
-                    className="px-3 py-2 border border-gray-300 rounded-md shadow-sm bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500 text-red-600">
-                    ✕
-                  </button>
-                </div>
-              ))} */}
-              <div className="flex gap-2">
-                <input
-                  type="text"
-                  placeholder="Nombre del repuesto"
-                  value={newSparePart.name}
-                  onChange={(e) =>
-                    setNewSparePart({ ...newSparePart, name: e.target.value })
-                  }
-                  className="flex-1 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                />
-                <div className="w-32">
-                  <input
-                    type="number"
-                    min="0"
-                    step="0.01"
-                    placeholder="Precio"
-                    value={newSparePart.price}
-                    onChange={(e) =>
-                      setNewSparePart({
-                        ...newSparePart,
-                        price: Number(e.target.value) || 0,
-                      })
-                    }
-                    // onKeyPress={(e) =>
-                    //   e.key === 'Enter' && (e.preventDefault(), addSparePart())
-                    // }
-                    className={classNameInput + 'text-right'}
-                  />
-                </div>
-                <button
-                  type="button"
-                  // onClick={addSparePart}
-                  disabled={!newSparePart.name.trim()}
-                  className="px-3 py-2 border border-gray-300 rounded-md shadow-sm bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 disabled:opacity-50 disabled:cursor-not-allowed text-green-600">
-                  +
-                </button>
-              </div>
+              <SpareParts
+                formData={formData}
+                handleChange={handleInputChange}
+                setFormData={setFormData}
+              />
             </div>
-
-            {/* {formData.spareParts.length > 0 && (
-              <div className="flex justify-end items-center gap-2 pt-2 border-t border-gray-200">
-                <span className="font-medium text-gray-700">Total:</span>
-                <span className="font-bold text-lg text-gray-900">
-                  $
-                  {formData.spareParts
-                    .reduce((sum, part) => sum + part.price, 0)
-                    .toFixed(2)}
-                </span>
-              </div>
-            )} */}
           </div>
-          <div className="flex gap-4 pt-4">
-            <button
-              type="submit"
-              className="flex-1 bg-blue-600 text-white py-2 px-4 rounded-md shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 font-medium">
-              Guardar Orden
-            </button>
-            <button
-              type="button"
-              onClick={() => setFormData(initialData)}
-              className="px-6 py-2 border border-gray-300 rounded-md shadow-sm bg-white text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 font-medium">
-              Resetear
-            </button>
-          </div>
+          <button
+            type="submit"
+            className=" bg-blue-600 text-white py-2 px-4 rounded-md shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 font-medium float-end">
+            Guardar Cambios
+          </button>
         </form>
       </div>
     </>

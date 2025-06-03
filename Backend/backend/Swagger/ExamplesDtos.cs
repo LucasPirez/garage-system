@@ -1,4 +1,5 @@
 ﻿using backend.Database;
+using backend.Database.Entites;
 using backend.Modules.CustomerModule.Dtos;
 using backend.Modules.VehicleEntryModule.Dtos;
 using backend.Modules.VehicleModule.Dtos;
@@ -31,7 +32,15 @@ namespace backend.Swagger
                 Details = "Cambio de aceite y filtro",
                 ReceptionDate = DateTime.UtcNow,
                 Presupuest = 1000,
-                SpareParts = new List<string>() { "Aceite", "Filtro" },
+                SpareParts = new List<SpareParts>()
+                {
+                    new()
+                    {
+                        Name = "Aceite",
+                        Price = 3000,
+                        Quantity = 1,
+                    },
+                },
                 VehicleId = "",
             };
     }

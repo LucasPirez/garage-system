@@ -40,6 +40,14 @@ namespace backend.Modules.VehicleEntryModule
                     ReceptionDate = k.ReceptionDate,
                     DeliveryDate = k.DeliveryDate,
                     Status = k.Status.ToString(),
+                    SpareParts = k
+                        .SpareParts.Select(sp => new SpareParts()
+                        {
+                            Name = sp.Name,
+                            Price = sp.Price,
+                            Quantity = sp.Quantity,
+                        })
+                        .ToList(),
                     FinalAmount = k.FinalAmount,
                     Vehicle = new ListJobsVehicleDto()
                     {

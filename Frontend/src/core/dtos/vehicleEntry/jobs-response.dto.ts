@@ -18,4 +18,11 @@ export interface JobsResponseDto {
     firstName: string
     lastName: string
   }
+  spareParts: SparePart[]
+}
+
+export interface SparePart {
+  name: string
+  price: number
+  quantity: number
 }
