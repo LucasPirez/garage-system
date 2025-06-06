@@ -12,7 +12,7 @@ using backend.Database;
 namespace backend.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250603181957_SpareParts")]
+    [Migration("20250606212615_SpareParts")]
     partial class SpareParts
     {
         /// <inheritdoc />
@@ -72,7 +72,7 @@ namespace backend.Migrations
                         new
                         {
                             Id = new Guid("cccccccc-cccc-cccc-cccc-cccccccccccc"),
-                            CreatedAt = new DateTime(2025, 6, 3, 18, 19, 55, 813, DateTimeKind.Utc).AddTicks(9316),
+                            CreatedAt = new DateTime(2025, 6, 6, 21, 26, 14, 454, DateTimeKind.Utc).AddTicks(4),
                             Email = new[] { "lucaspirez42@gmail.com" },
                             FirstName = "Juan ",
                             LastName = "Perez",
@@ -82,7 +82,7 @@ namespace backend.Migrations
                         new
                         {
                             Id = new Guid("dddddddd-dddd-dddd-dddd-dddddddddddd"),
-                            CreatedAt = new DateTime(2025, 6, 3, 18, 19, 55, 813, DateTimeKind.Utc).AddTicks(9327),
+                            CreatedAt = new DateTime(2025, 6, 6, 21, 26, 14, 454, DateTimeKind.Utc).AddTicks(17),
                             Email = new string[0],
                             FirstName = "Maria ",
                             LastName = "Lopez",
@@ -232,13 +232,13 @@ namespace backend.Migrations
                         new
                         {
                             Id = new Guid("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa"),
-                            CreatedAt = new DateTime(2025, 6, 3, 18, 19, 55, 813, DateTimeKind.Utc).AddTicks(9219),
+                            CreatedAt = new DateTime(2025, 6, 6, 21, 26, 14, 453, DateTimeKind.Utc).AddTicks(9906),
                             Name = "Taller Jesuita"
                         },
                         new
                         {
                             Id = new Guid("bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb"),
-                            CreatedAt = new DateTime(2025, 6, 3, 18, 19, 55, 813, DateTimeKind.Utc).AddTicks(9240),
+                            CreatedAt = new DateTime(2025, 6, 6, 21, 26, 14, 453, DateTimeKind.Utc).AddTicks(9927),
                             Name = "Taller Silvana"
                         });
                 });
@@ -290,7 +290,7 @@ namespace backend.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.OwnsMany("backend.Database.Entites.SpareParts", "SpareParts", b1 =>
+                    b.OwnsMany("backend.Database.Entites.SparePart", "SpareParts", b1 =>
                         {
                             b1.Property<Guid>("VehicleEntryId")
                                 .HasColumnType("uuid");
@@ -313,7 +313,7 @@ namespace backend.Migrations
 
                             b1.HasKey("VehicleEntryId", "Id");
 
-                            b1.ToTable("SpareParts");
+                            b1.ToTable("SparePart");
 
                             b1.WithOwner()
                                 .HasForeignKey("VehicleEntryId");

@@ -14,7 +14,7 @@ namespace backend.Modules.VehicleEntryModule
         public VehicleEntryService(AppDbContext database, IMapper mapper)
             : base(database, mapper) { }
 
-        public async Task<VehicleEntry> CreateAsync(CreateVehicleEntryDto createDto)
+        public async Task<VehicleEntry> CreateAsync(CreateJobDto createDto)
         {
             return await AddWithDto(createDto);
         }
@@ -28,6 +28,7 @@ namespace backend.Modules.VehicleEntryModule
         {
             IQueryable<ListJobsDto> listJobs = _dbSet
                 .Where(k => k.WorkShopId == workShopId)
+                .Include(k => k.SpareParts)
                 .Include(k => k.Vehicle)
                 .ThenInclude(k => k.Customer)
                 .Select(k => new ListJobsDto()
@@ -41,7 +42,7 @@ namespace backend.Modules.VehicleEntryModule
                     DeliveryDate = k.DeliveryDate,
                     Status = k.Status.ToString(),
                     SpareParts = k
-                        .SpareParts.Select(sp => new SpareParts()
+                        .SpareParts.Select(sp => new SparePart()
                         {
                             Name = sp.Name,
                             Price = sp.Price,
@@ -75,15 +76,32 @@ namespace backend.Modules.VehicleEntryModule
             return response;
         }
 
+        public async Task UpdateAsync(UpdateJobDto jobDto)
+        {
+            var entity =
+                await GetByIdAsync(Guid.Parse(jobDto.Id))
+                ?? throw new NotFoundException("Job not Found");
+
+            entity.ReceptionDate = jobDto.ReceptionDate;
+            entity.DeliveryDate = jobDto.DeliveryDate;
+            entity.NotifycationSent = jobDto.NotificationSent;
+            entity.Cause = jobDto.Cause;
+            entity.Details = jobDto.Details ?? "";
+            entity.Presupuest = jobDto.Presupuest ?? 0;
+            entity.FinalAmount = jobDto.FinalAmount;
+            entity.SpareParts = jobDto.SpareParts ?? new List<SparePart>();
+
+            await Update(entity);
+        }
+
         public Task UpdateAsync(VehicleEntry entity)
         {
             throw new NotImplementedException();
         }
 
-        Task<IEnumerable<VehicleEntry>> IServiceBase<
-            VehicleEntry,
-            CreateVehicleEntryDto
-        >.GetAllAsync(Guid workshopId)
+        Task<IEnumerable<VehicleEntry>> IServiceBase<VehicleEntry, CreateJobDto>.GetAllAsync(
+            Guid workshopId
+        )
         {
             throw new NotImplementedException();
         }

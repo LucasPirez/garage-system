@@ -12,7 +12,7 @@ namespace backend.AutoMapper
         {
             CreateMap<Vehicle, CreateVehicleDto>().ReverseMap();
             CreateMap<Customer, CreateCustomerDto>().ReverseMap();
-            CreateMap<VehicleEntry, CreateVehicleEntryDto>().ReverseMap();
+            CreateMap<VehicleEntry, CreateJobDto>().ReverseMap();
         }
     }
 }

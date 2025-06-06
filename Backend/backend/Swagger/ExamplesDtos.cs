@@ -22,9 +22,9 @@ namespace backend.Swagger
             };
     }
 
-    public class CreateVehicleEntryDtoExample : IExamplesProvider<CreateVehicleEntryDto>
+    public class CreateVehicleEntryDtoExample : IExamplesProvider<CreateJobDto>
     {
-        public CreateVehicleEntryDto GetExamples() =>
+        public CreateJobDto GetExamples() =>
             new()
             {
                 WorkshopId = SeedData.workshopAId.ToString(),
@@ -32,7 +32,7 @@ namespace backend.Swagger
                 Details = "Cambio de aceite y filtro",
                 ReceptionDate = DateTime.UtcNow,
                 Presupuest = 1000,
-                SpareParts = new List<SpareParts>()
+                SpareParts = new List<SparePart>()
                 {
                     new()
                     {
@@ -42,6 +42,31 @@ namespace backend.Swagger
                     },
                 },
                 VehicleId = "",
+            };
+    }
+
+    public class UpdateJboDtoExample : IExamplesProvider<UpdateJobDto>
+    {
+        public UpdateJobDto GetExamples() =>
+            new()
+            {
+                Cause = "Cambio de aceite",
+                Details = "Cambio de aceite y filtro",
+                ReceptionDate = DateTime.UtcNow,
+                Presupuest = 1000,
+                Id = "",
+                SpareParts = new List<SparePart>()
+                {
+                    new()
+                    {
+                        Name = "Aceite",
+                        Price = 3000,
+                        Quantity = 1,
+                    },
+                },
+                DeliveryDate = DateTime.UtcNow,
+                FinalAmount = 1000,
+                NotificationSent = false,
             };
     }
 

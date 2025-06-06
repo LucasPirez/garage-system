@@ -23,10 +23,17 @@ namespace backend.Modules.VehicleEntryModule
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] CreateVehicleEntryDto createDto)
+        public async Task<IActionResult> Create([FromBody] CreateJobDto createDto)
         {
             var result = await _vehicleEntryService.CreateAsync(createDto);
             return StatusCode(StatusCodes.Status201Created, result);
+        }
+
+        [HttpPut]
+        public async Task<IActionResult> Update([FromBody] UpdateJobDto updateDto)
+        {
+            await _vehicleEntryService.UpdateAsync(updateDto);
+            return StatusCode(StatusCodes.Status200OK);
         }
     }
 }

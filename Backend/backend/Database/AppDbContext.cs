@@ -68,6 +68,8 @@ namespace backend.Database
                     }
                 );
             base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<VehicleEntry>().OwnsMany(k => k.SpareParts);
         }
 
         public DbSet<WorkShop> WorkShops => Set<WorkShop>();

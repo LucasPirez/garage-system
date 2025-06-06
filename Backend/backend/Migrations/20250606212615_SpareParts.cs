@@ -17,7 +17,7 @@ namespace backend.Migrations
                 table: "VehicleEntries");
 
             migrationBuilder.CreateTable(
-                name: "SpareParts",
+                name: "SparePart",
                 columns: table => new
                 {
                     VehicleEntryId = table.Column<Guid>(type: "uuid", nullable: false),
@@ -29,9 +29,9 @@ namespace backend.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_SpareParts", x => new { x.VehicleEntryId, x.Id });
+                    table.PrimaryKey("PK_SparePart", x => new { x.VehicleEntryId, x.Id });
                     table.ForeignKey(
-                        name: "FK_SpareParts_VehicleEntries_VehicleEntryId",
+                        name: "FK_SparePart_VehicleEntries_VehicleEntryId",
                         column: x => x.VehicleEntryId,
                         principalTable: "VehicleEntries",
                         principalColumn: "Id",
@@ -43,35 +43,35 @@ namespace backend.Migrations
                 keyColumn: "Id",
                 keyValue: new Guid("cccccccc-cccc-cccc-cccc-cccccccccccc"),
                 column: "CreatedAt",
-                value: new DateTime(2025, 6, 3, 18, 19, 55, 813, DateTimeKind.Utc).AddTicks(9316));
+                value: new DateTime(2025, 6, 6, 21, 26, 14, 454, DateTimeKind.Utc).AddTicks(4));
 
             migrationBuilder.UpdateData(
                 table: "Customers",
                 keyColumn: "Id",
                 keyValue: new Guid("dddddddd-dddd-dddd-dddd-dddddddddddd"),
                 column: "CreatedAt",
-                value: new DateTime(2025, 6, 3, 18, 19, 55, 813, DateTimeKind.Utc).AddTicks(9327));
+                value: new DateTime(2025, 6, 6, 21, 26, 14, 454, DateTimeKind.Utc).AddTicks(17));
 
             migrationBuilder.UpdateData(
                 table: "WorkShops",
                 keyColumn: "Id",
                 keyValue: new Guid("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa"),
                 column: "CreatedAt",
-                value: new DateTime(2025, 6, 3, 18, 19, 55, 813, DateTimeKind.Utc).AddTicks(9219));
+                value: new DateTime(2025, 6, 6, 21, 26, 14, 453, DateTimeKind.Utc).AddTicks(9906));
 
             migrationBuilder.UpdateData(
                 table: "WorkShops",
                 keyColumn: "Id",
                 keyValue: new Guid("bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb"),
                 column: "CreatedAt",
-                value: new DateTime(2025, 6, 3, 18, 19, 55, 813, DateTimeKind.Utc).AddTicks(9240));
+                value: new DateTime(2025, 6, 6, 21, 26, 14, 453, DateTimeKind.Utc).AddTicks(9927));
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "SpareParts");
+                name: "SparePart");
 
             migrationBuilder.AddColumn<string[]>(
                 name: "SpareParts",

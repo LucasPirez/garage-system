@@ -1,5 +1,5 @@
-﻿using System.Text.Json.Serialization;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
 
 namespace backend.Database.Entites
 {
@@ -25,7 +25,7 @@ namespace backend.Database.Entites
         public double Presupuest { get; set; }
         public double FinalAmount { get; set; }
 
-        public IList<SpareParts> SpareParts { get; set; } = new List<SpareParts>();
+        public IList<SparePart> SpareParts { get; set; } = new List<SparePart>();
 
         public Guid VehicleId { get; set; }
 
@@ -33,10 +33,39 @@ namespace backend.Database.Entites
 
         public required Guid WorkShopId { get; set; }
         public WorkShop WorkShop { get; set; }
+
+        public VehicleEntry() { }
+
+        public VehicleEntry(
+            Guid id,
+            DateTime recepcionDate,
+            DateTime deliveriDate,
+            bool notificationSent,
+            string cause,
+            string details,
+            double budget,
+            double finalAmount,
+            List<SparePart> spareParts,
+            Guid workshopId,
+            Guid vehicleId
+        )
+        {
+            Id = id;
+            ReceptionDate = recepcionDate;
+            DeliveryDate = deliveriDate;
+            NotifycationSent = notificationSent;
+            Cause = cause;
+            Details = details;
+            Presupuest = budget;
+            FinalAmount = finalAmount;
+            SpareParts = spareParts ?? new List<SparePart>();
+            WorkShopId = workshopId;
+            VehicleId = vehicleId;
+        }
     }
 
     [Owned]
-    public class SpareParts
+    public class SparePart
     {
         public string Name { get; set; } = string.Empty;
         public double Price { get; set; }
