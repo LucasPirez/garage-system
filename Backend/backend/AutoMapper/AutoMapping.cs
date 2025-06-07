@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using backend.Database.Entites;
 using backend.Modules.CustomerModule.Dtos;
-using backend.Modules.VehicleEntryModule.Dtos;
+using backend.Modules.RepairOrderModule.Dtos;
 using backend.Modules.VehicleModule.Dtos;
 
 namespace backend.AutoMapper
@@ -12,7 +12,7 @@ namespace backend.AutoMapper
         {
             CreateMap<Vehicle, CreateVehicleDto>().ReverseMap();
             CreateMap<Customer, CreateCustomerDto>().ReverseMap();
-            CreateMap<VehicleEntry, CreateJobDto>().ReverseMap();
+            CreateMap<RepairOrder, CreateRepairOrderDto>().ReverseMap();
         }
     }
 }

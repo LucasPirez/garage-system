@@ -1,16 +1,16 @@
-﻿using backend.Modules.VehicleEntryModule.Dtos;
-using backend.Modules.VehicleEntryModule.Interfaces;
+﻿using backend.Modules.RepairOrderModule.Dtos;
+using backend.Modules.RepairOrderModule.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
-namespace backend.Modules.VehicleEntryModule
+namespace backend.Modules.RepairOrderModule
 {
     [ApiController]
-    [Route("vehicle-entry")]
-    public class VehicleEntryController : ControllerBase
+    [Route("repair-order")]
+    public class RepairOrderController : ControllerBase
     {
-        private readonly IVehicleEntryService _vehicleEntryService;
+        private readonly IRepairOrderService _vehicleEntryService;
 
-        public VehicleEntryController(IVehicleEntryService vehicleEntryService)
+        public RepairOrderController(IRepairOrderService vehicleEntryService)
         {
             _vehicleEntryService = vehicleEntryService;
         }
@@ -23,14 +23,14 @@ namespace backend.Modules.VehicleEntryModule
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] CreateJobDto createDto)
+        public async Task<IActionResult> Create([FromBody] CreateRepairOrderDto createDto)
         {
             var result = await _vehicleEntryService.CreateAsync(createDto);
             return StatusCode(StatusCodes.Status201Created, result);
         }
 
         [HttpPut]
-        public async Task<IActionResult> Update([FromBody] UpdateJobDto updateDto)
+        public async Task<IActionResult> Update([FromBody] UpdateRepairOrderDto updateDto)
         {
             await _vehicleEntryService.UpdateAsync(updateDto);
             return StatusCode(StatusCodes.Status200OK);

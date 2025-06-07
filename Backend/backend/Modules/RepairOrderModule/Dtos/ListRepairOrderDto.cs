@@ -1,8 +1,8 @@
 ﻿using backend.Database.Entites;
 
-namespace backend.Modules.VehicleEntryModule.Dtos
+namespace backend.Modules.RepairOrderModule.Dtos
 {
-    public class ListJobsDto
+    public class ListRepairOrderDto
     {
         public Guid Id { get; set; }
         public DateTime ReceptionDate { get; set; } = DateTime.UtcNow;
@@ -15,7 +15,7 @@ namespace backend.Modules.VehicleEntryModule.Dtos
         public string Cause { get; set; } = string.Empty;
 
         public string Details { get; set; } = string.Empty;
-        public double budget { get; set; }
+        public double Budget { get; set; }
         public double FinalAmount { get; set; }
         public IList<SparePart> SpareParts { get; set; } = new List<SparePart>();
 

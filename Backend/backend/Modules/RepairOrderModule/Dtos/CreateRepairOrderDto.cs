@@ -1,15 +1,15 @@
 ﻿using backend.Database.Entites;
 
-namespace backend.Modules.VehicleEntryModule.Dtos
+namespace backend.Modules.RepairOrderModule.Dtos
 {
-    public class CreateJobDto
+    public class CreateRepairOrderDto
     {
         public required DateTime ReceptionDate { get; set; } = DateTime.UtcNow;
 
         public required string Cause { get; set; } = string.Empty;
 
         public required string? Details { get; set; } = string.Empty;
-        public required double? Presupuest { get; set; }
+        public required double? Budget { get; set; }
 
         public required string VehicleId { get; set; }
 
@@ -18,7 +18,7 @@ namespace backend.Modules.VehicleEntryModule.Dtos
         public required List<SparePart>? SpareParts { get; set; } = new List<SparePart>();
     }
 
-    public class UpdateJobDto
+    public class UpdateRepairOrderDto
     {
         public string Id { get; set; }
         public required DateTime ReceptionDate { get; set; } = DateTime.UtcNow;
@@ -26,7 +26,7 @@ namespace backend.Modules.VehicleEntryModule.Dtos
         public required string Cause { get; set; } = string.Empty;
 
         public required string? Details { get; set; } = string.Empty;
-        public required double? Presupuest { get; set; }
+        public required double? Budget { get; set; }
         public DateTime DeliveryDate { get; set; }
         public bool NotificationSent { get; set; }
 

@@ -1,7 +1,7 @@
 ﻿using backend.Database;
 using backend.Database.Entites;
 using backend.Modules.CustomerModule.Dtos;
-using backend.Modules.VehicleEntryModule.Dtos;
+using backend.Modules.RepairOrderModule.Dtos;
 using backend.Modules.VehicleModule.Dtos;
 using Swashbuckle.AspNetCore.Filters;
 
@@ -22,16 +22,16 @@ namespace backend.Swagger
             };
     }
 
-    public class CreateVehicleEntryDtoExample : IExamplesProvider<CreateJobDto>
+    public class CreateVehicleEntryDtoExample : IExamplesProvider<CreateRepairOrderDto>
     {
-        public CreateJobDto GetExamples() =>
+        public CreateRepairOrderDto GetExamples() =>
             new()
             {
                 WorkshopId = SeedData.workshopAId.ToString(),
                 Cause = "Cambio de aceite",
                 Details = "Cambio de aceite y filtro",
                 ReceptionDate = DateTime.UtcNow,
-                Presupuest = 1000,
+                Budget = 1000,
                 SpareParts = new List<SparePart>()
                 {
                     new()
@@ -45,15 +45,15 @@ namespace backend.Swagger
             };
     }
 
-    public class UpdateJboDtoExample : IExamplesProvider<UpdateJobDto>
+    public class UpdateJboDtoExample : IExamplesProvider<UpdateRepairOrderDto>
     {
-        public UpdateJobDto GetExamples() =>
+        public UpdateRepairOrderDto GetExamples() =>
             new()
             {
                 Cause = "Cambio de aceite",
                 Details = "Cambio de aceite y filtro",
                 ReceptionDate = DateTime.UtcNow,
-                Presupuest = 1000,
+                Budget = 1000,
                 Id = "",
                 SpareParts = new List<SparePart>()
                 {

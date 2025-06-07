@@ -10,7 +10,7 @@ namespace backend.Database.Entites
         Cancelled,
     }
 
-    public class VehicleEntry : BaseEntity<Guid>
+    public class RepairOrder : BaseEntity<Guid>
     {
         public DateTime ReceptionDate { get; set; } = DateTime.UtcNow;
         public DateTime? DeliveryDate { get; set; }
@@ -22,7 +22,7 @@ namespace backend.Database.Entites
         public string Cause { get; set; } = string.Empty;
 
         public string Details { get; set; } = string.Empty;
-        public double Presupuest { get; set; }
+        public double Budget { get; set; }
         public double FinalAmount { get; set; }
 
         public IList<SparePart> SpareParts { get; set; } = new List<SparePart>();
@@ -34,9 +34,9 @@ namespace backend.Database.Entites
         public required Guid WorkShopId { get; set; }
         public WorkShop WorkShop { get; set; }
 
-        public VehicleEntry() { }
+        public RepairOrder() { }
 
-        public VehicleEntry(
+        public RepairOrder(
             Guid id,
             DateTime recepcionDate,
             DateTime deliveriDate,
@@ -56,7 +56,7 @@ namespace backend.Database.Entites
             NotifycationSent = notificationSent;
             Cause = cause;
             Details = details;
-            Presupuest = budget;
+            Budget = budget;
             FinalAmount = finalAmount;
             SpareParts = spareParts ?? new List<SparePart>();
             WorkShopId = workshopId;

@@ -13,7 +13,7 @@ export class WorkshopService {
     VEHICLES: (workshopId: string) => `workshops/${workshopId}/vehicles`,
     CUSTOMERS: (workshopId: string) => `workshops/${workshopId}/customers`,
     VEHICLE_ENTRIES: (workshopId: string) =>
-      `workshops/${workshopId}/vehicles-entries`,
+      `workshops/${workshopId}/repair-order`,
   }
   constructor(private readonly client: AxiosInstance) {}
 

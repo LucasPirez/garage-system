@@ -12,8 +12,8 @@ using backend.Database;
 namespace backend.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250606212615_SpareParts")]
-    partial class SpareParts
+    [Migration("20250607220012_SparePart")]
+    partial class SparePart
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -72,7 +72,7 @@ namespace backend.Migrations
                         new
                         {
                             Id = new Guid("cccccccc-cccc-cccc-cccc-cccccccccccc"),
-                            CreatedAt = new DateTime(2025, 6, 6, 21, 26, 14, 454, DateTimeKind.Utc).AddTicks(4),
+                            CreatedAt = new DateTime(2025, 6, 7, 22, 0, 11, 89, DateTimeKind.Utc).AddTicks(4859),
                             Email = new[] { "lucaspirez42@gmail.com" },
                             FirstName = "Juan ",
                             LastName = "Perez",
@@ -82,7 +82,7 @@ namespace backend.Migrations
                         new
                         {
                             Id = new Guid("dddddddd-dddd-dddd-dddd-dddddddddddd"),
-                            CreatedAt = new DateTime(2025, 6, 6, 21, 26, 14, 454, DateTimeKind.Utc).AddTicks(17),
+                            CreatedAt = new DateTime(2025, 6, 7, 22, 0, 11, 89, DateTimeKind.Utc).AddTicks(4883),
                             Email = new string[0],
                             FirstName = "Maria ",
                             LastName = "Lopez",
@@ -122,6 +122,60 @@ namespace backend.Migrations
                     b.ToTable("Payments");
                 });
 
+            modelBuilder.Entity("backend.Database.Entites.RepairOrder", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<double>("Budget")
+                        .HasColumnType("double precision");
+
+                    b.Property<string>("Cause")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime?>("DeliveryDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Details")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<double>("FinalAmount")
+                        .HasColumnType("double precision");
+
+                    b.Property<bool>("NotifycationSent")
+                        .HasColumnType("boolean");
+
+                    b.Property<DateTime>("ReceptionDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid>("VehicleId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("WorkShopId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("VehicleId");
+
+                    b.HasIndex("WorkShopId");
+
+                    b.ToTable("VehicleEntries");
+                });
+
             modelBuilder.Entity("backend.Database.Entites.Vehicle", b =>
                 {
                     b.Property<Guid>("Id")
@@ -154,60 +208,6 @@ namespace backend.Migrations
                     b.ToTable("Vehicles");
                 });
 
-            modelBuilder.Entity("backend.Database.Entites.VehicleEntry", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("Cause")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<DateTime?>("DeliveryDate")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("Details")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<double>("FinalAmount")
-                        .HasColumnType("double precision");
-
-                    b.Property<bool>("NotifycationSent")
-                        .HasColumnType("boolean");
-
-                    b.Property<double>("Presupuest")
-                        .HasColumnType("double precision");
-
-                    b.Property<DateTime>("ReceptionDate")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("Status")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<Guid>("VehicleId")
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid>("WorkShopId")
-                        .HasColumnType("uuid");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("VehicleId");
-
-                    b.HasIndex("WorkShopId");
-
-                    b.ToTable("VehicleEntries");
-                });
-
             modelBuilder.Entity("backend.Database.Entites.WorkShop", b =>
                 {
                     b.Property<Guid>("Id")
@@ -232,13 +232,13 @@ namespace backend.Migrations
                         new
                         {
                             Id = new Guid("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa"),
-                            CreatedAt = new DateTime(2025, 6, 6, 21, 26, 14, 453, DateTimeKind.Utc).AddTicks(9906),
+                            CreatedAt = new DateTime(2025, 6, 7, 22, 0, 11, 89, DateTimeKind.Utc).AddTicks(4703),
                             Name = "Taller Jesuita"
                         },
                         new
                         {
                             Id = new Guid("bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb"),
-                            CreatedAt = new DateTime(2025, 6, 6, 21, 26, 14, 453, DateTimeKind.Utc).AddTicks(9927),
+                            CreatedAt = new DateTime(2025, 6, 7, 22, 0, 11, 89, DateTimeKind.Utc).AddTicks(4734),
                             Name = "Taller Silvana"
                         });
                 });
@@ -265,18 +265,7 @@ namespace backend.Migrations
                     b.Navigation("Customer");
                 });
 
-            modelBuilder.Entity("backend.Database.Entites.Vehicle", b =>
-                {
-                    b.HasOne("backend.Database.Entites.Customer", "Customer")
-                        .WithMany("Vehicle")
-                        .HasForeignKey("CustomerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Customer");
-                });
-
-            modelBuilder.Entity("backend.Database.Entites.VehicleEntry", b =>
+            modelBuilder.Entity("backend.Database.Entites.RepairOrder", b =>
                 {
                     b.HasOne("backend.Database.Entites.Vehicle", "Vehicle")
                         .WithMany("VehicleEntries")
@@ -292,7 +281,7 @@ namespace backend.Migrations
 
                     b.OwnsMany("backend.Database.Entites.SparePart", "SpareParts", b1 =>
                         {
-                            b1.Property<Guid>("VehicleEntryId")
+                            b1.Property<Guid>("RepairOrderId")
                                 .HasColumnType("uuid");
 
                             b1.Property<int>("Id")
@@ -311,12 +300,12 @@ namespace backend.Migrations
                             b1.Property<int>("Quantity")
                                 .HasColumnType("integer");
 
-                            b1.HasKey("VehicleEntryId", "Id");
+                            b1.HasKey("RepairOrderId", "Id");
 
                             b1.ToTable("SparePart");
 
                             b1.WithOwner()
-                                .HasForeignKey("VehicleEntryId");
+                                .HasForeignKey("RepairOrderId");
                         });
 
                     b.Navigation("SpareParts");
@@ -324,6 +313,17 @@ namespace backend.Migrations
                     b.Navigation("Vehicle");
 
                     b.Navigation("WorkShop");
+                });
+
+            modelBuilder.Entity("backend.Database.Entites.Vehicle", b =>
+                {
+                    b.HasOne("backend.Database.Entites.Customer", "Customer")
+                        .WithMany("Vehicle")
+                        .HasForeignKey("CustomerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Customer");
                 });
 
             modelBuilder.Entity("backend.Database.Entites.Customer", b =>

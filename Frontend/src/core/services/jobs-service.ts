@@ -26,7 +26,7 @@ export interface CustomerCreateDto {
 
 export class JobsService {
   private readonly PATHS = {
-    create: '/vehicle-entry',
+    create: '/repair-order',
   }
   constructor(private readonly client: AxiosInstance) {}
 

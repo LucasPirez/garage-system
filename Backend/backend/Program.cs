@@ -3,8 +3,8 @@ using backend.Common.Middlewares;
 using backend.Database;
 using backend.Modules.CustomerModule;
 using backend.Modules.CustomerModule.Interfaces;
-using backend.Modules.VehicleEntryModule;
-using backend.Modules.VehicleEntryModule.Interfaces;
+using backend.Modules.RepairOrderModule;
+using backend.Modules.RepairOrderModule.Interfaces;
 using backend.Modules.VehicleModule;
 using backend.Modules.VehicleModule.Interfaces;
 using backend.Swagger;
@@ -44,7 +44,7 @@ builder.Services.AddDbContext<AppDbContext>(options => options.UseNpgsql(connect
 builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
 
 builder.Services.AddScoped<IVehicleService, VehicleService>();
-builder.Services.AddScoped<IVehicleEntryService, VehicleEntryService>();
+builder.Services.AddScoped<IRepairOrderService, RepairOrderService>();
 builder.Services.AddScoped<ICustomerService, CustomerService>();
 
 var app = builder.Build();

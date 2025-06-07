@@ -5,6 +5,6 @@
         public string Name { get; set; } = string.Empty;
 
         public ICollection<Customer> Customers { get; set; } = new List<Customer>();
-        public ICollection<VehicleEntry> VehicleEntries { get; set; } = new List<VehicleEntry>();
+        public ICollection<RepairOrder> VehicleEntries { get; set; } = new List<RepairOrder>();
     }
 }

@@ -13,6 +13,6 @@ namespace backend.Database.Entites
         [JsonIgnore]
         public Customer Customer { get; set; }
 
-        public ICollection<VehicleEntry> VehicleEntries { get; set; } = new List<VehicleEntry>();
+        public ICollection<RepairOrder> VehicleEntries { get; set; } = new List<RepairOrder>();
     }
 }

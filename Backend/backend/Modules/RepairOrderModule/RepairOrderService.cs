@@ -3,18 +3,18 @@ using backend.Common.Exceptions;
 using backend.Database;
 using backend.Database.Entites;
 using backend.Database.Repository;
-using backend.Modules.VehicleEntryModule.Dtos;
-using backend.Modules.VehicleEntryModule.Interfaces;
+using backend.Modules.RepairOrderModule.Dtos;
+using backend.Modules.RepairOrderModule.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
-namespace backend.Modules.VehicleEntryModule
+namespace backend.Modules.RepairOrderModule
 {
-    public class VehicleEntryService : Repository<VehicleEntry>, IVehicleEntryService
+    public class RepairOrderService : Repository<RepairOrder>, IRepairOrderService
     {
-        public VehicleEntryService(AppDbContext database, IMapper mapper)
+        public RepairOrderService(AppDbContext database, IMapper mapper)
             : base(database, mapper) { }
 
-        public async Task<VehicleEntry> CreateAsync(CreateJobDto createDto)
+        public async Task<RepairOrder> CreateAsync(CreateRepairOrderDto createDto)
         {
             return await AddWithDto(createDto);
         }
@@ -24,20 +24,20 @@ namespace backend.Modules.VehicleEntryModule
             throw new NotImplementedException();
         }
 
-        public async Task<IEnumerable<ListJobsDto>> GetAllAsync(Guid workShopId)
+        public async Task<IEnumerable<ListRepairOrderDto>> GetAllAsync(Guid workShopId)
         {
-            IQueryable<ListJobsDto> listJobs = _dbSet
+            IQueryable<ListRepairOrderDto> listJobs = _dbSet
                 .Where(k => k.WorkShopId == workShopId)
                 .Include(k => k.SpareParts)
                 .Include(k => k.Vehicle)
                 .ThenInclude(k => k.Customer)
-                .Select(k => new ListJobsDto()
+                .Select(k => new ListRepairOrderDto()
                 {
                     Id = k.Id,
                     Cause = k.Cause,
                     Details = k.Details,
                     NotificationSent = k.NotifycationSent,
-                    budget = k.Presupuest,
+                    Budget = k.Budget,
                     ReceptionDate = k.ReceptionDate,
                     DeliveryDate = k.DeliveryDate,
                     Status = k.Status.ToString(),
@@ -69,14 +69,14 @@ namespace backend.Modules.VehicleEntryModule
             return await listJobs.ToListAsync();
         }
 
-        public async Task<VehicleEntry> GetByIdAsync(Guid id)
+        public async Task<RepairOrder> GetByIdAsync(Guid id)
         {
             var response = await GetById(id) ?? throw new NotFoundException("Vehicle not found");
 
             return response;
         }
 
-        public async Task UpdateAsync(UpdateJobDto jobDto)
+        public async Task UpdateAsync(UpdateRepairOrderDto jobDto)
         {
             var entity =
                 await GetByIdAsync(Guid.Parse(jobDto.Id))
@@ -87,19 +87,19 @@ namespace backend.Modules.VehicleEntryModule
             entity.NotifycationSent = jobDto.NotificationSent;
             entity.Cause = jobDto.Cause;
             entity.Details = jobDto.Details ?? "";
-            entity.Presupuest = jobDto.Presupuest ?? 0;
+            entity.Budget = jobDto.Budget ?? 0;
             entity.FinalAmount = jobDto.FinalAmount;
             entity.SpareParts = jobDto.SpareParts ?? new List<SparePart>();
 
             await Update(entity);
         }
 
-        public Task UpdateAsync(VehicleEntry entity)
+        public Task UpdateAsync(RepairOrder entity)
         {
             throw new NotImplementedException();
         }
 
-        Task<IEnumerable<VehicleEntry>> IServiceBase<VehicleEntry, CreateJobDto>.GetAllAsync(
+        Task<IEnumerable<RepairOrder>> IServiceBase<RepairOrder, CreateRepairOrderDto>.GetAllAsync(
             Guid workshopId
         )
         {

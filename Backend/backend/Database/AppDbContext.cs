@@ -25,7 +25,7 @@ namespace backend.Database
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<VehicleEntry>().Property(k => k.Status).HasConversion<string>();
+            modelBuilder.Entity<RepairOrder>().Property(k => k.Status).HasConversion<string>();
             modelBuilder
                 .Entity<WorkShop>()
                 .HasData(
@@ -69,13 +69,13 @@ namespace backend.Database
                 );
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Entity<VehicleEntry>().OwnsMany(k => k.SpareParts);
+            modelBuilder.Entity<RepairOrder>().OwnsMany(k => k.SpareParts);
         }
 
         public DbSet<WorkShop> WorkShops => Set<WorkShop>();
         public DbSet<Customer> Customers => Set<Customer>();
         public DbSet<Vehicle> Vehicles => Set<Vehicle>();
-        public DbSet<VehicleEntry> VehicleEntries => Set<VehicleEntry>();
+        public DbSet<RepairOrder> VehicleEntries => Set<RepairOrder>();
         public DbSet<Payment> Payments => Set<Payment>();
     }
 }

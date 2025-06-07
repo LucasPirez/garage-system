@@ -1,5 +1,5 @@
 ﻿using backend.Modules.CustomerModule.Interfaces;
-using backend.Modules.VehicleEntryModule.Interfaces;
+using backend.Modules.RepairOrderModule.Interfaces;
 using backend.Modules.VehicleModule.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -12,12 +12,12 @@ namespace backend.Modules.WorkshopModule
     {
         private readonly ICustomerService _customerService;
         private readonly IVehicleService _vehicleService;
-        private readonly IVehicleEntryService _vehicleEntryService;
+        private readonly IRepairOrderService _vehicleEntryService;
 
         public WorkshopController(
             ICustomerService customerService,
             IVehicleService vehicleService,
-            IVehicleEntryService vehicleEntryService
+            IRepairOrderService vehicleEntryService
         )
         {
             _customerService = customerService;
@@ -41,7 +41,7 @@ namespace backend.Modules.WorkshopModule
             return Ok(result);
         }
 
-        [HttpGet("{workshopId}/vehicles-entries")]
+        [HttpGet("{workshopId}/repair-order")]
         public async Task<IActionResult> GetAllVehicleEntries([FromRoute] string workshopId)
         {
             var result = await _vehicleEntryService.GetAllAsync(Guid.Parse(workshopId));
