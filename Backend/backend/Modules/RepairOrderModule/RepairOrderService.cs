@@ -90,7 +90,9 @@ namespace backend.Modules.RepairOrderModule
             entity.Budget = jobDto.Budget ?? 0;
             entity.FinalAmount = jobDto.FinalAmount;
             entity.SpareParts = jobDto.SpareParts ?? new List<SparePart>();
-
+            Console.WriteLine(entity.ReceptionDate);
+            Console.WriteLine(entity.ReceptionDate);
+            Console.WriteLine(entity.Cause);
             await Update(entity);
         }
 

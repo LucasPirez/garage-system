@@ -4,7 +4,7 @@ export interface JobUpdateDto {
   cause: string
   details: string
   budget: number
-  deliveryDate: string
+  deliveryDate: string | null
   notificationSent: boolean
   finalAmount: number
   spareParts: SparePart[]

@@ -57,8 +57,6 @@ export const SpareParts = ({ formData, setFormData, handleChange }: Props) => {
       }
     })
   }
-  console.log(formData)
-
   return (
     <>
       {formData.spareParts.map((part, index) => (

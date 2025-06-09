@@ -3,6 +3,7 @@ export interface JobsResponseDto {
   receptionDate: string
   deliveryDate: string | null
   notificationSent: boolean
+  createdAt: string
   status: 'InProgress' | 'Completed' | 'Cancelled'
   cause: string
   details: string

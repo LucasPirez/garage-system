@@ -1,5 +1,7 @@
 import { AxiosInstance } from 'axios'
 import { workshopId } from '../constants/workshopId'
+import { JobsResponseDto } from '../dtos/vehicleEntry/jobs-response.dto'
+import { JobUpdateDto } from '../dtos/vehicleEntry/job-update.dto'
 
 export interface JobCreateDto {
   receptionDate: string
@@ -25,19 +27,41 @@ export interface CustomerCreateDto {
 }
 
 export class JobsService {
-  private readonly PATHS = {
-    create: '/repair-order',
-  }
+  private readonly BASE_PATH = '/repair-order'
+
   constructor(private readonly client: AxiosInstance) {}
 
   async create(job: Omit<JobCreateDto, 'workshopId'>): Promise<void> {
-    const response = await this.client.post(this.PATHS.create, {
+    const response = await this.client.post(this.BASE_PATH, {
       ...job,
       workshopId,
     })
 
     if (response.status !== 201) {
       alert('Error al crear trabajo')
+    }
+  }
+
+  async getById(id: string): Promise<JobsResponseDto> {
+    const response = await this.client.get<JobsResponseDto>(
+      `${this.BASE_PATH}/${id}`
+    )
+
+    if (response.status !== 200) {
+      alert('Error al obtener el trabajo')
+    }
+
+    return response.data
+  }
+
+  async update(data: JobUpdateDto): Promise<void> {
+    const response = await this.client.put<JobsResponseDto>(
+      `${this.BASE_PATH}`,
+      data
+    )
+
+    if (response.status !== 200) {
+      alert('Error al actualizar el trabajo')
     }
   }
 }

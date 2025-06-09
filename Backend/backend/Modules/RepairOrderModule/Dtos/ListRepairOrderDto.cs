@@ -10,7 +10,7 @@ namespace backend.Modules.RepairOrderModule.Dtos
 
         public bool NotificationSent { get; set; } = false;
 
-        public string Status { get; set; } = VehicleStatus.InProgress.ToString();
+        public string Status { get; set; } = RepairOrderStatus.InProgress.ToString();
 
         public string Cause { get; set; } = string.Empty;
 

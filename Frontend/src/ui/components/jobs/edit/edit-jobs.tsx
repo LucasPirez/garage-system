@@ -1,15 +1,19 @@
-import { useEffect, useState } from 'react'
-import { useLocation } from 'react-router-dom'
+import { useEffect, useRef, useState } from 'react'
+import { useLocation, useNavigate } from 'react-router-dom'
 import { JobType } from '../../../../core/type/job'
 import { SparePart } from '../../../../core/dtos/vehicleEntry/jobs-response.dto'
 import { SpareParts } from './spare-parts'
+import { jobService } from '../../../../core/services'
+import { useToast } from '../../../context/toast-context'
 
-export type FormDataType = Omit<JobType, 'client' | 'vehicle' | 'id'>
+export type FormDataType = Omit<
+  JobType,
+  'client' | 'vehicle' | 'id' | 'status' | 'createdAt'
+>
 
 const initialData: FormDataType = {
   receptionDate: '',
   deliveryDate: null,
-  status: 'InProgress',
   cause: '',
   details: '',
   budget: 1000,
@@ -19,17 +23,69 @@ const initialData: FormDataType = {
 }
 
 export const EditJob = () => {
+  const refId = useRef<string>('')
+  const navigate = useNavigate()
   const location = useLocation()
   const [formData, setFormData] = useState<FormDataType | null>(initialData)
+  const toast = useToast()
 
   useEffect(() => {
     if (location.state) {
       const {
-        client: _,
-        vehicle: _ignored,
-        ...rest
+        budget,
+        cause,
+        deliveryDate,
+        details,
+        finalAmount,
+        id,
+        notificationSent,
+        receptionDate,
+        spareParts,
       } = location.state as JobType
-      setFormData(rest)
+      refId.current = id
+      setFormData({
+        budget,
+        cause,
+        deliveryDate,
+        details,
+        finalAmount,
+        notificationSent,
+        receptionDate,
+        spareParts,
+      })
+      console.log(id)
+    } else {
+      const id =
+        location.pathname.split('/')[location.pathname.split('/').length - 1]
+      if (id?.length) {
+        // eslint-disable-next-line no-extra-semi
+        ;(async () => {
+          const {
+            budget,
+            cause,
+            deliveryDate,
+            details,
+            finalAmount,
+            notificationSent,
+            receptionDate,
+            spareParts,
+          } = await jobService.getById(id)
+          console.log(id)
+
+          refId.current = id
+
+          setFormData({
+            budget,
+            cause,
+            deliveryDate,
+            details,
+            finalAmount,
+            notificationSent,
+            receptionDate,
+            spareParts,
+          })
+        })()
+      }
     }
   }, [])
 
@@ -49,9 +105,32 @@ export const EditJob = () => {
     })
   }
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    console.log('Datos del formulario:', formData)
+
+    try {
+      console.log(formData)
+      console.log(refId.current)
+
+      await jobService.update({ id: refId.current, ...formData })
+
+      navigate('.', {
+        replace: true,
+        state: { ...formData, id: refId.current },
+      })
+
+      toast.addToast({
+        title: 'Actualizado',
+        message: 'Actualizado con exito',
+        severity: 'success',
+      })
+    } catch (error) {
+      toast.addToast({
+        title: 'Error',
+        message: 'Ocurrio un error al actualizar',
+        severity: 'error',
+      })
+    }
   }
 
   const classNameInput =
@@ -87,12 +166,12 @@ export const EditJob = () => {
             </div>
             <div className="space-y-2">
               <label htmlFor="deliveryDate" className={classNameLabel}>
-                Fecha de Entrega
+                Fecha de Finalizado
               </label>
               <input
                 id="deliveryDate"
                 type="datetime-local"
-                value={formData.deliveryDate ?? new Date().toISOString()}
+                value={formData.deliveryDate ?? ''}
                 onChange={(e) =>
                   handleInputChange('deliveryDate', e.target.value || null)
                 }
@@ -100,7 +179,7 @@ export const EditJob = () => {
               />
             </div>
           </div>
-          <div className="space-y-2">
+          {/* <div className="space-y-2">
             <label htmlFor="status" className={classNameLabel}>
               Estado
             </label>
@@ -115,7 +194,7 @@ export const EditJob = () => {
                 </option>
               ))}
             </select>
-          </div>
+          </div> */}
           <div className="space-y-2">
             <label htmlFor="cause" className={classNameLabel}>
               Causa

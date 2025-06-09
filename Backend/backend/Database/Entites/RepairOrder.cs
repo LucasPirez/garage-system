@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
 
 namespace backend.Database.Entites
 {
-    public enum VehicleStatus
+    public enum RepairOrderStatus
     {
         InProgress,
         Completed,
@@ -17,7 +17,7 @@ namespace backend.Database.Entites
 
         public bool NotifycationSent { get; set; } = false;
 
-        public VehicleStatus Status { get; set; } = VehicleStatus.InProgress;
+        public RepairOrderStatus Status { get; set; } = RepairOrderStatus.InProgress;
 
         public string Cause { get; set; } = string.Empty;
 
