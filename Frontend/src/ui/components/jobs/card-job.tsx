@@ -2,7 +2,19 @@ import { FILTER } from '../../../core/constants/filter-jobs-status'
 import { JobsResponseDto } from '../../../core/dtos/vehicleEntry/jobs-response.dto'
 import { ButtonNavigate } from '../common/button-navigate'
 
-export const CardJob = ({ job }: { job: JobsResponseDto }) => {
+const label_traduction = {
+  [FILTER.ALL]: 'Todos',
+  [FILTER.PENDING]: 'En Progreso',
+  [FILTER.REALIZED]: 'Completado',
+}
+
+export const CardJob = ({
+  job,
+  setIsModalOpen,
+}: {
+  job: JobsResponseDto
+  setIsModalOpen: (isOpen: boolean) => void
+}) => {
   return (
     <div
       key={job.id}
@@ -35,14 +47,15 @@ export const CardJob = ({ job }: { job: JobsResponseDto }) => {
               <p className="text-sm text-gray-600">
                 {job.vehicle.model} ({job.vehicle.plate})
                 <span
-                  className={`inline-block ml-2 px-2 py-1 text-xs font-medium rounded-full ${
+                  onClick={() => setIsModalOpen(true)}
+                  className={`inline-block ml-2 px-3 py-1 text-xs font-medium cursor-pointer rounded-full ${
                     job.status === FILTER.REALIZED
                       ? 'bg-green-100 text-green-800'
                       : job.status === FILTER.PENDING
                       ? 'bg-yellow-100 text-yellow-800'
                       : 'bg-purple-100 text-purple-800'
                   }`}>
-                  {job.status}
+                  {label_traduction[job.status]}
                 </span>
               </p>
             </div>
@@ -78,7 +91,7 @@ export const CardJob = ({ job }: { job: JobsResponseDto }) => {
           {/* <DollarSign className="w-5 h-5 text-gray-500 mr-2 mt-0.5" /> */}
           <div>
             <p className="text-xs text-gray-500">Presupuesto</p>
-            <p className="text-sm">{job.budget}</p>
+            <p className="text-sm">$ {job.budget}</p>
           </div>
         </div>
 
@@ -86,19 +99,24 @@ export const CardJob = ({ job }: { job: JobsResponseDto }) => {
           {/* <Tool className="w-5 h-5 text-gray-500 mr-2 mt-0.5" /> */}
           <div>
             <p className="text-xs text-gray-500">Repuestos</p>
-            {/* <ul className="text-sm list-disc ml-4 mt-1">
-              {job.parts.map((part, index) => (
-                <li key={index}>{part}</li>
+            <ul className="text-sm list-disc ml-4 mt-1">
+              {job.spareParts.map((part, index) => (
+                <li key={index + part.name + part.price}>
+                  <span>x{part.quantity} </span>
+                  <span>
+                    {part.name} {'  '}
+                  </span>{' '}
+                  <span>${part.price.toLocaleString('Es-es')} </span>
+                </li>
               ))}
-            </ul> */}
+            </ul>
           </div>
         </div>
-
         {job.details && (
           <div className="flex items-start">
             {/* <AlertTriangle className="w-5 h-5 text-gray-500 mr-2 mt-0.5" /> */}
             <div>
-              <p className="text-xs text-gray-500">Notas</p>
+              <p className="text-xs text-gray-500">Detalles</p>
               <p className="text-sm">{job.details}</p>
             </div>
           </div>

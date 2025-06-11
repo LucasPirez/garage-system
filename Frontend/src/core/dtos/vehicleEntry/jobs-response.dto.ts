@@ -4,7 +4,7 @@ export interface JobsResponseDto {
   deliveryDate: string | null
   notificationSent: boolean
   createdAt: string
-  status: 'InProgress' | 'Completed' | 'Cancelled'
+  status: 'InProgress' | 'Completed'
   cause: string
   details: string
   budget: number

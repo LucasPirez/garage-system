@@ -8,14 +8,11 @@ namespace backend.Modules.RepairOrderModule.Dtos
 
         public required string Cause { get; set; } = string.Empty;
 
-        public required string? Details { get; set; } = string.Empty;
-        public required double? Budget { get; set; }
+        public string? Details { get; set; } = string.Empty;
 
         public required string VehicleId { get; set; }
 
         public string WorkshopId { get; set; }
-
-        public required List<SparePart>? SpareParts { get; set; } = new List<SparePart>();
     }
 
     public class UpdateRepairOrderDto

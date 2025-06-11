@@ -5,6 +5,7 @@ import { SparePart } from '../../../../core/dtos/vehicleEntry/jobs-response.dto'
 import { SpareParts } from './spare-parts'
 import { jobService } from '../../../../core/services'
 import { useToast } from '../../../context/toast-context'
+import { ArrowBigLeft, ArrowLeft } from 'lucide-react'
 
 export type FormDataType = Omit<
   JobType,
@@ -141,10 +142,12 @@ export const EditJob = () => {
   return (
     <>
       <div className="p-6 border-b border-gray-200">
-        <h1 className="text-2xl font-bold text-gray-900">Orden de Servicio</h1>
-        <p className="text-gray-600 mt-1">
-          Complete los datos de la orden de servicio
-        </p>
+        <div className="flex items-center gap-4" onClick={() => navigate(-1)}>
+          <ArrowLeft className="hover:scale-105 cursor-pointer " />
+          <h1 className="text-2xl font-bold text-gray-900">
+            Orden de Servicio
+          </h1>
+        </div>
       </div>
       <div className="p-6">
         <form onSubmit={handleSubmit} className="space-y-6">

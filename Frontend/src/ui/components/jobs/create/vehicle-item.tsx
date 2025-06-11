@@ -1,4 +1,4 @@
-import { VehicleType } from '../../../core/type/vehicle'
+import { VehicleType } from '../../../../core/type/vehicle'
 
 interface Props {
   vehicle: VehicleType

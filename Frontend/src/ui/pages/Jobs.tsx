@@ -6,11 +6,13 @@ import { CardJob } from '../components/jobs/card-job'
 
 import { workshopService } from '../../core/services'
 import { JobsResponseDto } from '../../core/dtos/vehicleEntry/jobs-response.dto'
+import { ModalStatus } from '../components/modal/modal-status'
 
 export const Jobs = () => {
   const [statusFilter, setStatusFilter] = useState<JobsFilterType>(FILTER.ALL)
   const [jobs, setJobs] = useState<JobsResponseDto[] | null>(null)
   const [jobsFilter, setJobsFilter] = useState<JobsResponseDto[]>([])
+  const [isModalOpen, setIsModalOpen] = useState(false)
 
   useEffect(() => {
     // eslint-disable-next-line no-extra-semi
@@ -33,6 +35,10 @@ export const Jobs = () => {
       jobs?.filter((k) => k.status === value || value === FILTER.ALL) ?? []
 
     setJobsFilter(filteredJobs)
+  }
+
+  const handleVisibilityModal = (isOpen: boolean) => {
+    setIsModalOpen(isOpen)
   }
 
   return (
@@ -59,10 +65,13 @@ export const Jobs = () => {
           </button>
         </div>
       </div>
-
+      <ModalStatus
+        isModalOpen={isModalOpen}
+        setIsModalOpen={handleVisibilityModal}
+      />
       <div className="flex flex-wrap justify-center gap-4 ">
         {jobsFilter.map((job) => (
-          <CardJob job={job} />
+          <CardJob job={job} setIsModalOpen={handleVisibilityModal} />
         ))}
       </div>
 

@@ -63,7 +63,7 @@ export function Toast({ toast, onRemove }: ToastProps) {
   return (
     <div
       className={`
-        transform transition-all duration-300 ease-in-out w-64 h-auto
+        transform transition-all duration-300 ease-in-out h-auto
         ${
           isVisible && !isLeaving
             ? 'translate-x-0 opacity-100'
@@ -71,7 +71,7 @@ export function Toast({ toast, onRemove }: ToastProps) {
         }
         max-w-sm w-full ${config.bgColor} ${
         config.borderColor
-      } border rounded-lg shadow-lg pointer-events-auto
+      } border rounded-lg shadow-lg pointer-events-auto  
       `}>
       <div className="p-4">
         <div className="flex items-start">

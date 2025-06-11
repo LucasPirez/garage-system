@@ -27,20 +27,9 @@ namespace backend.Swagger
         public CreateRepairOrderDto GetExamples() =>
             new()
             {
-                WorkshopId = SeedData.workshopAId.ToString(),
                 Cause = "Cambio de aceite",
                 Details = "Cambio de aceite y filtro",
                 ReceptionDate = DateTime.UtcNow,
-                Budget = 1000,
-                SpareParts = new List<SparePart>()
-                {
-                    new()
-                    {
-                        Name = "Aceite",
-                        Price = 3000,
-                        Quantity = 1,
-                    },
-                },
                 VehicleId = "",
             };
     }
