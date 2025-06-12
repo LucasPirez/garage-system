@@ -101,6 +101,25 @@ namespace backend.Modules.RepairOrderModule
             throw new NotImplementedException();
         }
 
+        public async Task UpdateStatusAndFinalAmount(UpdateAmountAndStatusDto dto)
+        {
+            var entity =
+                await GetByIdAsync(Guid.Parse(dto.Id))
+                ?? throw new NotFoundException("Job not Found");
+
+            if (Enum.TryParse<RepairOrderStatus>(dto.Status, out var status))
+            {
+                entity.Status = status;
+                entity.FinalAmount = dto.FinalAmount;
+
+                await Update(entity);
+            }
+            else
+            {
+                throw new BadHttpRequestException("Invalid status provided");
+            }
+        }
+
         Task<IEnumerable<RepairOrder>> IServiceBase<RepairOrder, CreateRepairOrderDto>.GetAllAsync(
             Guid workshopId
         )

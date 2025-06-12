@@ -8,5 +8,7 @@ namespace backend.Modules.RepairOrderModule.Interfaces
         new Task<IEnumerable<ListRepairOrderDto>> GetAllAsync(Guid workShopId);
 
         Task UpdateAsync(UpdateRepairOrderDto updateDto);
+
+        Task UpdateStatusAndFinalAmount(UpdateAmountAndStatusDto dto);
     }
 }

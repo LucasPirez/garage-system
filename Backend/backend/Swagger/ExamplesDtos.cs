@@ -59,6 +59,17 @@ namespace backend.Swagger
             };
     }
 
+    public class PatchRepairOrderDto : IExamplesProvider<UpdateAmountAndStatusDto>
+    {
+        public UpdateAmountAndStatusDto GetExamples() =>
+            new()
+            {
+                Id = "",
+                FinalAmount = 1000,
+                Status = RepairOrderStatus.InProgress.ToString(),
+            };
+    }
+
     public class CreateVehicleDtoExample : IExamplesProvider<CreateVehicleDto>
     {
         public CreateVehicleDto GetExamples() =>

@@ -1,6 +1,9 @@
 ﻿using backend.Modules.RepairOrderModule.Dtos;
 using backend.Modules.RepairOrderModule.Interfaces;
+using backend.Modules.VehicleModule.Dtos;
+using backend.Swagger;
 using Microsoft.AspNetCore.Mvc;
+using Swashbuckle.AspNetCore.Filters;
 
 namespace backend.Modules.RepairOrderModule
 {
@@ -33,6 +36,14 @@ namespace backend.Modules.RepairOrderModule
         public async Task<IActionResult> Update([FromBody] UpdateRepairOrderDto updateDto)
         {
             await _vehicleEntryService.UpdateAsync(updateDto);
+            return StatusCode(StatusCodes.Status200OK);
+        }
+
+        [SwaggerRequestExample(typeof(UpdateAmountAndStatusDto), typeof(PatchRepairOrderDto))]
+        [HttpPatch]
+        public async Task<IActionResult> Patch([FromBody] UpdateAmountAndStatusDto updateDto)
+        {
+            await _vehicleEntryService.UpdateStatusAndFinalAmount(updateDto);
             return StatusCode(StatusCodes.Status200OK);
         }
     }
