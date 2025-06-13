@@ -7,12 +7,14 @@ import { CardJob } from '../components/jobs/card-job'
 import { workshopService } from '../../core/services'
 import { JobsResponseDto } from '../../core/dtos/vehicleEntry/jobs-response.dto'
 import { ModalStatus } from '../components/modal/modal-status'
+import { JobType } from '../../core/type/job'
+import { JobStatusType } from '../../core/constants/jobs-status'
 
 export const Jobs = () => {
   const [statusFilter, setStatusFilter] = useState<JobsFilterType>(FILTER.ALL)
   const [jobs, setJobs] = useState<JobsResponseDto[] | null>(null)
   const [jobsFilter, setJobsFilter] = useState<JobsResponseDto[]>([])
-  const [isModalOpen, setIsModalOpen] = useState(false)
+  const [jobModal, setJobModal] = useState<JobType | null>(null)
 
   useEffect(() => {
     // eslint-disable-next-line no-extra-semi
@@ -37,8 +39,44 @@ export const Jobs = () => {
     setJobsFilter(filteredJobs)
   }
 
-  const handleVisibilityModal = (isOpen: boolean) => {
-    setIsModalOpen(isOpen)
+  const handleVisibilityModal = (data: JobType | null) => {
+    setJobModal(data)
+  }
+
+  const handleJobModalState = ({
+    id,
+    finalAmount,
+    status,
+  }: {
+    status: JobStatusType
+    finalAmount: number
+    id: string
+  }) => {
+    const jobsChange =
+      jobs?.map((job) => {
+        if (job.id !== id) return job
+
+        return {
+          ...job,
+          status,
+          finalAmount,
+        }
+      }) ?? null
+    setJobs(jobsChange)
+
+    const filteredJobs =
+      jobsFilter?.map((job) => {
+        if (job.id !== id) return job
+
+        return {
+          ...job,
+          status,
+          finalAmount,
+        }
+      }) ?? null
+
+    setJobsFilter(filteredJobs)
+    setJobModal(null)
   }
 
   return (
@@ -65,10 +103,13 @@ export const Jobs = () => {
           </button>
         </div>
       </div>
-      <ModalStatus
-        isModalOpen={isModalOpen}
-        setIsModalOpen={handleVisibilityModal}
-      />
+      {jobModal && (
+        <ModalStatus
+          closeModal={handleVisibilityModal}
+          job={jobModal}
+          handleJobState={handleJobModalState}
+        />
+      )}
       <div className="flex flex-wrap justify-center gap-4 ">
         {jobsFilter.map((job) => (
           <CardJob job={job} setIsModalOpen={handleVisibilityModal} />

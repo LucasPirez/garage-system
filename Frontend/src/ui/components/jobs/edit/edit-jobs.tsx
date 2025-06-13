@@ -6,6 +6,7 @@ import { SpareParts } from './spare-parts'
 import { jobService } from '../../../../core/services'
 import { useToast } from '../../../context/toast-context'
 import { ArrowBigLeft, ArrowLeft } from 'lucide-react'
+import { classNameInput, classNameLabel } from '../../common/class-names'
 
 export type FormDataType = Omit<
   JobType,
@@ -134,11 +135,6 @@ export const EditJob = () => {
     }
   }
 
-  const classNameInput =
-    'w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500'
-
-  const classNameLabel = 'block text-sm font-medium text-gray-700'
-
   return (
     <>
       <div className="p-6 border-b border-gray-200">
@@ -182,22 +178,7 @@ export const EditJob = () => {
               />
             </div>
           </div>
-          {/* <div className="space-y-2">
-            <label htmlFor="status" className={classNameLabel}>
-              Estado
-            </label>
-            <select
-              id="status"
-              value={formData.status}
-              onChange={(e) => handleInputChange('status', e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white">
-              {['pending', 'Realizado'].map((option) => (
-                <option key={option} value={option}>
-                  {option}
-                </option>
-              ))}
-            </select>
-          </div> */}
+
           <div className="space-y-2">
             <label htmlFor="cause" className={classNameLabel}>
               Causa

@@ -1,5 +1,6 @@
 import { FILTER } from '../../../core/constants/filter-jobs-status'
 import { JobsResponseDto } from '../../../core/dtos/vehicleEntry/jobs-response.dto'
+import { JobType } from '../../../core/type/job'
 import { ButtonNavigate } from '../common/button-navigate'
 
 const label_traduction = {
@@ -13,7 +14,7 @@ export const CardJob = ({
   setIsModalOpen,
 }: {
   job: JobsResponseDto
-  setIsModalOpen: (isOpen: boolean) => void
+  setIsModalOpen: (data: JobType | null) => void
 }) => {
   return (
     <div
@@ -47,7 +48,7 @@ export const CardJob = ({
               <p className="text-sm text-gray-600">
                 {job.vehicle.model} ({job.vehicle.plate})
                 <span
-                  onClick={() => setIsModalOpen(true)}
+                  onClick={() => setIsModalOpen(job)}
                   className={`inline-block ml-2 px-3 py-1 text-xs font-medium cursor-pointer rounded-full ${
                     job.status === FILTER.REALIZED
                       ? 'bg-green-100 text-green-800'

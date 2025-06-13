@@ -2,6 +2,7 @@ import { AxiosInstance } from 'axios'
 import { workshopId } from '../constants/workshopId'
 import { JobsResponseDto } from '../dtos/vehicleEntry/jobs-response.dto'
 import { JobUpdateDto } from '../dtos/vehicleEntry/job-update.dto'
+import { JOBS_STATUS } from '../constants/jobs-status'
 
 export interface JobCreateDto {
   receptionDate: string
@@ -59,6 +60,18 @@ export class JobsService {
       `${this.BASE_PATH}`,
       data
     )
+
+    if (response.status !== 200) {
+      alert('Error al actualizar el trabajo')
+    }
+  }
+
+  async updateStatusAndAmount(data: {
+    id: string
+    finalAmount: number
+    status: (typeof JOBS_STATUS)[keyof typeof JOBS_STATUS]
+  }): Promise<void> {
+    const response = await this.client.patch(`${this.BASE_PATH}`, data)
 
     if (response.status !== 200) {
       alert('Error al actualizar el trabajo')
