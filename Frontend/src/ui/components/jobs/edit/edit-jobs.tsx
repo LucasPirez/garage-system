@@ -5,7 +5,7 @@ import { SparePart } from '../../../../core/dtos/vehicleEntry/jobs-response.dto'
 import { SpareParts } from './spare-parts'
 import { jobService } from '../../../../core/services'
 import { useToast } from '../../../context/toast-context'
-import { ArrowBigLeft, ArrowLeft } from 'lucide-react'
+import { ArrowLeft } from 'lucide-react'
 import { classNameInput, classNameLabel } from '../../common/class-names'
 
 export type FormDataType = Omit<
@@ -55,7 +55,6 @@ export const EditJob = () => {
         receptionDate,
         spareParts,
       })
-      console.log(id)
     } else {
       const id =
         location.pathname.split('/')[location.pathname.split('/').length - 1]
@@ -72,7 +71,6 @@ export const EditJob = () => {
             receptionDate,
             spareParts,
           } = await jobService.getById(id)
-          console.log(id)
 
           refId.current = id
 
@@ -111,10 +109,14 @@ export const EditJob = () => {
     e.preventDefault()
 
     try {
-      console.log(formData)
-      console.log(refId.current)
-
-      await jobService.update({ id: refId.current, ...formData })
+      await jobService.update({
+        ...formData,
+        id: refId.current,
+        deliveryDate: formData.deliveryDate
+          ? new Date(formData.deliveryDate).toISOString()
+          : null,
+        receptionDate: new Date(formData.receptionDate).toISOString(),
+      })
 
       navigate('.', {
         replace: true,
@@ -169,8 +171,8 @@ export const EditJob = () => {
               </label>
               <input
                 id="deliveryDate"
-                type="datetime-local"
-                value={formData.deliveryDate ?? ''}
+                type="date"
+                value={formData.deliveryDate?.split('T')[0] ?? ''}
                 onChange={(e) =>
                   handleInputChange('deliveryDate', e.target.value || null)
                 }
