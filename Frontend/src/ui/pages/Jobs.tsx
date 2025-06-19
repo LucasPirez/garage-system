@@ -9,8 +9,10 @@ import { JobsResponseDto } from '../../core/dtos/vehicleEntry/jobs-response.dto'
 import { ModalStatus } from '../components/modal/modal-status'
 import { JobType } from '../../core/type/job'
 import { JobStatusType } from '../../core/constants/jobs-status'
+import withAuth from '../components/hoc/with-auth'
+import { label_traduction } from '../../core/constants/label-traduction-status'
 
-export const Jobs = () => {
+const Jobs = () => {
   const [statusFilter, setStatusFilter] = useState<JobsFilterType>(FILTER.ALL)
   const [jobs, setJobs] = useState<JobsResponseDto[] | null>(null)
   const [jobsFilter, setJobsFilter] = useState<JobsResponseDto[]>([])
@@ -97,10 +99,6 @@ export const Jobs = () => {
               />
             ))}
           </div>
-
-          <button className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors">
-            Nuevo Trabajo
-          </button>
         </div>
       </div>
       {jobModal && (
@@ -112,19 +110,25 @@ export const Jobs = () => {
       )}
       <div className="flex flex-wrap justify-center gap-4 ">
         {jobsFilter.map((job) => (
-          <CardJob job={job} setIsModalOpen={handleVisibilityModal} />
+          <CardJob
+            job={job}
+            setIsModalOpen={handleVisibilityModal}
+            key={job.id}
+          />
         ))}
       </div>
 
-      {/* {filteredJobs.length === 0 && (
-          <div className="text-center py-12">
-            <p className="text-gray-500">
-              No hay trabajos{' '}
-              {statusFilter !== 'todos' ? `con estado "${statusFilter}"` : ''}{' '}
-              para mostrar.
-            </p>
-          </div>
-        )} */}
+      {jobsFilter.length === 0 && (
+        <div className="text-center py-12">
+          <p className="text-gray-500">
+            No hay trabajos "{label_traduction[statusFilter]}" para mostrar.
+          </p>
+        </div>
+      )}
     </>
   )
 }
+
+const JobComponent = withAuth(Jobs)
+
+export { JobComponent as Jobs }
