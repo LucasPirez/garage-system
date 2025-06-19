@@ -24,7 +24,7 @@ namespace backend.Modules.RepairOrderModule.Dtos
 
         public required string? Details { get; set; } = string.Empty;
         public required double? Budget { get; set; }
-        public DateTime DeliveryDate { get; set; }
+        public DateTime? DeliveryDate { get; set; }
         public bool NotificationSent { get; set; }
 
         public double FinalAmount { get; set; }

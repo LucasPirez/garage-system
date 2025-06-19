@@ -77,5 +77,6 @@ namespace backend.Database
         public DbSet<Vehicle> Vehicles => Set<Vehicle>();
         public DbSet<RepairOrder> VehicleEntries => Set<RepairOrder>();
         public DbSet<Payment> Payments => Set<Payment>();
+        public DbSet<Admin> Admins => Set<Admin>();
     }
 }

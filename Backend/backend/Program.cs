@@ -1,6 +1,7 @@
 using System.Reflection;
 using backend.Common.Middlewares;
 using backend.Database;
+using backend.Modules.AuthModule;
 using backend.Modules.CustomerModule;
 using backend.Modules.CustomerModule.Interfaces;
 using backend.Modules.RepairOrderModule;
@@ -46,6 +47,7 @@ builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
 builder.Services.AddScoped<IVehicleService, VehicleService>();
 builder.Services.AddScoped<IRepairOrderService, RepairOrderService>();
 builder.Services.AddScoped<ICustomerService, CustomerService>();
+builder.Services.AddScoped<AuthService>();
 
 var app = builder.Build();
 
