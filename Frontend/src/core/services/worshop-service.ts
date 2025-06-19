@@ -2,9 +2,14 @@ import { AxiosInstance } from 'axios'
 import { type CustomerResponseDto } from '../dtos/customer/customer-response.dto'
 import { type VehicleResponseDto } from '../dtos/vehicle/vehicle-response.dto'
 import { type JobsResponseDto } from '../dtos/vehicleEntry/jobs-response.dto'
-import { workshopId } from '../constants/workshopId'
+import { localStorageService, localKeys } from '../storage/storages'
 
-const getWorkshopId = () => {
+export const getWorkshopId = (): string => {
+  const workshopId = localStorageService.getItem(localKeys.USER)?.workShopId
+
+  if (!workshopId) throw new Error()
+  console.log(workshopId)
+
   return workshopId
 }
 

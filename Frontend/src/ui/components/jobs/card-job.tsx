@@ -1,14 +1,9 @@
 import { FILTER } from '../../../core/constants/filter-jobs-status'
+import { label_traduction } from '../../../core/constants/label-traduction-status'
 import { JobsResponseDto } from '../../../core/dtos/vehicleEntry/jobs-response.dto'
 import { JobType } from '../../../core/type/job'
 import { ButtonNavigate } from '../common/button-navigate'
 import { DownloadPDF } from '../pdf/react-pdf'
-
-const label_traduction = {
-  [FILTER.ALL]: 'Todos',
-  [FILTER.PENDING]: 'En Progreso',
-  [FILTER.REALIZED]: 'Completado',
-}
 
 export const CardJob = ({
   job,
@@ -22,8 +17,7 @@ export const CardJob = ({
       key={job.id}
       className="bg-gray-100 rounded-lg shadow-md  hover:shadow-lg transition-shadow w-[340px] max-h-[450px] overflow-auto">
       <div className="p-4 border-b border-gray-300 relative">
-        <div className=" flex gap-2 items-center absolute right-2 top-2">
-          <DownloadPDF data={job} />
+        <div className="flex flex-col gap-2 items-center absolute right-2 top-2">
           <ButtonNavigate
             className=""
             label={
@@ -43,6 +37,7 @@ export const CardJob = ({
             data={job}
             path={job.id}
           />
+          <DownloadPDF data={job} />
         </div>
         <div className="flex justify-between items-start">
           <div>
@@ -74,7 +69,7 @@ export const CardJob = ({
           <div>
             <p className="text-xs text-gray-500">Cliente</p>
             <p className="text-sm">
-              {job.client.firstName + job.client.lastName}
+              {job.client.firstName + ' ' + job.client.lastName}
             </p>
             <p className="text-xs text-gray-500 mt-0.5">
               Placa: {job.vehicle.plate}

@@ -1,8 +1,9 @@
 import { AxiosInstance } from 'axios'
-import { workshopId } from '../constants/workshopId'
+
 import { JobsResponseDto } from '../dtos/vehicleEntry/jobs-response.dto'
 import { JobUpdateDto } from '../dtos/vehicleEntry/job-update.dto'
 import { JOBS_STATUS } from '../constants/jobs-status'
+import { getWorkshopId } from './worshop-service'
 
 export interface JobCreateDto {
   receptionDate: string
@@ -35,7 +36,7 @@ export class JobsService {
   async create(job: Omit<JobCreateDto, 'workshopId'>): Promise<void> {
     const response = await this.client.post(this.BASE_PATH, {
       ...job,
-      workshopId,
+      workshopId: getWorkshopId(),
     })
 
     if (response.status !== 201) {
@@ -103,7 +104,7 @@ export class CustomerService {
   ): Promise<string> {
     const { data } = await this.client.post(this.PATHS.create, {
       ...customer,
-      workshopId,
+      workshopId: getWorkshopId(),
     })
 
     return data.id

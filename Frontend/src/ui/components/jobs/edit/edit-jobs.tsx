@@ -107,6 +107,7 @@ export const EditJob = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    console.log(formData)
 
     try {
       await jobService.update({
@@ -220,10 +221,7 @@ export const EditJob = () => {
                 step="0.01"
                 value={formData.budget}
                 onChange={(e) =>
-                  handleInputChange(
-                    'budget',
-                    Number.parseFloat(e.target.value) || 0
-                  )
+                  handleInputChange('budget', Number.parseFloat(e.target.value))
                 }
                 required
                 className={classNameInput}

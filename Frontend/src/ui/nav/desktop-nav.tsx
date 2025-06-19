@@ -1,7 +1,10 @@
 import { Link } from 'react-router-dom'
 import { NAV_LINKS } from './nav-links'
+import { useLogout } from '../components/common/useLogout'
 
 export const DesktopNav = () => {
+  const { handleLogout } = useLogout()
+
   return (
     <ul className="space-y-2">
       {NAV_LINKS.map((link) => (
@@ -14,11 +17,11 @@ export const DesktopNav = () => {
         </li>
       ))}
       <li className="pt-4">
-        <Link
-          to="/login"
-          className="flex items-center p-3 bg-blue-500 text-white hover:bg-blue-600 rounded-md transition-colors">
-          <span className="ml-3">Login</span>
-        </Link>
+        <button
+          className="flex items-center ml-3 p-3 bg-red-400 hover:bg-red-600 px-4 py-2 rounded-md text-sm font-medium transition-colors"
+          onClick={handleLogout}>
+          Logout
+        </button>
       </li>
     </ul>
   )

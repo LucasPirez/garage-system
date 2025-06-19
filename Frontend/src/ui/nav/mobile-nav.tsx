@@ -1,9 +1,11 @@
 import { useState } from 'react'
 import { NAV_LINKS } from './nav-links'
 import { Link } from 'react-router-dom'
+import { useLogout } from '../components/common/useLogout'
 
 export const MobileNav = () => {
   const [isOpen, setIsOpen] = useState(false)
+  const { handleLogout } = useLogout()
 
   const toggleMenu = () => {
     setIsOpen(!isOpen)
@@ -61,11 +63,11 @@ export const MobileNav = () => {
               <span className="ml-3">{link.label}</span>
             </Link>
           ))}
-          <Link
-            to="/login"
-            className="flex items-center bg-blue-500 text-white hover:bg-blue-600 px-3 py-2 rounded-md text-base font-medium transition-colors">
-            <span className="ml-3">Login</span>
-          </Link>
+          <button
+            className="bg-red-400 hover:bg-red-600 px-4 py-2 rounded-md text-sm font-medium transition-colors"
+            onClick={handleLogout}>
+            Logout
+          </button>
         </div>
       </div>
     </>

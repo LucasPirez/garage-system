@@ -1,7 +1,10 @@
 import { Link } from 'react-router-dom'
 import { NAV_LINKS } from './nav-links'
+import { useLogout } from '../components/common/useLogout'
 
 export const TabletNav = () => {
+  const { handleLogout } = useLogout()
+
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6">
       <div className="flex justify-between h-16">
@@ -20,11 +23,11 @@ export const TabletNav = () => {
               {link.label}
             </Link>
           ))}
-          <Link
-            to="/login"
-            className="bg-blue-500 text-white hover:bg-blue-600 px-4 py-2 rounded-md text-sm font-medium transition-colors">
-            Login
-          </Link>
+          <button
+            className="bg-red-400 hover:bg-red-600 px-4 py-2 rounded-md text-sm font-medium transition-colors"
+            onClick={handleLogout}>
+            Logout
+          </button>
         </div>
       </div>
     </div>

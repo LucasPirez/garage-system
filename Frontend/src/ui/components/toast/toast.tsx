@@ -73,18 +73,18 @@ export function Toast({ toast, onRemove }: ToastProps) {
         config.borderColor
       } border rounded-lg shadow-lg pointer-events-auto  
       `}>
-      <div className="p-4">
+      <div className="p-4 px-2">
         <div className="flex items-start">
           <div className="flex-shrink-0">{config.icon}</div>
-          <div className="ml-3 w-0 flex-1">
+          <div className="ml-2 w-0 flex-1">
             <p className={`text-sm font-medium ${config.textColor}`}>
               {toast.title}
             </p>
-            <p className={`mt-1 text-sm ${config.textColor} opacity-90`}>
+            <p className={`mt-2 text-sm ${config.textColor} opacity-90`}>
               {toast.message}
             </p>
           </div>
-          <div className="ml-4 flex-shrink-0 flex">
+          <div className="absolute top-4 right-2 flex-shrink-0 flex">
             <button
               className={`
                 inline-flex ${config.textColor} hover:opacity-75 focus:outline-none 

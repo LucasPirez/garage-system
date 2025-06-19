@@ -5,7 +5,12 @@ export const LocalStorageKeys = {
 } as const
 
 export type LocalStorageObjectTypes = {
-  [LocalStorageKeys.USER]: string
+  [LocalStorageKeys.USER]: {
+    email: string
+    token: string
+    workShopId: string
+    workShopName: string
+  }
   [LocalStorageKeys.HASH]: { hash: string }
 }
 
