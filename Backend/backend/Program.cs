@@ -29,7 +29,8 @@ builder.Services.AddSwaggerGen(c =>
     c.OperationFilter<SwaggerDefaultWorkshopIdFilter>();
 });
 
-var origins = builder.Configuration.GetSection("Origins").Get<string[]>() ?? [];
+var origins = builder.Configuration.GetSection("Origins").Get<string[]>() ?? 
+                Environment.GetEnvironmentVariable("Origins")?.Split(",") ?? [];
 
 builder.Services.AddCors(options =>
 {
