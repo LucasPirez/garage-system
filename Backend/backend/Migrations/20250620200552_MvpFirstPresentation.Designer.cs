@@ -12,8 +12,8 @@ using backend.Database;
 namespace backend.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250524213111_Init")]
-    partial class Init
+    [Migration("20250620200552_MvpFirstPresentation")]
+    partial class MvpFirstPresentation
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,6 +24,39 @@ namespace backend.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
+
+            modelBuilder.Entity("backend.Database.Entites.Admin", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid>("WorkShopId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Email")
+                        .IsUnique();
+
+                    b.HasIndex("WorkShopId");
+
+                    b.ToTable("Admins");
+                });
 
             modelBuilder.Entity("backend.Database.Entites.Customer", b =>
                 {
@@ -72,7 +105,7 @@ namespace backend.Migrations
                         new
                         {
                             Id = new Guid("cccccccc-cccc-cccc-cccc-cccccccccccc"),
-                            CreatedAt = new DateTime(2025, 5, 24, 21, 31, 10, 407, DateTimeKind.Utc).AddTicks(2976),
+                            CreatedAt = new DateTime(2025, 6, 20, 20, 5, 50, 995, DateTimeKind.Utc).AddTicks(4474),
                             Email = new[] { "lucaspirez42@gmail.com" },
                             FirstName = "Juan ",
                             LastName = "Perez",
@@ -82,7 +115,7 @@ namespace backend.Migrations
                         new
                         {
                             Id = new Guid("dddddddd-dddd-dddd-dddd-dddddddddddd"),
-                            CreatedAt = new DateTime(2025, 5, 24, 21, 31, 10, 407, DateTimeKind.Utc).AddTicks(2996),
+                            CreatedAt = new DateTime(2025, 6, 20, 20, 5, 50, 995, DateTimeKind.Utc).AddTicks(4504),
                             Email = new string[0],
                             FirstName = "Maria ",
                             LastName = "Lopez",
@@ -122,6 +155,60 @@ namespace backend.Migrations
                     b.ToTable("Payments");
                 });
 
+            modelBuilder.Entity("backend.Database.Entites.RepairOrder", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<double>("Budget")
+                        .HasColumnType("double precision");
+
+                    b.Property<string>("Cause")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime?>("DeliveryDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Details")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<double>("FinalAmount")
+                        .HasColumnType("double precision");
+
+                    b.Property<bool>("NotifycationSent")
+                        .HasColumnType("boolean");
+
+                    b.Property<DateTime>("ReceptionDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid>("VehicleId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("WorkShopId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("VehicleId");
+
+                    b.HasIndex("WorkShopId");
+
+                    b.ToTable("VehicleEntries");
+                });
+
             modelBuilder.Entity("backend.Database.Entites.Vehicle", b =>
                 {
                     b.Property<Guid>("Id")
@@ -151,65 +238,10 @@ namespace backend.Migrations
 
                     b.HasIndex("CustomerId");
 
+                    b.HasIndex("Plate")
+                        .IsUnique();
+
                     b.ToTable("Vehicles");
-                });
-
-            modelBuilder.Entity("backend.Database.Entites.VehicleEntry", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("Cause")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<DateTime?>("DeliveryDate")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("Details")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<double>("FinalAmount")
-                        .HasColumnType("double precision");
-
-                    b.Property<bool>("NotifycationSent")
-                        .HasColumnType("boolean");
-
-                    b.Property<double>("Presupuest")
-                        .HasColumnType("double precision");
-
-                    b.Property<DateTime>("ReceptionDate")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string[]>("SpareParts")
-                        .IsRequired()
-                        .HasColumnType("text[]");
-
-                    b.Property<string>("Status")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<Guid>("VehicleId")
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid>("WorkShopId")
-                        .HasColumnType("uuid");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("VehicleId");
-
-                    b.HasIndex("WorkShopId");
-
-                    b.ToTable("VehicleEntries");
                 });
 
             modelBuilder.Entity("backend.Database.Entites.WorkShop", b =>
@@ -218,11 +250,20 @@ namespace backend.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
+                    b.Property<string>("Address")
+                        .HasColumnType("text");
+
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
+                    b.Property<string>("Email")
+                        .HasColumnType("text");
+
                     b.Property<string>("Name")
                         .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("PhoneNumber")
                         .HasColumnType("text");
 
                     b.Property<DateTime?>("UpdatedAt")
@@ -236,15 +277,26 @@ namespace backend.Migrations
                         new
                         {
                             Id = new Guid("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa"),
-                            CreatedAt = new DateTime(2025, 5, 24, 21, 31, 10, 407, DateTimeKind.Utc).AddTicks(2849),
+                            CreatedAt = new DateTime(2025, 6, 20, 20, 5, 50, 995, DateTimeKind.Utc).AddTicks(4207),
                             Name = "Taller Jesuita"
                         },
                         new
                         {
                             Id = new Guid("bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb"),
-                            CreatedAt = new DateTime(2025, 5, 24, 21, 31, 10, 407, DateTimeKind.Utc).AddTicks(2877),
+                            CreatedAt = new DateTime(2025, 6, 20, 20, 5, 50, 995, DateTimeKind.Utc).AddTicks(4259),
                             Name = "Taller Silvana"
                         });
+                });
+
+            modelBuilder.Entity("backend.Database.Entites.Admin", b =>
+                {
+                    b.HasOne("backend.Database.Entites.WorkShop", "WorkShop")
+                        .WithMany()
+                        .HasForeignKey("WorkShopId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("WorkShop");
                 });
 
             modelBuilder.Entity("backend.Database.Entites.Customer", b =>
@@ -269,18 +321,7 @@ namespace backend.Migrations
                     b.Navigation("Customer");
                 });
 
-            modelBuilder.Entity("backend.Database.Entites.Vehicle", b =>
-                {
-                    b.HasOne("backend.Database.Entites.Customer", "Customer")
-                        .WithMany("Vehicle")
-                        .HasForeignKey("CustomerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Customer");
-                });
-
-            modelBuilder.Entity("backend.Database.Entites.VehicleEntry", b =>
+            modelBuilder.Entity("backend.Database.Entites.RepairOrder", b =>
                 {
                     b.HasOne("backend.Database.Entites.Vehicle", "Vehicle")
                         .WithMany("VehicleEntries")
@@ -294,9 +335,51 @@ namespace backend.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.OwnsMany("backend.Database.Entites.SparePart", "SpareParts", b1 =>
+                        {
+                            b1.Property<Guid>("RepairOrderId")
+                                .HasColumnType("uuid");
+
+                            b1.Property<int>("Id")
+                                .ValueGeneratedOnAdd()
+                                .HasColumnType("integer");
+
+                            NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b1.Property<int>("Id"));
+
+                            b1.Property<string>("Name")
+                                .IsRequired()
+                                .HasColumnType("text");
+
+                            b1.Property<double>("Price")
+                                .HasColumnType("double precision");
+
+                            b1.Property<int>("Quantity")
+                                .HasColumnType("integer");
+
+                            b1.HasKey("RepairOrderId", "Id");
+
+                            b1.ToTable("SparePart");
+
+                            b1.WithOwner()
+                                .HasForeignKey("RepairOrderId");
+                        });
+
+                    b.Navigation("SpareParts");
+
                     b.Navigation("Vehicle");
 
                     b.Navigation("WorkShop");
+                });
+
+            modelBuilder.Entity("backend.Database.Entites.Vehicle", b =>
+                {
+                    b.HasOne("backend.Database.Entites.Customer", "Customer")
+                        .WithMany("Vehicle")
+                        .HasForeignKey("CustomerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Customer");
                 });
 
             modelBuilder.Entity("backend.Database.Entites.Customer", b =>

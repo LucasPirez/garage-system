@@ -47,6 +47,9 @@ namespace backend.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("Email")
+                        .IsUnique();
+
                     b.HasIndex("WorkShopId");
 
                     b.ToTable("Admins");
@@ -99,7 +102,7 @@ namespace backend.Migrations
                         new
                         {
                             Id = new Guid("cccccccc-cccc-cccc-cccc-cccccccccccc"),
-                            CreatedAt = new DateTime(2025, 6, 19, 19, 51, 48, 472, DateTimeKind.Utc).AddTicks(6950),
+                            CreatedAt = new DateTime(2025, 6, 20, 20, 5, 50, 995, DateTimeKind.Utc).AddTicks(4474),
                             Email = new[] { "lucaspirez42@gmail.com" },
                             FirstName = "Juan ",
                             LastName = "Perez",
@@ -109,7 +112,7 @@ namespace backend.Migrations
                         new
                         {
                             Id = new Guid("dddddddd-dddd-dddd-dddd-dddddddddddd"),
-                            CreatedAt = new DateTime(2025, 6, 19, 19, 51, 48, 472, DateTimeKind.Utc).AddTicks(6961),
+                            CreatedAt = new DateTime(2025, 6, 20, 20, 5, 50, 995, DateTimeKind.Utc).AddTicks(4504),
                             Email = new string[0],
                             FirstName = "Maria ",
                             LastName = "Lopez",
@@ -232,6 +235,9 @@ namespace backend.Migrations
 
                     b.HasIndex("CustomerId");
 
+                    b.HasIndex("Plate")
+                        .IsUnique();
+
                     b.ToTable("Vehicles");
                 });
 
@@ -241,11 +247,20 @@ namespace backend.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
+                    b.Property<string>("Address")
+                        .HasColumnType("text");
+
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
+                    b.Property<string>("Email")
+                        .HasColumnType("text");
+
                     b.Property<string>("Name")
                         .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("PhoneNumber")
                         .HasColumnType("text");
 
                     b.Property<DateTime?>("UpdatedAt")
@@ -259,13 +274,13 @@ namespace backend.Migrations
                         new
                         {
                             Id = new Guid("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa"),
-                            CreatedAt = new DateTime(2025, 6, 19, 19, 51, 48, 472, DateTimeKind.Utc).AddTicks(6863),
+                            CreatedAt = new DateTime(2025, 6, 20, 20, 5, 50, 995, DateTimeKind.Utc).AddTicks(4207),
                             Name = "Taller Jesuita"
                         },
                         new
                         {
                             Id = new Guid("bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb"),
-                            CreatedAt = new DateTime(2025, 6, 19, 19, 51, 48, 472, DateTimeKind.Utc).AddTicks(6882),
+                            CreatedAt = new DateTime(2025, 6, 20, 20, 5, 50, 995, DateTimeKind.Utc).AddTicks(4259),
                             Name = "Taller Silvana"
                         });
                 });

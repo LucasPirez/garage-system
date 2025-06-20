@@ -1,4 +1,6 @@
-﻿namespace backend.Modules.AuthModule.Dtos
+﻿using backend.Database.Entites;
+
+namespace backend.Modules.AuthModule.Dtos
 {
     public class AuthRequestDto
     {
@@ -10,7 +12,8 @@
     {
         public required string Email { get; set; }
         public required string Token { get; set; }
-        public required string WorkShopId { get; set; }
-        public required string WorkShopName { get; set; }
+        public required WorkShop WorkShop { get; set; }
+
+        
     }
 }

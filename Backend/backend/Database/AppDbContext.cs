@@ -25,7 +25,16 @@ namespace backend.Database
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<Admin>()
+                .HasIndex(k => k.Email)
+                .IsUnique();
+
+            modelBuilder.Entity<Vehicle>()
+                .HasIndex(k => k.Plate)
+                .IsUnique();
+
             modelBuilder.Entity<RepairOrder>().Property(k => k.Status).HasConversion<string>();
+
             modelBuilder
                 .Entity<WorkShop>()
                 .HasData(

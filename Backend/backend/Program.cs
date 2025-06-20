@@ -29,11 +29,13 @@ builder.Services.AddSwaggerGen(c =>
     c.OperationFilter<SwaggerDefaultWorkshopIdFilter>();
 });
 
+var origins = builder.Configuration.GetSection("Origins").Get<string[]>() ?? [];
+
 builder.Services.AddCors(options =>
 {
     options.AddPolicy(
-        "AllowAll",
-        builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader()
+        "CorsPolicy",
+        builder => builder.WithOrigins(origins).AllowAnyMethod().AllowAnyHeader()
     );
 });
 
@@ -64,7 +66,7 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
-app.UseCors("AllowAll");
+app.UseCors("CorsPolicy");
 
 app.MapControllers();
 app.UseMiddleware<ExceptionHandlingMiddleware>();

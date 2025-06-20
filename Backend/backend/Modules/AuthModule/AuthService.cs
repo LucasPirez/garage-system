@@ -28,8 +28,7 @@ namespace backend.Modules.AuthModule
             {
                 Email = admin.Email,
                 Token = "dummy-token",
-                WorkShopId = admin.WorkShopId.ToString(),
-                WorkShopName = admin.WorkShop.Name,
+                WorkShop = admin.WorkShop
             };
         }
     }
