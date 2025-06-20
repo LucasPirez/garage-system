@@ -1,13 +1,16 @@
 import { Text, View, StyleSheet } from '@react-pdf/renderer'
 import { JobStatusType } from '../../../core/constants/jobs-status'
+import { useEffect, useState } from 'react'
+import { AuthResponseDto } from '../../../core/dtos/auth/auth-response.dto'
+import { localKeys, localStorageService } from '../../../core/storage/storages'
 
-const formatDate = (dateString: string) => {
-  return new Date(dateString).toLocaleDateString('es-ES', {
-    year: 'numeric',
-    month: '2-digit',
-    day: '2-digit',
-  })
-}
+// const formatDate = (dateString: string) => {
+//   return new Date(dateString).toLocaleDateString('es-ES', {
+//     year: 'numeric',
+//     month: '2-digit',
+//     day: '2-digit',
+//   })
+// }
 
 const styles = StyleSheet.create({
   header: {
@@ -71,16 +74,33 @@ const styles = StyleSheet.create({
 })
 
 export const HeaderPDF = ({ status }: { status: JobStatusType | string }) => {
+  const [workshopData, setWorkshopData] = useState<
+    AuthResponseDto['workShop'] | null
+  >(null)
+
+  useEffect(() => {
+    const workshop = localStorageService.getItem(localKeys.WORKSHOP)
+
+    setWorkshopData(workshop)
+  }, [])
+
   return (
     <>
       <View style={styles.header}>
         <View style={styles.headerRow}>
           <View style={styles.companyInfo}>
-            <Text style={styles.companyTitle}>TALLER MECÁNICO</Text>
+            <Text style={styles.companyTitle}>
+              {workshopData?.name ?? 'TALLER MECÁNICO'}
+            </Text>
             <View style={styles.companyDetails}>
-              <Text>Calle Principal 123, Ciudad</Text>
-              <Text>Teléfono: 343 516-0378</Text>
-              <Text>Email: info@tallerprofesional.com</Text>
+              <Text>{workshopData?.address ?? 'Sin Direccion'}</Text>
+              <Text>
+                {workshopData?.phoneNumber?.length &&
+                  'Teléfono: ' + workshopData?.phoneNumber}
+              </Text>
+              <Text>
+                {workshopData?.email?.length && 'Email: ' + workshopData.email}
+              </Text>
             </View>
           </View>
           <View style={styles.invoiceInfo}>

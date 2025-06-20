@@ -1,11 +1,5 @@
 import { AxiosInstance } from 'axios'
-
-interface AuthResponseDto {
-  email: string
-  token: string
-  workShopId: string
-  workShopName: string
-}
+import { AuthResponseDto } from '../dtos/auth/auth-response.dto'
 
 export class AuthService {
   private readonly BASE_PATH = '/auth'

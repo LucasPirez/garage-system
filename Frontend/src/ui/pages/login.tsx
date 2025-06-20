@@ -70,8 +70,10 @@ const Login = () => {
 
     try {
       const response = await authService.login(formData)
+      const { workShop, ...user } = response
 
-      localStorageService.setItem(localStorageService.keys.USER, response)
+      localStorageService.setItem(localStorageService.keys.USER, user)
+      localStorageService.setItem(localStorageService.keys.WORKSHOP, workShop)
 
       navigate(PATHS.JOBS)
     } catch (error) {

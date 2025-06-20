@@ -46,33 +46,6 @@ const styles = StyleSheet.create({
     textAlign: 'right',
     fontWeight: 'bold',
   },
-  subtotalRow: {
-    flexDirection: 'row',
-    borderLeftWidth: 1,
-    borderRightWidth: 1,
-    borderBottomWidth: 1,
-    borderColor: '#d1d5db',
-    borderBottomLeftRadius: 5,
-    borderBottomRightRadius: 5,
-  },
-  subtotalEmpty: {
-    flex: 2,
-  },
-  subtotalLabel: {
-    flex: 1,
-    padding: 8,
-    textAlign: 'center',
-    fontSize: 9,
-    borderRightWidth: 1,
-    borderColor: '#d1d5db',
-  },
-  subtotalAmount: {
-    flex: 1,
-    padding: 8,
-    textAlign: 'right',
-    fontSize: 9,
-    fontWeight: 'bold',
-  },
   sectionTitle: {
     fontSize: 12,
     fontWeight: 'bold',
@@ -81,6 +54,24 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: '#e5e7eb',
     paddingBottom: 3,
+  },
+  subTotalRow: {
+    flexDirection: 'row',
+  },
+  bottomRight: {
+    borderBottomRightRadius: 5,
+    borderBottomWidth: 1,
+    borderBottomColor: '#e5e7eb',
+  },
+  bottomLeft: {
+    borderBottomLeftRadius: 5,
+    borderBottomWidth: 1,
+    borderLeftWidth: 1,
+    borderLeftColor: '#e5e7eb',
+    borderBottomColor: '#e5e7eb',
+  },
+  noBorderRight: {
+    borderRightWidth: 0,
   },
 })
 
@@ -137,11 +128,25 @@ export const SpareParts = ({ data }: { data: JobType['spareParts'] }) => {
         </View>
       ))}
 
-      <View style={styles.subtotalRow}>
-        <View style={styles.subtotalEmpty}></View>
-        <View style={styles.subtotalEmpty}></View>
-        <Text style={styles.subtotalLabel}>Subtotal Repuestos</Text>
-        <Text style={styles.subtotalAmount}>
+      <View style={styles.subTotalRow}>
+        <Text
+          style={[
+            styles.tableCell,
+            styles.tableCellName,
+            styles.noBorderRight,
+          ]}></Text>
+        <Text
+          style={[
+            styles.tableCell,
+            styles.tableCellQuantity,
+            styles.noBorderRight,
+          ]}></Text>
+        <Text
+          style={[styles.tableCell, styles.tableCellPrice, styles.bottomLeft]}>
+          Subtotal Repuestos
+        </Text>
+        <Text
+          style={[styles.tableCell, styles.tableCellTotal, styles.bottomRight]}>
           {formatCurrency(
             data.reduce((acc, spare) => acc + spare.price * spare.quantity, 0)
           )}

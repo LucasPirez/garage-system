@@ -134,7 +134,7 @@ export const RegisterJob = () => {
               <InputsFormCustomer state={formData} onChange={handleChange} />
             )}
           </div>
-          <div className="border-t border-gray-500 mt-3 mb-4"></div>
+          <div className="border-t border-gray-500 mt-5 mb-4"></div>
 
           <div className="mb-4">
             <div className="flex items-center mb-4">
@@ -160,7 +160,7 @@ export const RegisterJob = () => {
             )}
           </div>
 
-          <div className="border-t border-gray-500 mt-3 mb-4"></div>
+          <div className="border-t border-gray-500 mt-7 mb-4"></div>
 
           <div className="mb-3">
             <div className="flex items-center mb-5">
@@ -175,13 +175,13 @@ export const RegisterJob = () => {
             <button
               type="reset"
               onClick={() => setFormData(FormInitialState)}
-              className="px-6 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50   font-medium active:scale-95">
+              className="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50   font-medium active:scale-95">
               🗑️ Limpiar Formulario
             </button>
 
             <button
               type="submit"
-              className="px-8 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-medium shadow-sm active:scale-95">
+              className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-medium shadow-sm active:scale-95">
               ✅ Registrar Servicio
             </button>
           </div>

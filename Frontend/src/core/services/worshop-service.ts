@@ -5,7 +5,7 @@ import { type JobsResponseDto } from '../dtos/vehicleEntry/jobs-response.dto'
 import { localStorageService, localKeys } from '../storage/storages'
 
 export const getWorkshopId = (): string => {
-  const workshopId = localStorageService.getItem(localKeys.USER)?.workShopId
+  const workshopId = localStorageService.getItem(localKeys.WORKSHOP)?.id
 
   if (!workshopId) throw new Error()
   console.log(workshopId)

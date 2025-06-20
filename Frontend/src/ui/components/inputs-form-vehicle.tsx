@@ -1,5 +1,6 @@
 import { ChangeEvent } from 'react'
 import { VehicleCreateDto } from '../../core/services/jobs-service'
+import { classNameInput } from '../pages/register'
 
 interface Props {
   state: Omit<VehicleCreateDto, 'customerId'>
@@ -22,7 +23,7 @@ export const InputsFormVehicle = ({ state, onChange }: Props) => {
           defaultValue={''}
           title="Formato requerido: AB-123-45"
           required
-          className="w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 uppercase font-mono"
+          className={classNameInput}
           placeholder="AB-123-45"
           onChange={onChange}
           value={state.plate}
@@ -43,7 +44,7 @@ export const InputsFormVehicle = ({ state, onChange }: Props) => {
           required
           minLength={2}
           maxLength={50}
-          className="w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200"
+          className={classNameInput}
           placeholder="Ej: Ranger Raptor"
           value={state.model}
           onChange={onChange}
@@ -59,7 +60,7 @@ export const InputsFormVehicle = ({ state, onChange }: Props) => {
         <select
           id="color"
           name="color"
-          className="w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200"
+          className={classNameInput}
           onChange={onChange}
           value={state.color}>
           <option value="">Seleccionar color</option>

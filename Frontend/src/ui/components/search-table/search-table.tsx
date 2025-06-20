@@ -61,6 +61,7 @@ export const SearchTable = ({
         client.phoneNumber[0]?.includes(value)
       )
     })
+    console.log(filteredClients)
 
     setClientsSearch(filteredClients)
   }

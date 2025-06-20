@@ -13,9 +13,7 @@ export const ButtonNavigate = ({ path, className, label, data }: Props) => {
 
   return (
     <button
-      className={
-        ' p-2 rounded-full text-gray-600  hover:bg-gray-200 ' + className
-      }
+      className={' text-gray-600  hover:scale-110' + className}
       onClick={() => navigate(path, { state: data })}>
       {label}
     </button>

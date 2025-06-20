@@ -5,6 +5,7 @@ import {
   View,
   StyleSheet,
   PDFDownloadLink,
+  PDFViewer,
 } from '@react-pdf/renderer'
 import { HeaderPDF } from './header'
 import { formatCurrency, SpareParts } from './spare-parts'
@@ -188,23 +189,24 @@ const InvoicePDF = ({ data }: { data: JobType }) => (
     </Page>
   </Document>
 )
+export const SeePDF = ({ data }: { data: JobType }) => {
+  return (
+    <PDFViewer>
+      <InvoicePDF data={data} />
+    </PDFViewer>
+  )
+}
 
 export const DownloadPDF = ({ data }: { data: JobType }) => {
   return (
     <>
       <PDFDownloadLink
         document={<InvoicePDF data={data} />}
-        className="hover:bg-gray-300 p-2 rounded-full"
+        className="hover:scale-110 "
         fileName={`factura-${data.client.firstName}_${data.client.lastName}-${
           new Date().toISOString().split('T')[0]
         }.pdf`}>
-        {({ blob, url, loading, error }) =>
-          loading ? (
-            'Generando PDF...'
-          ) : (
-            <DownloadIcon className="w-5 h-5 text-blue-600" />
-          )
-        }
+        {() => <DownloadIcon className="w-5 h-5 text-blue-600" />}
       </PDFDownloadLink>
     </>
   )
