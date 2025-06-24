@@ -170,7 +170,11 @@ const InvoicePDF = ({ data }: { data: JobType }) => (
         </View>
       </View>
 
-      {data.spareParts.length > 0 ? <SpareParts data={data.spareParts} /> : ''}
+      {data.spareParts.length > 0 ? (
+        <SpareParts data={data.spareParts} />
+      ) : (
+        <></>
+      )}
 
       <View style={styles.totalSection}>
         <View style={styles.totalBox}>
@@ -202,7 +206,7 @@ export const DownloadPDF = ({ data }: { data: JobType }) => {
     <>
       <PDFDownloadLink
         document={<InvoicePDF data={data} />}
-        className="hover:scale-110 "
+        className="hover:scale-110"
         fileName={`factura-${data.client.firstName}_${data.client.lastName}-${
           new Date().toISOString().split('T')[0]
         }.pdf`}>
