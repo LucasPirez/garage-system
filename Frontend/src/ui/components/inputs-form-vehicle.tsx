@@ -20,11 +20,11 @@ export const InputsFormVehicle = ({ state, onChange }: Props) => {
           type="text"
           id="plate"
           name="plate"
-          defaultValue={''}
-          title="Formato requerido: AB-123-45"
+          pattern="^([A-Z]{2}-\d{3}-[A-Z]{2}|[A-Z]{3}-\d{3})$"
+          title="Formato requerido: AB-123-EU  | AAA-000"
           required
           className={classNameInput}
-          placeholder="AB-123-45"
+          placeholder="AB-123-45 | AAA-000"
           onChange={onChange}
           value={state.plate}
         />
@@ -40,7 +40,6 @@ export const InputsFormVehicle = ({ state, onChange }: Props) => {
           type="text"
           id="model"
           name="model"
-          defaultValue={''}
           required
           minLength={2}
           maxLength={50}

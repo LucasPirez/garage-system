@@ -41,6 +41,7 @@ export const InputsFormJob = ({ state, onChange }: Props) => {
           </label>
           <input
             type="text"
+            required
             id="MotivoServicio"
             name="cause"
             className={classNameInput + 'uppercase font-mono'}

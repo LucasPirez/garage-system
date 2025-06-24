@@ -33,27 +33,27 @@ export const CardJob = ({
         onClick={handleSeeMore}>
         <div className="p-4 relative">
           <CardIcons job={job} />
-          <div className="flex justify-between items-start">
+          <div className="flex justify-between items-start ">
             <div>
               <h3 className="text-lg font-semibold text-gray-800">
                 {job.cause}
               </h3>
-              <div className="flex items-center mt-1">
+              <div className="flex items-center justify-between mt-1  w-[270px] max-w-auto">
                 {/* <Car className="w-4 h-4 text-gray-500 mr-1" /> */}
                 <p className="text-sm text-gray-600">
                   {job.vehicle.model} ({job.vehicle.plate})
-                  <span
-                    onClick={() => setIsModalOpen(job)}
-                    className={`inline-block ml-2 px-3 py-1 text-xs font-medium cursor-pointer rounded-full ${
-                      job.status === FILTER.REALIZED
-                        ? 'bg-green-100 text-green-800'
-                        : job.status === FILTER.PENDING
-                        ? 'bg-yellow-100 text-yellow-800'
-                        : 'bg-purple-100 text-purple-800'
-                    }`}>
-                    {label_traduction[job.status]}
-                  </span>
                 </p>
+                <span
+                  onClick={() => setIsModalOpen(job)}
+                  className={`inline-block ml-2 px-3 py-1 text-xs font-medium cursor-pointer rounded-full ${
+                    job.status === FILTER.REALIZED
+                      ? 'bg-green-100 text-green-800'
+                      : job.status === FILTER.PENDING
+                      ? 'bg-yellow-100 text-yellow-800'
+                      : 'bg-purple-100 text-purple-800'
+                  }`}>
+                  {label_traduction[job.status]}
+                </span>
               </div>
             </div>
           </div>

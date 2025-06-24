@@ -51,6 +51,11 @@ export const RegisterJob = () => {
   ) => {
     const { name, value } = e.target
 
+    if (name == 'plate') {
+      setFormData((prev) => ({ ...prev, [name]: value.toUpperCase() }))
+      return
+    }
+
     setFormData((prev) => ({ ...prev, [name]: value }))
   }
 
@@ -71,6 +76,7 @@ export const RegisterJob = () => {
     try {
       let customerId: string | undefined = customerSelected?.id
       let vehicleId: string | undefined = vehicleSelected?.id
+      console.log(formData)
 
       if (!customerSelected?.firstName) {
         const customerResponse = await customerService.create({
@@ -105,7 +111,6 @@ export const RegisterJob = () => {
 
       setFormData(FormInitialState)
     } catch (error) {
-      console.log(error)
       alert('Ocurrio un error')
     }
   }
@@ -113,7 +118,7 @@ export const RegisterJob = () => {
   return (
     <>
       <div>
-        <form onSubmit={handleSubmit} className="p-8">
+        <form onSubmit={handleSubmit} className="pt-9">
           <div className="mb-3">
             <div className="flex items-center mb-6">
               <span className="text-2xl mr-3">👤</span>

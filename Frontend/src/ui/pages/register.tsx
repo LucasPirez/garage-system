@@ -26,7 +26,7 @@ export const RegisterService = () => {
   } = useRegisterJobContext()
 
   return (
-    <section className="relative">
+    <section className="relative max-w-[750px] m-auto ">
       <section className="absolute md:w-[70%] w-[97%] z-10 right-0 -top-3">
         <SearchTable
           isVisible={searchTable}

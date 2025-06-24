@@ -28,7 +28,8 @@ export const InputsFormCustomer = ({ state, onChange }: Props) => {
           pattern="[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+"
           title="Solo se permiten letras y espacios"
           className={classNameInput}
-          placeholder="Ej: Juan Pérez García"
+          placeholder="Ej: Juan"
+          required
           value={state.firstName}
           onChange={onChange}
         />
@@ -49,7 +50,7 @@ export const InputsFormCustomer = ({ state, onChange }: Props) => {
           pattern="[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+"
           title="Solo se permiten letras y espacios"
           className={classNameInput}
-          placeholder="Ej: Juan Pérez García"
+          placeholder="Ej: Pérez García"
           value={state.lastName}
           onChange={onChange}
         />
@@ -67,7 +68,7 @@ export const InputsFormCustomer = ({ state, onChange }: Props) => {
           pattern="[0-9]{8,15}"
           title="Ingrese un número de teléfono válido (8-15 dígitos)"
           className={classNameInput}
-          placeholder="Ej: 12345678"
+          placeholder="Ej: 3424383459"
           value={state.phoneNumber}
           onChange={onChange}
         />
