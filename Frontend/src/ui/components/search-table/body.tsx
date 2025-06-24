@@ -48,30 +48,27 @@ export const Body = ({
           key={customer.id}
           className="hover:bg-gray-100 cursor-pointer"
           onClick={() => handleClient(customer)}>
-          <td className="px-6 py-4 whitespace-nowrap">
+          <td className="px-6 py-4 whitespace-nowrap ">
             <div className="text-sm font-medium text-gray-900">
               {customer.firstName} {customer.lastName}
             </div>
           </td>
-          <td className="px-6 py-4 whitespace-nowrap">
-            <div className="text-sm text-gray-900">
-              {customer.phoneNumber.join(', ')}
-            </div>
-          </td>
+
           {/* <td className="px-6 py-4 whitespace-nowrap">
             <div className="text-sm text-gray-900">
               {customer.email.join(', ')}
             </div>
           </td> */}
-          <td className="px-6 py-4">
+          <td className="px-1 py-4 ">
             {customer.vehicle?.length > 0 ? (
               <div className="space-y-1">
                 {customer.vehicle.map((v) => (
-                  <div key={v.id} className="text-sm text-gray-900">
-                    <span className="font-medium">
-                      <span className="font-bold">-</span> {v.model}{' '}
-                      <span className="opacity-90">({v.plate})</span>
-                    </span>
+                  <div key={v.id} className="text-sm text-gray-900 font-medium">
+                    <p className="">
+                      <span className="font-bold ">- </span>
+                      {v.model}
+                    </p>
+                    <p className="opacity-90 ">({v.plate})</p>
                   </div>
                 ))}
               </div>
@@ -80,6 +77,11 @@ export const Body = ({
                 Sin vehículos
               </span>
             )}
+          </td>
+          <td className="px-6 py-4 whitespace-nowrap">
+            <div className="text-sm text-gray-900">
+              {customer.phoneNumber.join(', ')}
+            </div>
           </td>
         </tr>
       ))}

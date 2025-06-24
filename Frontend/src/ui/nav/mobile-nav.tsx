@@ -53,12 +53,12 @@ export const MobileNav = () => {
       </div>
 
       <div className={`${isOpen ? 'block' : 'hidden'}`}>
-        <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+        <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 ">
           {NAV_LINKS.map((link) => (
             <Link
               key={link.href}
               to={link.href}
-              className="flex items-center text-gray-700 hover:text-gray-900 hover:bg-gray-100 px-3 py-2 rounded-md text-base font-medium"
+              className="flex justify-end text-gray-700 hover:text-gray-900 hover:bg-gray-100 px-3 py-2 rounded-md text-base font-medium"
               onClick={() => setIsOpen(!open)}>
               <span className="ml-3">{link.label}</span>
             </Link>

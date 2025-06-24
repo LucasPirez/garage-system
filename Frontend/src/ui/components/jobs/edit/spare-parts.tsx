@@ -12,9 +12,6 @@ interface Props {
   ) => void
 }
 
-const classNameInput =
-  'w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500'
-
 export const SpareParts = ({ formData, setFormData, handleChange }: Props) => {
   const [newSparePart, setNewSparePart] = useState<SparePart>({
     name: '',
@@ -28,7 +25,7 @@ export const SpareParts = ({ formData, setFormData, handleChange }: Props) => {
         (part) =>
           part.name.toLowerCase() === newSparePart.name.toLowerCase().trim()
       )
-      if (!exists) {
+      if (!exists && newSparePart.quantity) {
         setFormData((prev) => {
           if (!prev) return prev
           return {
@@ -57,40 +54,47 @@ export const SpareParts = ({ formData, setFormData, handleChange }: Props) => {
       }
     })
   }
+  const classInputSpare =
+    'pl-1 w-full md:px-3 py-2 border border-gray-300 focus:max-sm:w-48 rounded-md shadow-sm bg-gray-50 text-gray-700'
+
+  const classInputNumbers =
+    ' w-full sm:max-w-24  max-w-16 px-1 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-right'
+
   return (
     <>
       {formData.spareParts.map((part, index) => (
-        <div key={index + Math.random()} className="flex items-center gap-2">
+        <div
+          key={index + Math.random()}
+          className="flex items-center gap-1 md:gap-2">
           <input
             type="text"
             value={part.name}
             readOnly
-            className="flex-1 px-3 py-2 border border-gray-300 rounded-md shadow-sm bg-gray-50 text-gray-700"
+            className={classInputSpare}
           />
-          <div className="w-24">
-            <input
-              type="text"
-              value={'x ' + part.quantity}
-              readOnly
-              className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-right"
-            />
-          </div>
-          <div className="w-32">
-            <input
-              type="text"
-              value={'$' + part.price}
-              onChange={(e) => {
-                const updatedParts = [...formData.spareParts]
-                updatedParts[index].price = Number(e.target.value) || 0
-                handleChange('spareParts', updatedParts)
-              }}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-right"
-            />
-          </div>
+
+          <input
+            type="text"
+            value={'x ' + part.quantity}
+            readOnly
+            className={classInputNumbers}
+          />
+
+          <input
+            type="text"
+            value={'$' + part.price}
+            onChange={(e) => {
+              const updatedParts = [...formData.spareParts]
+              updatedParts[index].price = Number(e.target.value) || 0
+              handleChange('spareParts', updatedParts)
+            }}
+            className={classInputNumbers}
+          />
+
           <ButtonClose onClick={() => removeSparePart(index)} />
         </div>
       ))}
-      <div className="flex gap-2">
+      <div className="flex gap-1 md:gap-2">
         <input
           type="text"
           placeholder="Nombre del repuesto"
@@ -98,50 +102,49 @@ export const SpareParts = ({ formData, setFormData, handleChange }: Props) => {
           onChange={(e) =>
             setNewSparePart({ ...newSparePart, name: e.target.value })
           }
-          className="flex-1 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+          className={classInputSpare}
         />
-        <div className="w-24">
-          <input
-            type="number"
-            min="0"
-            placeholder="Precio"
-            value={newSparePart.quantity ?? null}
-            onChange={(e) =>
-              setNewSparePart({
-                ...newSparePart,
-                quantity: Number(e.target.value) || 0,
-              })
-            }
-            onKeyDown={(e) =>
-              e.key === 'Enter' && (e.preventDefault(), addSparePart())
-            }
-            className={classNameInput + 'text-right'}
-          />
-        </div>
-        <div className="w-32">
-          <input
-            type="number"
-            min="0"
-            step="0.01"
-            placeholder="Precio"
-            value={newSparePart.price}
-            onChange={(e) =>
-              setNewSparePart({
-                ...newSparePart,
-                price: Number(e.target.value) || 0,
-              })
-            }
-            onKeyDown={(e) =>
-              e.key === 'Enter' && (e.preventDefault(), addSparePart())
-            }
-            className={classNameInput + 'text-right'}
-          />
-        </div>
+
+        <input
+          type="number"
+          min="0"
+          placeholder="Cantidad"
+          value={newSparePart.quantity || undefined}
+          onChange={(e) =>
+            setNewSparePart({
+              ...newSparePart,
+              quantity: Number(e.target.value),
+            })
+          }
+          onKeyDown={(e) =>
+            e.key === 'Enter' && (e.preventDefault(), addSparePart())
+          }
+          className={classInputNumbers}
+        />
+
+        <input
+          type="number"
+          min="0"
+          step="0.01"
+          placeholder="Precio"
+          value={newSparePart.price || ''}
+          onChange={(e) =>
+            setNewSparePart({
+              ...newSparePart,
+              price: Number(e.target.value),
+            })
+          }
+          onKeyDown={(e) =>
+            e.key === 'Enter' && (e.preventDefault(), addSparePart())
+          }
+          className={classInputNumbers}
+        />
+
         <button
           type="button"
           onClick={addSparePart}
           disabled={!newSparePart.name.trim()}
-          className="px-3 py-2 border border-gray-300 rounded-md shadow-sm bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 disabled:opacity-50 disabled:cursor-not-allowed text-green-600">
+          className="ml-2 p-2 py-2 border border-gray-300 rounded-md shadow-sm bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 disabled:opacity-50 disabled:cursor-not-allowed text-green-600">
           +
         </button>
       </div>
@@ -153,7 +156,7 @@ export const SpareParts = ({ formData, setFormData, handleChange }: Props) => {
             $
             {formData.spareParts
               .reduce((sum, part) => sum + part.price, 0)
-              .toFixed(2)}
+              .toLocaleString('ES-es')}
           </span>
         </div>
       )}

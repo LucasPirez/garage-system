@@ -1,3 +1,4 @@
+using System;
 using System.Reflection;
 using backend.Common.Middlewares;
 using backend.Database;
@@ -20,6 +21,11 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 
+builder.WebHost.ConfigureKestrel(serverOptions =>
+{
+    serverOptions.ListenAnyIP(7027);
+});
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
@@ -29,8 +35,10 @@ builder.Services.AddSwaggerGen(c =>
     c.OperationFilter<SwaggerDefaultWorkshopIdFilter>();
 });
 
-var origins = builder.Configuration.GetSection("Origins").Get<string[]>() ?? 
-                Environment.GetEnvironmentVariable("Origins")?.Split(",") ?? [];
+var origins =
+    builder.Configuration.GetSection("Origins").Get<string[]>()
+    ?? Environment.GetEnvironmentVariable("Origins")?.Split(",")
+    ?? [];
 
 builder.Services.AddCors(options =>
 {

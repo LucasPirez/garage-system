@@ -18,7 +18,7 @@ export const ButtonFilterJobs = ({ onClick, status, label }: Props) => {
   return (
     <button
       onClick={onClick}
-      className={`px-4 py-2 text-sm font-medium  ${
+      className={`px-2 md:px-4 py-2 text-sm font-medium ${
         status === label
           ? 'bg-blue-600 text-white'
           : 'bg-white text-gray-700 hover:bg-gray-50'

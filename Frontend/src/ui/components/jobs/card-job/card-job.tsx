@@ -1,10 +1,10 @@
-import { FILTER } from '../../../core/constants/filter-jobs-status'
-import { label_traduction } from '../../../core/constants/label-traduction-status'
-import { JobsResponseDto } from '../../../core/dtos/vehicleEntry/jobs-response.dto'
-import { JobType } from '../../../core/type/job'
-import { ButtonNavigate } from '../common/button-navigate'
-import { DownloadPDF } from '../pdf/react-pdf'
-import { MessageCircleIcon } from 'lucide-react'
+import { MouseEvent, useState } from 'react'
+import { FILTER } from '../../../../core/constants/filter-jobs-status'
+import { label_traduction } from '../../../../core/constants/label-traduction-status'
+import { JobsResponseDto } from '../../../../core/dtos/vehicleEntry/jobs-response.dto'
+import { JobType } from '../../../../core/type/job'
+import { CardIcons } from './icons'
+import { MoreHorizontal } from 'lucide-react'
 
 export const CardJob = ({
   job,
@@ -13,46 +13,26 @@ export const CardJob = ({
   job: JobsResponseDto
   setIsModalOpen: (data: JobType | null) => void
 }) => {
+  const [seeMore, setSeeMore] = useState(false)
+
+  const handleSeeMore = (event: MouseEvent<HTMLDivElement>) => {
+    event.preventDefault()
+    event.stopPropagation()
+    if (window.innerWidth > 640) return
+
+    setSeeMore(!seeMore)
+  }
+
   return (
     <>
       <div
         key={job.id}
-        className="bg-gray-100 rounded-lg shadow-md  hover:shadow-lg transition-shadow w-[340px] max-h-[450px]  overflow-auto">
+        className={`relative bg-gray-100 rounded-lg shadow-md  hover:shadow-lg transition-shadow w-[340px] max-h-[450px]  overflow-auto ${
+          !seeMore ? 'max-sm:max-h-[180px] max-sm:overflow-hidden' : ''
+        }`}
+        onClick={handleSeeMore}>
         <div className="p-4 relative">
-          <div className="flex flex-col gap-5 items-center absolute right-3 top-4">
-            <ButtonNavigate
-              className=""
-              label={
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  className="w-5 h-5 text-blue-600 ">
-                  <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
-                  <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
-                </svg>
-              }
-              data={job}
-              path={job.id}
-            />
-            <DownloadPDF data={job} />
-            {job.client.phoneNumber[0] && (
-              <button
-                onClick={() => {
-                  const url = `https://web.whatsapp.com/send/?phone=${job.client.phoneNumber[0]}`
-                  window.open(url, '_blank')
-                }}>
-                <MessageCircleIcon
-                  className="w-5 h-5  text-blue-600
-                 hover:scale-110"
-                />
-              </button>
-            )}
-          </div>
+          <CardIcons job={job} />
           <div className="flex justify-between items-start">
             <div>
               <h3 className="text-lg font-semibold text-gray-800">
@@ -86,9 +66,6 @@ export const CardJob = ({
               <p className="text-xs text-gray-500">Cliente</p>
               <p className="text-sm">
                 {job.client.firstName + ' ' + job.client.lastName}
-              </p>
-              <p className="text-xs text-gray-500 mt-0.5">
-                Placa: {job.vehicle.plate}
               </p>
             </div>
           </div>
@@ -138,6 +115,14 @@ export const CardJob = ({
             </div>
           )}
         </div>
+        {!seeMore ? (
+          <MoreHorizontal
+            className="absolute bottom-0 right-40 sm:opacity-0"
+            opacity={0.6}
+          />
+        ) : (
+          ''
+        )}
       </div>
     </>
   )

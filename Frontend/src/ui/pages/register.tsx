@@ -27,7 +27,7 @@ export const RegisterService = () => {
 
   return (
     <section className="relative">
-      <section className="absolute w-[70%] z-10 right-0">
+      <section className="absolute md:w-[70%] w-[97%] z-10 right-0 -top-3">
         <SearchTable
           isVisible={searchTable}
           onVisibilityChange={handleVisibility}

@@ -67,7 +67,7 @@ export const SearchTable = ({
   }
 
   return (
-    <div className="w-full max-w-6xl mx-auto p-3">
+    <>
       <div>
         <div className="relative">
           <input
@@ -113,6 +113,6 @@ export const SearchTable = ({
           </table>
         </div>
       </div>
-    </div>
+    </>
   )
 }
