@@ -21,10 +21,13 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 
-builder.WebHost.ConfigureKestrel(serverOptions =>
+if (builder.Environment.EnvironmentName == "Development")
 {
-    serverOptions.ListenAnyIP(7027);
-});
+    builder.WebHost.ConfigureKestrel(serverOptions =>
+    {
+        serverOptions.ListenAnyIP(7027);
+    });
+}
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
