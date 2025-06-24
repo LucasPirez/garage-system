@@ -1,4 +1,4 @@
-import { MouseEvent, useState } from 'react'
+import { useState } from 'react'
 import { FILTER } from '../../../../core/constants/filter-jobs-status'
 import { label_traduction } from '../../../../core/constants/label-traduction-status'
 import { JobsResponseDto } from '../../../../core/dtos/vehicleEntry/jobs-response.dto'
@@ -15,9 +15,7 @@ export const CardJob = ({
 }) => {
   const [seeMore, setSeeMore] = useState(false)
 
-  const handleSeeMore = (event: MouseEvent<HTMLDivElement>) => {
-    event.preventDefault()
-    event.stopPropagation()
+  const handleSeeMore = () => {
     if (window.innerWidth > 640) return
 
     setSeeMore(!seeMore)
