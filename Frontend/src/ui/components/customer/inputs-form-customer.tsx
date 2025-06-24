@@ -1,6 +1,6 @@
 import { ChangeEvent } from 'react'
-import { CustomerCreateDto } from '../../core/services/jobs-service'
-import { classNameInput } from '../pages/register'
+import { CustomerCreateDto } from '../../../core/services/jobs-service'
+import { classNameInput } from '../../pages/register'
 
 interface Props {
   state: Omit<

@@ -4,9 +4,9 @@ import {
   JobCreateDto,
   VehicleCreateDto,
 } from '../../../../core/services/jobs-service'
-import { InputsFormCustomer } from '../../inputs-form-customer'
-import { InputsFormVehicle } from '../../inputs-form-vehicle'
-import { InputsFormJob } from '../../inputs-form-job'
+import { InputsFormCustomer } from '../../customer/inputs-form-customer'
+import { InputsFormVehicle } from '../../vehicle/inputs-form-vehicle'
+import { InputsFormJob } from '../inputs-form-job'
 import {
   customerService,
   jobService,
