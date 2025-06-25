@@ -1,12 +1,10 @@
 import { ChangeEvent } from 'react'
-import { CustomerCreateDto } from '../../../core/services/jobs-service'
 import { classNameInput } from '../../pages/register'
+import type { CustomerFormType } from '../../../core/type/customer'
+import { classNameLabel } from '../common/class-names'
 
 interface Props {
-  state: Omit<
-    CustomerCreateDto,
-    'workshopId' | 'vehicleId' | 'email' | 'phoneNumber'
-  > & { email: string; phoneNumber: string }
+  state: CustomerFormType
   onChange: (e: ChangeEvent<HTMLInputElement>) => void
 }
 
@@ -14,9 +12,7 @@ export const InputsFormCustomer = ({ state, onChange }: Props) => {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-6 gap-y-3">
       <div>
-        <label
-          htmlFor="customerName"
-          className="block text-sm font-medium text-gray-700 mb-2">
+        <label htmlFor="customerName" className={classNameLabel}>
           Nombre
         </label>
         <input
@@ -36,9 +32,7 @@ export const InputsFormCustomer = ({ state, onChange }: Props) => {
       </div>
 
       <div>
-        <label
-          htmlFor="customerName"
-          className="block text-sm font-medium text-gray-700 mb-2">
+        <label htmlFor="customerName" className={classNameLabel}>
           Apellido
         </label>
         <input
@@ -56,9 +50,7 @@ export const InputsFormCustomer = ({ state, onChange }: Props) => {
         />
       </div>
       <div>
-        <label
-          htmlFor="customerPhone"
-          className="block text-sm font-medium text-gray-700 mb-2">
+        <label htmlFor="customerPhone" className={classNameLabel}>
           Número de Teléfono
         </label>
         <input
@@ -75,9 +67,7 @@ export const InputsFormCustomer = ({ state, onChange }: Props) => {
       </div>
 
       <div>
-        <label
-          htmlFor="customerEmail"
-          className="block text-sm font-medium text-gray-700 mb-2">
+        <label htmlFor="customerEmail" className={classNameLabel}>
           Correo Electrónico
         </label>
         <input

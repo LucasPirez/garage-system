@@ -5,7 +5,7 @@ import { DesktopNav } from './desktop-nav'
 
 export const Navbar = () => {
   return (
-    <div className="flex h-screen">
+    <div className="flex h-screen max-w-[1200px] mx-auto shadow-lg shadow-gray-300">
       <div className="hidden lg:flex  lg:h-screen lg:w-48 lg:flex-col lg:bg-white lg:shadow-lg">
         <div className="p-4 border-b">
           <span className="text-xl font-bold text-gray-800">Logo</span>

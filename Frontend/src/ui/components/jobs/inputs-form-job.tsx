@@ -1,6 +1,7 @@
 import { ChangeEvent } from 'react'
 import { JobCreateDto } from '../../../core/services/jobs-service'
 import { classNameInput } from '../../pages/register'
+import { classNameLabel } from '../common/class-names'
 
 interface Props {
   state: Omit<JobCreateDto, 'workshopId' | 'vehicleId'>
@@ -12,9 +13,7 @@ export const InputsFormJob = ({ state, onChange }: Props) => {
     <>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 gap-y-3">
         <div>
-          <label
-            htmlFor="receptionDate"
-            className="block text-sm font-medium text-gray-700 mb-1">
+          <label htmlFor="receptionDate" className={classNameLabel}>
             Fecha de Recepción
           </label>
           <input
@@ -34,9 +33,7 @@ export const InputsFormJob = ({ state, onChange }: Props) => {
         </div>
 
         <div>
-          <label
-            htmlFor="plate"
-            className="block text-sm font-medium text-gray-700 mb-1">
+          <label htmlFor="plate" className={classNameLabel}>
             Motivo
           </label>
           <input
@@ -53,9 +50,7 @@ export const InputsFormJob = ({ state, onChange }: Props) => {
       </div>
 
       <div className="mt-6">
-        <label
-          htmlFor="observations"
-          className="block text-sm font-medium text-gray-700 mb-1">
+        <label htmlFor="observations" className={classNameLabel}>
           Observaciones Adicionales
         </label>
         <textarea

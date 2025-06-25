@@ -1,6 +1,7 @@
 import { ChangeEvent } from 'react'
 import { VehicleCreateDto } from '../../../core/services/jobs-service'
 import { classNameInput } from '../../pages/register'
+import { classNameLabel } from '../common/class-names'
 
 interface Props {
   state: Omit<VehicleCreateDto, 'customerId'>
@@ -11,9 +12,7 @@ export const InputsFormVehicle = ({ state, onChange }: Props) => {
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
       <div>
-        <label
-          htmlFor="plate"
-          className="block text-sm font-medium text-gray-700 mb-2">
+        <label htmlFor="plate" className={classNameLabel}>
           Patente
         </label>
         <input
@@ -31,9 +30,7 @@ export const InputsFormVehicle = ({ state, onChange }: Props) => {
       </div>
 
       <div>
-        <label
-          htmlFor="model"
-          className="block text-sm font-medium text-gray-700 mb-2">
+        <label htmlFor="model" className={classNameLabel}>
           Modelo
         </label>
         <input
@@ -51,9 +48,7 @@ export const InputsFormVehicle = ({ state, onChange }: Props) => {
       </div>
 
       <div>
-        <label
-          htmlFor="color"
-          className="block text-sm font-medium text-gray-700 mb-2">
+        <label htmlFor="color" className={classNameLabel}>
           Color
         </label>
         <select

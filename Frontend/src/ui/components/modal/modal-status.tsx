@@ -88,7 +88,7 @@ export const ModalStatus = ({ closeModal, job, handleJobState }: Props) => {
           <span>
             $
             {job.spareParts
-              .reduce((acc, act) => act.price + acc, 0)
+              .reduce((acc, act) => act.price * act.quantity + acc, 0)
               .toLocaleString('Es-es')}
           </span>
         </div>
