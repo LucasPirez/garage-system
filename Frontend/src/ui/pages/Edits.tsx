@@ -1,41 +1,48 @@
 import { useState } from 'react'
 import { SearchTable } from '../components/search-table/search-table'
-import { CustomerType } from '../../core/type/customer'
+import type { CustomerFormType } from '../../core/type/customer'
 import withAuth from '../components/hoc/with-auth'
-import { VehicleType } from '../../core/type/vehicle'
+import type { VehicleType } from '../../core/type/vehicle'
+import { EditCustomer } from '../components/customer/edit-customer'
+import { EditVehicle } from '../components/vehicle/edit-vehicle'
+import type { CustomerAndVehicleType } from '../../core/store/clients-vehicles-store'
 
 const Edits = () => {
   const [visible, setVisible] = useState(false)
-  const [customer, setCustomer] = useState<CustomerType | null>(null)
-  const [vehicle, setVehicle] = useState<VehicleType | null>(null)
+  const [customer, setCustomer] = useState<CustomerFormType | null>(null)
+  const [vehicle, setVehicle] = useState<VehicleType[] | null>(null)
+
+  const handleSelect = (select: CustomerAndVehicleType | null) => {
+    if (!select) {
+      alert('error en la seleccion del cliente y vehiculo')
+      return
+    }
+    const { vehicle, ...customer } = select
+
+    setCustomer({
+      ...customer,
+      phoneNumber: customer.phoneNumber[0],
+      email: customer.email[0],
+    })
+
+    setVehicle(vehicle)
+  }
 
   return (
-    <>
+    <section className="lg:px-6 sm:px-4">
       <SearchTable
         isVisible={visible}
         onVisibilityChange={setVisible}
-        handleClientSelect={setCustomer}
-        handleVehicleSelect={setVehicle}
+        handleClientSelect={handleSelect}
       />
-
-      {customer ? (
-        <div>
-          <p>
-            {customer.firstName} - {customer.lastName}
-          </p>
-
-          <div>
-            {customer?.vehicle.map((vehicle) => (
-              <p>
-                {vehicle.model}- {vehicle.plate}
-              </p>
-            ))}
-          </div>
+      <section>
+        <div className=" mt-3 pb-3 border-b-4 border-gray-700/40">
+          {customer ? <EditCustomer customer={customer} /> : ''}
         </div>
-      ) : (
-        ''
-      )}
-    </>
+
+        {vehicle?.length ? <EditVehicle vehicle={vehicle} /> : ''}
+      </section>
+    </section>
   )
 }
 
