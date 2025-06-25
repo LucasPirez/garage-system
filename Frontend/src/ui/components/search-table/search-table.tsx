@@ -2,7 +2,7 @@ import { ChangeEvent, useEffect, useState } from 'react'
 import { Head } from './head'
 import { Body } from './body'
 import {
-  ClientAndVehicleType,
+  CustomerAndVehicleType,
   ClientsAndVehiclesStoreType,
   useStoreClientsAndVehicles,
 } from '../../../core/store/clients-vehicles-store'
@@ -13,7 +13,7 @@ import { ButtonClose } from '../common/button-close-icon'
 interface Props {
   onVisibilityChange: (visible: boolean) => void
   isVisible: boolean
-  handleClientSelect?: (clientSelected: ClientAndVehicleType | null) => void
+  handleClientSelect?: (clientSelected: CustomerAndVehicleType | null) => void
   handleVehicleSelect?: (vehicle: VehicleType | null) => void
 }
 
@@ -61,7 +61,6 @@ export const SearchTable = ({
         client.phoneNumber[0]?.includes(value)
       )
     })
-    console.log(filteredClients)
 
     setClientsSearch(filteredClients)
   }

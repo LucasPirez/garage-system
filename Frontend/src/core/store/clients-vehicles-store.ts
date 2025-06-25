@@ -2,13 +2,13 @@ import { create } from 'zustand'
 import { VehicleType } from '../type/vehicle'
 import { CustomerType } from '../type/customer'
 
-export type ClientAndVehicleType = CustomerType & { vehicle: VehicleType[] }
+export type CustomerAndVehicleType = CustomerType & { vehicle: VehicleType[] }
 
 export interface ClientsAndVehiclesStoreType {
-  clients: ClientAndVehicleType[]
+  clients: CustomerAndVehicleType[]
   addVehicle: (vehicleData: VehicleType, clientId: string) => void
   setVehicles: (vehicleData: VehicleType[], clientId: string) => void
-  setClients: (clients: ClientAndVehicleType[]) => void
+  setClients: (clients: CustomerAndVehicleType[]) => void
 }
 
 export const useStoreClientsAndVehicles = create<ClientsAndVehiclesStoreType>(
@@ -31,7 +31,7 @@ export const useStoreClientsAndVehicles = create<ClientsAndVehiclesStoreType>(
         ),
       })),
 
-    setClients: (clients: ClientAndVehicleType[]) =>
+    setClients: (clients: CustomerAndVehicleType[]) =>
       set((state) => ({
         ...state,
         clients,

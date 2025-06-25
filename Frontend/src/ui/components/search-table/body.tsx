@@ -1,5 +1,5 @@
 import {
-  ClientAndVehicleType,
+  CustomerAndVehicleType,
   ClientsAndVehiclesStoreType,
 } from '../../../core/store/clients-vehicles-store'
 import { VehicleType } from '../../../core/type/vehicle'
@@ -7,7 +7,7 @@ import { VehicleType } from '../../../core/type/vehicle'
 interface Props {
   data: ClientsAndVehiclesStoreType['clients']
   onVisibilityChange: (visible: boolean) => void
-  handleClientSelect?: (clientSelected: ClientAndVehicleType | null) => void
+  handleClientSelect?: (clientSelected: CustomerAndVehicleType | null) => void
   handleVehicleSelect?: (vehicle: VehicleType | null) => void
 }
 
@@ -31,7 +31,7 @@ export const Body = ({
     )
   }
 
-  const handleClient = (client: ClientAndVehicleType) => {
+  const handleClient = (client: CustomerAndVehicleType) => {
     handleClientSelect?.(client)
 
     if (client?.vehicle?.length) {
