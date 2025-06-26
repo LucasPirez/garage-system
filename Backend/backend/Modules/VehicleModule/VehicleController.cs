@@ -25,5 +25,15 @@ namespace backend.Modules.VehicleModule
 
             return StatusCode(StatusCodes.Status201Created, result);
         }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Update(
+            [FromRoute] Guid id,
+            [FromBody] UpdateVehicleDto vehicleDto
+        )
+        {
+            await _vehicleService.UpdateAsync(id, vehicleDto);
+            return Ok();
+        }
     }
 }

@@ -28,6 +28,13 @@ const Edits = () => {
     setVehicle(vehicle)
   }
 
+  const handleSetVehicle = (vehicleUpdate: VehicleType) => {
+    const vehicleSet = vehicle?.map((v) =>
+      v.id === vehicleUpdate.id ? vehicleUpdate : v
+    )
+    setVehicle(vehicleSet ?? null)
+  }
+
   return (
     <section className="lg:px-6 sm:px-4">
       <SearchTable
@@ -40,7 +47,11 @@ const Edits = () => {
           {customer ? <EditCustomer customer={customer} /> : ''}
         </div>
 
-        {vehicle?.length ? <EditVehicle vehicle={vehicle} /> : ''}
+        {vehicle?.length ? (
+          <EditVehicle vehicle={vehicle} setVehicle={handleSetVehicle} />
+        ) : (
+          ''
+        )}
       </section>
     </section>
   )

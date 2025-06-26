@@ -1,12 +1,75 @@
-import { ChangeEvent, useState } from 'react'
+import { ChangeEvent, useEffect, useState } from 'react'
 import { VehicleType } from '../../../core/type/vehicle'
 import { InputsFormVehicle } from './inputs-form-vehicle'
+import { useToast } from '../../context/toast-context'
+import { updateCustomerVehicleService } from '../../../core/services'
 
-export const EditVehicle = ({ vehicle }: { vehicle: VehicleType[] }) => {
+export const EditVehicle = ({
+  vehicle,
+  setVehicle,
+}: {
+  vehicle: VehicleType[]
+  setVehicle: (vehicleUpdate: VehicleType) => void
+}) => {
   const [vehicleSelect, setVehicleSelect] = useState<VehicleType>(vehicle[0])
+  const [disabled, setDisabled] = useState(true)
+  const [isCoolDown, setIsCoolDown] = useState(false)
+  const { addToast } = useToast()
+  useEffect(() => {
+    setVehicleSelect(vehicle[0])
+  }, [vehicle])
+
   const handleChange = (
     event: ChangeEvent<HTMLSelectElement | HTMLInputElement>
-  ) => {}
+  ) => {
+    const { name, value } = event.target
+
+    setDisabled(false)
+
+    if (name === 'plate') {
+      setVehicleSelect((prev) => ({
+        ...prev,
+        [name]: value.toUpperCase(),
+      }))
+      return
+    }
+
+    setVehicleSelect((prev) => ({
+      ...prev,
+      [name]: value,
+    }))
+  }
+
+  const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault()
+    if (isCoolDown) return
+
+    try {
+      await updateCustomerVehicleService.updateVehicle(
+        vehicleSelect,
+        vehicleSelect.id
+      )
+      addToast({
+        severity: 'success',
+        title: 'Exito',
+        message: 'Vehiculo actualizado correctamente',
+      })
+      setVehicle(vehicleSelect)
+
+      setDisabled(true)
+    } catch (error) {
+      addToast({
+        severity: 'error',
+        title: 'Error',
+        message: 'Error al actualizar el vehiculo',
+      })
+    } finally {
+      setIsCoolDown(true)
+      setTimeout(() => {
+        setIsCoolDown(false)
+      }, 5000)
+    }
+  }
 
   return (
     <>
@@ -25,12 +88,12 @@ export const EditVehicle = ({ vehicle }: { vehicle: VehicleType[] }) => {
             {vehicle.map((car) => (
               <div
                 key={car.id}
-                onClick={(e) => {
+                onClick={() => {
                   setVehicleSelect(car)
                 }}
                 className={`${
                   car.id === vehicleSelect.id ? 'bg-blue-200 ' : ''
-                }  max-w-52 h-auto p-3 shadow-md border-2 border-blue-200 shadow-gray-400 rounded-lg cursor-pointer`}>
+                }  max-w-56 h-auto p-3 shadow-md border-2 border-blue-200 shadow-gray-400 rounded-lg cursor-pointer`}>
                 <div className="flex justify-between items-start">
                   <div className="flex-1">
                     <div className="flex justify-between items-start mb-1">
@@ -52,7 +115,7 @@ export const EditVehicle = ({ vehicle }: { vehicle: VehicleType[] }) => {
                         <path
                           strokeLinecap="round"
                           strokeLinejoin="round"
-                          strokeWidth={2}
+                          strokeWidth={1.5}
                           d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
                         />
                       </svg>
@@ -64,7 +127,15 @@ export const EditVehicle = ({ vehicle }: { vehicle: VehicleType[] }) => {
           </div>
         )}
       </div>
-      <InputsFormVehicle state={vehicleSelect} onChange={handleChange} />
+      <form onSubmit={onSubmit} className="mt-4">
+        <InputsFormVehicle state={vehicleSelect} onChange={handleChange} />
+        <button
+          type="submit"
+          disabled={disabled}
+          className="mt-4 px-4 py-2 bg-blue-600 text-white right-0 rounded-md hover:bg-blue-700 transition-colors disabled:opacity-70 disabled:cursor-not-allowed">
+          Actualizar Vehiculo
+        </button>
+      </form>
     </>
   )
 }

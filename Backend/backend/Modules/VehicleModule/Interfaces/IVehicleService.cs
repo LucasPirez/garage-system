@@ -3,5 +3,8 @@ using backend.Modules.VehicleModule.Dtos;
 
 namespace backend.Modules.VehicleModule.Interfaces
 {
-    public interface IVehicleService : IServiceBase<Vehicle, CreateVehicleDto> { }
+    public interface IVehicleService : IServiceBase<Vehicle, CreateVehicleDto>
+    {
+        Task UpdateAsync(Guid Id, UpdateVehicleDto vehicle);
+    }
 }

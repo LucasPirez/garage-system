@@ -1,30 +1,16 @@
 import { AxiosInstance } from 'axios'
-
 import { JobsResponseDto } from '../dtos/vehicleEntry/jobs-response.dto'
 import { JobUpdateDto } from '../dtos/vehicleEntry/job-update.dto'
 import { JOBS_STATUS } from '../constants/jobs-status'
 import { getWorkshopId } from './worshop-service'
+import { CustomerCreateDto } from '../dtos/customer/customer-request.dto'
+import { VehicleCreateDto } from '../dtos/vehicle/vehicle-request.dto'
 
 export interface JobCreateDto {
   receptionDate: string
   cause: string
   details: string
   vehicleId: string
-  workshopId: string
-}
-
-export interface VehicleCreateDto {
-  plate: string
-  model: string
-  color: string
-  customerId: string
-}
-
-export interface CustomerCreateDto {
-  firstName: string
-  lastName: string
-  phoneNumber: string[]
-  email: string[]
   workshopId: string
 }
 

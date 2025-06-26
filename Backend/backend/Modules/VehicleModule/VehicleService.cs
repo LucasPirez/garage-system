@@ -49,5 +49,16 @@ namespace backend.Modules.VehicleModule
         {
             throw new NotImplementedException();
         }
+
+        public async Task UpdateAsync(Guid Id, UpdateVehicleDto vehicleDto)
+        {
+            Vehicle vehicle = await GetByIdAsync(Id);
+
+            vehicle.Plate = vehicleDto.Plate;
+            vehicle.Color = vehicleDto.Color;
+            vehicle.Model = vehicleDto.Model;
+
+            await UpdateAsync(vehicle);
+        }
     }
 }
