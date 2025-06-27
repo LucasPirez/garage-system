@@ -7,6 +7,7 @@ import { jobService } from '../../../../core/services'
 import { useToast } from '../../../context/toast-context'
 import { ArrowLeft } from 'lucide-react'
 import { classNameInput, classNameLabel } from '../../common/class-names'
+import { triggerCoolDown } from '../../../../core/helpers/triggerCoolDown'
 
 export type FormDataType = Omit<
   JobType,
@@ -107,7 +108,15 @@ export const EditJob = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    console.log(formData)
+
+    if (!triggerCoolDown()) {
+      toast.addToast({
+        severity: 'error',
+        title: 'Error',
+        message: 'Demasiadas solicitudes, por favor espere un momento.',
+      })
+      return
+    }
 
     try {
       await jobService.update({

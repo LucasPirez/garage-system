@@ -15,6 +15,8 @@ import { CustomerItem } from './customer-item'
 import { ButtonSubmit } from '../../common/button-submit'
 import { CustomerCreateDto } from '../../../../core/dtos/customer/customer-request.dto'
 import { VehicleCreateDto } from '../../../../core/dtos/vehicle/vehicle-request.dto'
+import { triggerCoolDown } from '../../../../core/helpers/triggerCoolDown'
+import { useToast } from '../../../context/toast-context'
 
 type FormDataType = Omit<JobCreateDto, 'workshopId' | 'vehicleId'> &
   Omit<VehicleCreateDto, 'customerId'> &
@@ -44,6 +46,7 @@ export const RegisterJob = () => {
     vehicleSelected,
     handleVehicleSelect,
   } = useRegisterJobContext()
+  const { addToast } = useToast()
 
   const handleChange = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
@@ -75,7 +78,15 @@ export const RegisterJob = () => {
     try {
       let customerId: string | undefined = customerSelected?.id
       let vehicleId: string | undefined = vehicleSelected?.id
-      console.log(formData)
+
+      if (!triggerCoolDown()) {
+        addToast({
+          severity: 'error',
+          title: 'Error',
+          message: 'Demasiadas solicitudes, por favor espere un momento.',
+        })
+        return
+      }
 
       if (!customerSelected?.firstName) {
         const customerResponse = await customerService.create({
@@ -109,8 +120,17 @@ export const RegisterJob = () => {
       })
 
       setFormData(FormInitialState)
+      addToast({
+        severity: 'success',
+        title: 'Éxito',
+        message: 'Servicio registrado correctamente',
+      })
     } catch (error) {
-      alert('Ocurrio un error')
+      addToast({
+        severity: 'error',
+        title: 'Error',
+        message: 'Ocurrio un error al registrar el servicio',
+      })
     }
   }
 

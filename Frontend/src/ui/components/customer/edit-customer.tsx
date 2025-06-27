@@ -7,6 +7,7 @@ import type {
 import { ButtonSubmit } from '../common/button-submit'
 import { useToast } from '../../context/toast-context'
 import { updateCustomerVehicleService } from '../../../core/services'
+import { triggerCoolDown } from '../../../core/helpers/triggerCoolDown'
 
 export const EditCustomer = ({
   customer,
@@ -32,6 +33,15 @@ export const EditCustomer = ({
   }
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
+
+    if (!triggerCoolDown()) {
+      addToast({
+        severity: 'error',
+        title: 'Error',
+        message: 'Demasiadas solicitudes, por favor espere un momento.',
+      })
+      return
+    }
 
     try {
       await updateCustomerVehicleService.updateCustomer(

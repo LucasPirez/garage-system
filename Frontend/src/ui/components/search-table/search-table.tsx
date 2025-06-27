@@ -37,7 +37,13 @@ export const SearchTable = ({
       try {
         const result = await workshopService.getAllCustomers()
 
-        setStoreClients(result)
+        setStoreClients(
+          result.map((client) => ({
+            ...client,
+            phoneNumber: client.phoneNumber?.[0] || '',
+            email: client.email?.[0] || '',
+          }))
+        )
       } catch (error) {
         console.log(error)
         alert(error)

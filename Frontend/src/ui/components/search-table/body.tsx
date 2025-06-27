@@ -79,9 +79,7 @@ export const Body = ({
             )}
           </td>
           <td className="px-6 py-4 whitespace-nowrap">
-            <div className="text-sm text-gray-900">
-              {customer.phoneNumber.join(', ')}
-            </div>
+            <div className="text-sm text-gray-900">{customer.phoneNumber}</div>
           </td>
         </tr>
       ))}

@@ -6,10 +6,12 @@ export const axiosInstance: AxiosInstance = axios.create({
     'Content-Type': 'application/json',
   },
   timeout: 5000,
+
 })
 
 axiosInstance.interceptors.request.use(
   (config) => {
+
     return config
   },
   (error) => {

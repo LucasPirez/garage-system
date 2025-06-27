@@ -4,6 +4,7 @@ import { InputsFormVehicle } from './inputs-form-vehicle'
 import { useToast } from '../../context/toast-context'
 import { updateCustomerVehicleService } from '../../../core/services'
 import { ButtonSubmit } from '../common/button-submit'
+import { triggerCoolDown } from '../../../core/helpers/triggerCoolDown'
 
 export const EditVehicle = ({
   vehicle,
@@ -14,7 +15,6 @@ export const EditVehicle = ({
 }) => {
   const [vehicleSelect, setVehicleSelect] = useState<VehicleType>(vehicle[0])
   const [disabled, setDisabled] = useState(true)
-  const [isCoolDown, setIsCoolDown] = useState(false)
   const { addToast } = useToast()
   useEffect(() => {
     setVehicleSelect(vehicle[0])
@@ -43,7 +43,15 @@ export const EditVehicle = ({
 
   const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
-    if (isCoolDown) return
+
+    if (!triggerCoolDown()) {
+      addToast({
+        severity: 'error',
+        title: 'Error',
+        message: 'Demasiadas solicitudes, por favor espere un momento.',
+      })
+      return
+    }
 
     try {
       await updateCustomerVehicleService.updateVehicle(
@@ -64,11 +72,6 @@ export const EditVehicle = ({
         title: 'Error',
         message: 'Error al actualizar el vehiculo',
       })
-    } finally {
-      setIsCoolDown(true)
-      setTimeout(() => {
-        setIsCoolDown(false)
-      }, 5000)
     }
   }
 
