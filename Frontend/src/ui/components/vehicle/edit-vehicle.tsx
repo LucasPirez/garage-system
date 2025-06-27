@@ -3,6 +3,7 @@ import { VehicleType } from '../../../core/type/vehicle'
 import { InputsFormVehicle } from './inputs-form-vehicle'
 import { useToast } from '../../context/toast-context'
 import { updateCustomerVehicleService } from '../../../core/services'
+import { ButtonSubmit } from '../common/button-submit'
 
 export const EditVehicle = ({
   vehicle,
@@ -129,12 +130,11 @@ export const EditVehicle = ({
       </div>
       <form onSubmit={onSubmit} className="mt-4">
         <InputsFormVehicle state={vehicleSelect} onChange={handleChange} />
-        <button
-          type="submit"
+        <ButtonSubmit
+          label="Actualizar Vehiculo"
           disabled={disabled}
-          className="mt-4 px-4 py-2 bg-blue-600 text-white right-0 rounded-md hover:bg-blue-700 transition-colors disabled:opacity-70 disabled:cursor-not-allowed">
-          Actualizar Vehiculo
-        </button>
+          className="mt-4"
+        />
       </form>
     </>
   )

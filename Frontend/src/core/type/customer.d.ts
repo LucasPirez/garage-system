@@ -1,7 +1,10 @@
 import type { CustomerResponseDto } from '../dtos/customer/customer-response.dto'
-import type { CustomerCreateDto } from '../services/jobs-service'
+import type { CustomerCreateDto } from '../dtos/customer/customer-request.dto'
 
-export interface CustomerType extends CustomerResponseDto {}
+export interface CustomerType extends CustomerResponseDto {
+  email: string
+  phoneNumber: string
+}
 
 export type CustomerFormType = Omit<
   CustomerCreateDto,

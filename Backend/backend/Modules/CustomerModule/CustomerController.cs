@@ -37,29 +37,14 @@ namespace backend.Modules.CustomerModule
             return StatusCode(StatusCodes.Status201Created, result);
         }
 
-        [HttpPatch("{id}")]
+        [HttpPut("{id}")]
         public async Task<IActionResult> Update(
-            [FromRoute] string id,
+            [FromRoute] Guid id,
             [FromBody] UpdateCustomerDto customerDto
         )
         {
-            var Customer = await _customerService.GetByIdAsync(Guid.Parse(id));
-
-            if (Customer == null)
-            {
-                return NotFound();
-            }
-            // lo tengo que poner en el servicio.
-            Customer.PhoneNumber = customerDto?.PhoneNumber ?? Customer.PhoneNumber;
-            Customer.Email = customerDto?.Email ?? Customer.Email;
-            Customer.Address = customerDto?.Address ?? Customer.Address;
-            Customer.Dni = customerDto?.Dni ?? Customer.Dni;
-            Customer.FirstName = customerDto?.FirstName ?? Customer.FirstName;
-            Customer.LastName = customerDto?.LastName ?? Customer.LastName;
-
-            await _customerService.UpdateAsync(Customer);
-
-            return StatusCode(StatusCodes.Status204NoContent);
+            await _customerService.UpdateAsync(id, customerDto);
+            return Ok();
         }
 
         [HttpDelete("{id}")]

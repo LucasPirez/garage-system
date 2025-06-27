@@ -1,9 +1,5 @@
 import { ChangeEvent, useState } from 'react'
-import {
-  CustomerCreateDto,
-  JobCreateDto,
-  VehicleCreateDto,
-} from '../../../../core/services/jobs-service'
+import { JobCreateDto } from '../../../../core/services/jobs-service'
 import { InputsFormCustomer } from '../../customer/inputs-form-customer'
 import { InputsFormVehicle } from '../../vehicle/inputs-form-vehicle'
 import { InputsFormJob } from '../inputs-form-job'
@@ -16,6 +12,9 @@ import { useRegisterJobContext } from '../../../context/register-job-context'
 import { ButtonClose } from '../../common/button-close-icon'
 import { VehicleItem } from './vehicle-item'
 import { CustomerItem } from './customer-item'
+import { ButtonSubmit } from '../../common/button-submit'
+import { CustomerCreateDto } from '../../../../core/dtos/customer/customer-request.dto'
+import { VehicleCreateDto } from '../../../../core/dtos/vehicle/vehicle-request.dto'
 
 type FormDataType = Omit<JobCreateDto, 'workshopId' | 'vehicleId'> &
   Omit<VehicleCreateDto, 'customerId'> &
@@ -180,15 +179,11 @@ export const RegisterJob = () => {
             <button
               type="reset"
               onClick={() => setFormData(FormInitialState)}
-              className="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50   font-medium active:scale-95">
+              className="px-4 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50   font-medium active:scale-95">
               🗑️ Limpiar Formulario
             </button>
 
-            <button
-              type="submit"
-              className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-medium shadow-sm active:scale-95">
-              ✅ Registrar Servicio
-            </button>
+            <ButtonSubmit label="✅ Registrar Servicio" className="py-3" />
           </div>
         </form>
       </div>

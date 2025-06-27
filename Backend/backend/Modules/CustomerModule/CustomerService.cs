@@ -44,6 +44,25 @@ namespace backend.Modules.CustomerModule
             await Update(entity);
         }
 
+        public async Task UpdateAsync(Guid Id, UpdateCustomerDto customerDto)
+        {
+            Customer customer = await GetByIdAsync(Id);
+
+            customer.FirstName = customerDto.FirstName;
+            customer.LastName = customerDto.LastName;
+            customer.Email =
+                customerDto.Email != null
+                    ? new List<string>() { customerDto.Email }
+                    : customer.Email;
+
+            customer.PhoneNumber =
+                customerDto.PhoneNumber != null
+                    ? new List<string>() { customerDto.PhoneNumber }
+                    : customer.PhoneNumber;
+
+            await UpdateAsync(customer);
+        }
+
         public async Task DeleteAsync(Guid id)
         {
             throw new NotImplementedException();

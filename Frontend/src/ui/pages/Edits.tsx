@@ -1,15 +1,18 @@
 import { useState } from 'react'
 import { SearchTable } from '../components/search-table/search-table'
-import type { CustomerFormType } from '../../core/type/customer'
 import withAuth from '../components/hoc/with-auth'
 import type { VehicleType } from '../../core/type/vehicle'
 import { EditCustomer } from '../components/customer/edit-customer'
 import { EditVehicle } from '../components/vehicle/edit-vehicle'
 import type { CustomerAndVehicleType } from '../../core/store/clients-vehicles-store'
+import type { CustomerType } from '../../core/type/customer'
 
 const Edits = () => {
   const [visible, setVisible] = useState(false)
-  const [customer, setCustomer] = useState<CustomerFormType | null>(null)
+  const [customer, setCustomer] = useState<Omit<
+    CustomerType,
+    'vehicle'
+  > | null>(null)
   const [vehicle, setVehicle] = useState<VehicleType[] | null>(null)
 
   const handleSelect = (select: CustomerAndVehicleType | null) => {
