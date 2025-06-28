@@ -5,7 +5,6 @@ import {
   View,
   StyleSheet,
   PDFDownloadLink,
-  PDFViewer,
 } from '@react-pdf/renderer'
 import { HeaderPDF } from './header'
 import { formatCurrency, SpareParts } from './spare-parts'
@@ -193,13 +192,6 @@ const InvoicePDF = ({ data }: { data: JobType }) => (
     </Page>
   </Document>
 )
-export const SeePDF = ({ data }: { data: JobType }) => {
-  return (
-    <PDFViewer>
-      <InvoicePDF data={data} />
-    </PDFViewer>
-  )
-}
 
 export const DownloadPDF = ({ data }: { data: JobType }) => {
   return (

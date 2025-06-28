@@ -1,7 +1,13 @@
 import { MessageCircleIcon } from 'lucide-react'
 import { ButtonNavigate } from '../../common/button-navigate'
-import { DownloadPDF } from '../../pdf/react-pdf'
 import { JobType } from '../../../../core/type/job'
+import { lazy, Suspense } from 'react'
+
+const DownloadPDF = lazy(() =>
+  import('../../pdf/react-pdf').then((module) => ({
+    default: module.DownloadPDF,
+  }))
+)
 
 export const CardIcons = ({ job }: { job: JobType }) => {
   return (
@@ -25,7 +31,9 @@ export const CardIcons = ({ job }: { job: JobType }) => {
         data={job}
         path={job.id}
       />
-      <DownloadPDF data={job} />
+      <Suspense fallback={<></>}>
+        <DownloadPDF data={job} />
+      </Suspense>
       {job.client.phoneNumber[0] && (
         <button
           onClick={() => {
