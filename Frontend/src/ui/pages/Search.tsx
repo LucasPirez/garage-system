@@ -7,7 +7,7 @@ import { EditVehicle } from '../components/vehicle/edit-vehicle'
 import type { CustomerAndVehicleType } from '../../core/store/clients-vehicles-store'
 import type { CustomerType } from '../../core/type/customer'
 
-const Edits = () => {
+const Search = () => {
   const [visible, setVisible] = useState(false)
   const [customer, setCustomer] = useState<Omit<
     CustomerType,
@@ -47,7 +47,7 @@ const Edits = () => {
       />
       {!customer && !vehicle && (
         <h2 className="text-2xl text-gray-500 text-center font-semibold mt-10">
-          Selecciona un cliente para editar
+          Selecciona un cliente
         </h2>
       )}
       <section>
@@ -68,6 +68,6 @@ const Edits = () => {
   )
 }
 
-const EditComponent = withAuth(Edits)
+const SearchComponent = withAuth(Search)
 
-export { EditComponent as Edits }
+export { SearchComponent as Search }
