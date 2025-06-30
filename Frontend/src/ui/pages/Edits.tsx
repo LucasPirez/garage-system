@@ -45,10 +45,18 @@ const Edits = () => {
         onVisibilityChange={setVisible}
         handleClientSelect={handleSelect}
       />
+      {!customer && !vehicle && (
+        <h2 className="text-2xl text-gray-500 text-center font-semibold mt-10">
+          Selecciona un cliente para editar
+        </h2>
+      )}
       <section>
-        <div className=" mt-3 pb-3 border-b-4 border-gray-700/40">
+        <div className=" mt-3 pb-3">
           {customer ? <EditCustomer customer={customer} /> : ''}
         </div>
+        {customer && vehicle && (
+          <div className="border-b border-[3px] border-gray-300 mb-3"></div>
+        )}
 
         {vehicle?.length ? (
           <EditVehicle vehicle={vehicle} setVehicle={handleSetVehicle} />

@@ -5,6 +5,7 @@ import { useToast } from '../../context/toast-context'
 import { updateCustomerVehicleService } from '../../../core/services'
 import { ButtonSubmit } from '../common/button-submit'
 import { triggerCoolDown } from '../../../core/helpers/triggerCoolDown'
+import { ModalDeleteVehicle } from '../modal/modal-delete'
 
 export const EditVehicle = ({
   vehicle,
@@ -15,6 +16,7 @@ export const EditVehicle = ({
 }) => {
   const [vehicleSelect, setVehicleSelect] = useState<VehicleType>(vehicle[0])
   const [disabled, setDisabled] = useState(true)
+  const [deleteVehicle, setDeleteVehicle] = useState<VehicleType | null>(null)
   const { addToast } = useToast()
   useEffect(() => {
     setVehicleSelect(vehicle[0])
@@ -79,8 +81,7 @@ export const EditVehicle = ({
     <>
       <div className="bg-white rounded-lg py-4 shadow-sm">
         <div className="flex items-center justify-between mb-4">
-          <h2 className="text-lg font-medium text-gray-900">Autos</h2>
-          <span className="text-sm text-gray-500">{vehicle.length}</span>
+          <h2 className="text-lg font-medium text-gray-900">Vehiculos</h2>
         </div>
 
         {vehicle.length === 0 ? (
@@ -107,9 +108,7 @@ export const EditVehicle = ({
                   </div>
                   <div className="flex items-center ml-3 space-x-1">
                     <button
-                      onClick={(e) => {
-                        e.stopPropagation()
-                      }}
+                      onClick={() => setDeleteVehicle(car)}
                       className="p-1.5 text-red-600 hover:text-red-600 hover:bg-red-50 rounded-md transition-colors">
                       <svg
                         className="w-5 h-5"
@@ -136,9 +135,15 @@ export const EditVehicle = ({
         <ButtonSubmit
           label="Actualizar Vehiculo"
           disabled={disabled}
-          className="mt-4"
+          className="mt-4 float-end"
         />
       </form>
+      {deleteVehicle && (
+        <ModalDeleteVehicle
+          handleUnSelectVehicle={() => setDeleteVehicle(null)}
+          vehicle={deleteVehicle}
+        />
+      )}
     </>
   )
 }

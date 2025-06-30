@@ -77,11 +77,9 @@ export const EditCustomer = ({
       </div>
       <form onSubmit={handleSubmit}>
         <InputsFormCustomer state={customerSelected} onChange={handleChange} />
-        <ButtonSubmit
-          label="Actualizar Cliente"
-          className="mt-4"
-          disabled={disabled}
-        />
+        <div className="flex justify-end mt-4">
+          <ButtonSubmit label="Actualizar Cliente" disabled={disabled} />
+        </div>
       </form>
     </>
   )

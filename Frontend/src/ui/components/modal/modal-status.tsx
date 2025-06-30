@@ -6,6 +6,7 @@ import { status_translation } from '../common/status-translation'
 import { ModalPortal } from './modal-portal'
 import { jobService } from '../../../core/services'
 import { useToast } from '../../context/toast-context'
+import { BaseModal } from './base-modal'
 
 interface Props {
   closeModal: (data: JobType | null) => void
@@ -72,17 +73,11 @@ export const ModalStatus = ({ closeModal, job, handleJobState }: Props) => {
   }
   return (
     <ModalPortal isOpen={job !== null} onClose={() => closeModal(null)}>
-      <div className="p-6">
-        <div className="flex justify-between items-center mb-4">
-          <h2 className="text-xl font-semibold text-gray-800">
-            {job.vehicle.model} ({job.vehicle.plate})
-          </h2>
-          <button
-            onClick={() => closeModal(null)}
-            className="text-gray-400  hover:text-gray-600 text-2xl leading-none">
-            ×
-          </button>
-        </div>
+      <BaseModal
+        onClose={() => closeModal(null)}
+        onSave={handleSubmit}
+        title={`${job.vehicle.model}  (${job.vehicle.plate})`}
+        disabledSaveButton={disabledButton}>
         <div className=" mb-3 text-red-900 font-semibold">
           <span>Total en repuestos: </span>
           <span>
@@ -126,21 +121,7 @@ export const ModalStatus = ({ closeModal, job, handleJobState }: Props) => {
             className={classNameInput}
           />
         </div>
-
-        <div className="flex gap-3 justify-end">
-          {/* <button
-            onClick={() => setIsModalOpen(false)}
-            className="px-4 py-2 text-gray-600 border border-gray-300 rounded hover:bg-gray-50 transition-colors">
-            Cancelar
-          </button> */}
-          <button
-            onClick={handleSubmit}
-            disabled={disabledButton}
-            className="px-4 py-2 disabled:opacity-60 disabled:bg-blue-800  bg-blue-600 text-white rounded hover:bg-blue-600 transition-colors">
-            Confirmar cambios
-          </button>
-        </div>
-      </div>
+      </BaseModal>
     </ModalPortal>
   )
 }
