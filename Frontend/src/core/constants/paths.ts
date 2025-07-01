@@ -1,7 +1,7 @@
 export const PATHS = {
   JOBS: '/trabajos',
   REGISTER: '/registrar',
-  SEARCH: '/buscar',
+  EDITS: '/editar',
   LOGIN: '/login',
 }
 

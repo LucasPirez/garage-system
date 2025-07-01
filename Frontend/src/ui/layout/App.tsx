@@ -7,7 +7,7 @@ import { ToastProvider } from '../context/toast-context'
 import { ToastContainer } from '../components/toast/toast-container'
 import { PATHS } from '../../core/constants/paths'
 import { Login } from '../pages/login'
-import { Search } from '../pages/Search'
+import { Edits } from '../pages/Edits'
 
 function App() {
   return (
@@ -18,7 +18,7 @@ function App() {
           <Route path={`${PATHS.JOBS}/:id`} element={<EditJob />}></Route>
           <Route path={`${PATHS.JOBS}`} element={<Jobs />}></Route>
           <Route path={`${PATHS.REGISTER}`} element={<RegisterPage />} />
-          <Route path={`${PATHS.SEARCH}`} element={<Search />} />
+          <Route path={`${PATHS.EDITS}`} element={<Edits />} />
           <Route path={`${PATHS.LOGIN}`} element={<Login />} />
           <Route path="*" element={<h1>404 not found</h1>} />
         </Route>

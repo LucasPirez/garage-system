@@ -4,5 +4,5 @@ export const NAV_LINKS = [
     href: '/registrar',
     label: 'Registrar',
   },
-  { href: '/buscar', label: 'Buscar' },
+  { href: '/editar', label: 'Editar' },
 ] as const
