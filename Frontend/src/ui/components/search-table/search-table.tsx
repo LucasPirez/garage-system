@@ -60,13 +60,19 @@ export const SearchTable = ({
     }
     onVisibilityChange(true)
 
-    const filteredClients = clients.filter((client) => {
-      const fullName = `${client.firstName} ${client.lastName}`.toLowerCase()
-      return (
-        fullName.includes(value.toLowerCase()) ||
-        client.phoneNumber[0]?.includes(value)
-      )
-    })
+    // Optimize this.
+    const filteredClients = clients
+      .filter((client) => {
+        const fullName = `${client.firstName} ${client.lastName}`.toLowerCase()
+        return (
+          fullName.includes(value.toLowerCase()) ||
+          client.phoneNumber[0]?.includes(value) ||
+          client.vehicle.some((vehicle) =>
+            vehicle.plate.toLowerCase().includes(value.toLowerCase())
+          )
+        )
+      })
+      .splice(0, 4)
 
     setClientsSearch(filteredClients)
   }
@@ -77,7 +83,7 @@ export const SearchTable = ({
         <div className="relative">
           <input
             type="text"
-            placeholder="Buscar por nombre, Telefono"
+            placeholder="Buscar por nombre, Telefono o Patente"
             onChange={handleChange}
             className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
           />
