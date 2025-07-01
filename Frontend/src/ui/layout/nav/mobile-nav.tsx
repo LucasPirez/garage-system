@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { NAV_LINKS } from './nav-links'
 import { Link } from 'react-router-dom'
-import { useLogout } from '../components/common/useLogout'
+import { useLogout } from '../../components/common/useLogout'
 
 export const MobileNav = () => {
   const [isOpen, setIsOpen] = useState(false)

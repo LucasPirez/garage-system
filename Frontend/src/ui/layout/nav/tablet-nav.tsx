@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
 import { NAV_LINKS } from './nav-links'
-import { useLogout } from '../components/common/useLogout'
+import { useLogout } from '../../components/common/useLogout'
 
 export const TabletNav = () => {
   const { handleLogout } = useLogout()

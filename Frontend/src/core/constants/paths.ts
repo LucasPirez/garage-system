@@ -3,6 +3,7 @@ export const PATHS = {
   REGISTER: '/registrar',
   EDITS: '/editar',
   LOGIN: '/login',
+  HISTORICAL: '/historico',
 }
 
 // <Route path="/trabajos/:id" element={<EditJob />}></Route>
