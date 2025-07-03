@@ -1,7 +1,9 @@
 import { FILTER } from '../../../../core/constants/filter-jobs-status'
 import { label_traduction } from '../../../../core/constants/label-traduction-status'
-import { JobsResponseDto } from '../../../../core/dtos/vehicleEntry/jobs-response.dto'
-import { JobType } from '../../../../core/type/job'
+import {
+  JobWithVehicleAndCustomerType,
+  JobWithVehicleType,
+} from '../../../../core/type/job'
 import { CardIcons } from './icons'
 import { ContainerCard } from './container-card'
 import { CardDataJob } from './card-data-job'
@@ -10,8 +12,8 @@ export const CardJob = ({
   job,
   setIsModalOpen,
 }: {
-  job: JobsResponseDto
-  setIsModalOpen: (data: JobType | null) => void
+  job: JobWithVehicleAndCustomerType
+  setIsModalOpen: (data: JobWithVehicleType | null) => void
 }) => {
   return (
     <ContainerCard key={job.id}>
@@ -19,7 +21,9 @@ export const CardJob = ({
         <CardIcons job={job} />
         <div className="flex justify-between items-start ">
           <div>
-            <h3 className="text-lg font-semibold text-gray-800">{job.cause}</h3>
+            <h3 className="text-lg font-semibold text-gray-800 mr-4">
+              {job.cause}
+            </h3>
             <div className="flex items-center justify-between mt-1  w-[270px] max-w-auto">
               {/* <Car className="w-4 h-4 text-gray-500 mr-1" /> */}
               <p className="text-sm text-gray-600">

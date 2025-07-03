@@ -1,6 +1,6 @@
 import { MessageCircleIcon } from 'lucide-react'
 import { ButtonNavigate } from '../../common/button-navigate'
-import { JobType } from '../../../../core/type/job'
+import { JobWithVehicleAndCustomerType } from '../../../../core/type/job'
 import { lazy, Suspense } from 'react'
 
 const DownloadPDF = lazy(() =>
@@ -9,7 +9,7 @@ const DownloadPDF = lazy(() =>
   }))
 )
 
-export const CardIcons = ({ job }: { job: JobType }) => {
+export const CardIcons = ({ job }: { job: JobWithVehicleAndCustomerType }) => {
   return (
     <div className="flex flex-col gap-5 items-center absolute right-3 top-4">
       <ButtonNavigate
@@ -34,10 +34,10 @@ export const CardIcons = ({ job }: { job: JobType }) => {
       <Suspense fallback={<></>}>
         <DownloadPDF data={job} />
       </Suspense>
-      {job.client.phoneNumber[0] && (
+      {job.client.phoneNumber && (
         <button
           onClick={() => {
-            const url = `https://web.whatsapp.com/send/?phone=${job.client.phoneNumber[0]}`
+            const url = `https://web.whatsapp.com/send/?phone=${job.client.phoneNumber}`
             window.open(url, '_blank')
           }}>
           <MessageCircleIcon

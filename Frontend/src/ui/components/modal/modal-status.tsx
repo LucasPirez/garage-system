@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { JOBS_STATUS, JobStatusType } from '../../../core/constants/jobs-status'
-import { JobType } from '../../../core/type/job'
+import { JobWithVehicleType } from '../../../core/type/job'
 import { classNameInput, classNameLabel } from '../common/class-names'
 import { status_translation } from '../common/status-translation'
 import { ModalPortal } from './modal-portal'
@@ -9,8 +9,8 @@ import { useToast } from '../../context/toast-context'
 import { BaseModal } from './base-modal'
 
 interface Props {
-  closeModal: (data: JobType | null) => void
-  job: JobType
+  closeModal: (data: JobWithVehicleType | null) => void
+  job: JobWithVehicleType
   handleJobState: (data: {
     status: JobStatusType
     finalAmount: number

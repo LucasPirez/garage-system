@@ -5,18 +5,22 @@ import { ButtonFilterJobs } from '../components/common/button-filter-jobs'
 import { CardJob } from '../components/jobs/card-job/card-job'
 
 import { workshopService } from '../../core/services'
-import { JobsResponseDto } from '../../core/dtos/vehicleEntry/jobs-response.dto'
 import { ModalStatus } from '../components/modal/modal-status'
-import { JobType } from '../../core/type/job'
+import {
+  JobWithVehicleAndCustomerType,
+  JobWithVehicleType,
+} from '../../core/type/job'
 import { JobStatusType } from '../../core/constants/jobs-status'
 import withAuth from '../components/hoc/with-auth'
 import { label_traduction } from '../../core/constants/label-traduction-status'
 
 const Jobs = () => {
   const [statusFilter, setStatusFilter] = useState<JobsFilterType>(FILTER.ALL)
-  const [jobs, setJobs] = useState<JobsResponseDto[] | null>(null)
-  const [jobsFilter, setJobsFilter] = useState<JobsResponseDto[]>([])
-  const [jobModal, setJobModal] = useState<JobType | null>(null)
+  const [jobs, setJobs] = useState<JobWithVehicleAndCustomerType[] | null>(null)
+  const [jobsFilter, setJobsFilter] = useState<JobWithVehicleAndCustomerType[]>(
+    []
+  )
+  const [jobModal, setJobModal] = useState<JobWithVehicleType | null>(null)
 
   useEffect(() => {
     // eslint-disable-next-line no-extra-semi
@@ -41,7 +45,7 @@ const Jobs = () => {
     setJobsFilter(filteredJobs)
   }
 
-  const handleVisibilityModal = (data: JobType | null) => {
+  const handleVisibilityModal = (data: JobWithVehicleType | null) => {
     setJobModal(data)
   }
 

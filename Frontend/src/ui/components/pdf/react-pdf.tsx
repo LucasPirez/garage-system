@@ -8,7 +8,7 @@ import {
 } from '@react-pdf/renderer'
 import { HeaderPDF } from './header'
 import { formatCurrency, SpareParts } from './spare-parts'
-import { JobType } from '../../../core/type/job'
+import { JobWithVehicleAndCustomerType } from '../../../core/type/job'
 import { DownloadIcon } from 'lucide-react'
 
 const styles = StyleSheet.create({
@@ -111,7 +111,7 @@ const formatDate = (dateString: string) => {
   })
 }
 
-const InvoicePDF = ({ data }: { data: JobType }) => (
+const InvoicePDF = ({ data }: { data: JobWithVehicleAndCustomerType }) => (
   <Document>
     <Page size="A4" style={styles.page}>
       <HeaderPDF status={data.status} />
@@ -193,7 +193,11 @@ const InvoicePDF = ({ data }: { data: JobType }) => (
   </Document>
 )
 
-export const DownloadPDF = ({ data }: { data: JobType }) => {
+export const DownloadPDF = ({
+  data,
+}: {
+  data: JobWithVehicleAndCustomerType
+}) => {
   return (
     <>
       <PDFDownloadLink
