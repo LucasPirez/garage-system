@@ -64,7 +64,8 @@ namespace backend.Modules.RepairOrderModule
                         PhoneNumber = k.Vehicle.Customer.PhoneNumber,
                         Email = k.Vehicle.Customer.Email,
                     },
-                });
+                })
+                .OrderByDescending(repairOrder => repairOrder.ReceptionDate);
 
             return await listJobs.ToListAsync();
         }

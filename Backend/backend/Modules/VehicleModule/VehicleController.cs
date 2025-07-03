@@ -35,5 +35,16 @@ namespace backend.Modules.VehicleModule
             await _vehicleService.UpdateAsync(id, vehicleDto);
             return Ok();
         }
+
+        [HttpGet("{id}/repair-orders")]
+        public async Task<IActionResult> GetRepairOrdersByVehicleId(
+            [FromRoute] Guid id,
+            int limit = 10
+        )
+        {
+            var result = await _vehicleService.GetRepairOrderByVehicleIdAsync(id, limit);
+
+            return new OkObjectResult(result);
+        }
     }
 }
