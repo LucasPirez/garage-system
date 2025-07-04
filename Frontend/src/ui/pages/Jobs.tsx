@@ -21,6 +21,7 @@ const Jobs = () => {
     []
   )
   const [jobModal, setJobModal] = useState<JobWithVehicleType | null>(null)
+  const [seeMore, setSeeMore] = useState(6)
 
   useEffect(() => {
     // eslint-disable-next-line no-extra-semi
@@ -113,14 +114,28 @@ const Jobs = () => {
         />
       )}
       <div className="flex flex-wrap justify-center gap-4 ">
-        {jobsFilter.map((job) => (
-          <CardJob
-            job={job}
-            setIsModalOpen={handleVisibilityModal}
-            key={job.id}
-          />
-        ))}
+        {jobsFilter.map((job, index) => {
+          if (index + 1 > seeMore) return
+          return (
+            <CardJob
+              job={job}
+              setIsModalOpen={handleVisibilityModal}
+              key={job.id}
+            />
+          )
+        })}
       </div>
+      {seeMore < jobsFilter.length ? (
+        <div className="w-full flex justify-center">
+          <button
+            className="m-auto px-10 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors active:scale-95 text-lg my-8"
+            onClick={() => setSeeMore(seeMore + 6)}>
+            Ver más
+          </button>
+        </div>
+      ) : (
+        ''
+      )}
 
       {jobsFilter.length === 0 && (
         <div className="text-center py-12">
