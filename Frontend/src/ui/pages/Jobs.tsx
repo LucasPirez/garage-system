@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { JobsFilterType } from '../../core/type/jobs-filter'
 import { FILTER } from '../../core/constants/filter-jobs-status'
-import { ButtonFilterJobs } from '../components/common/button-filter-jobs'
+import { ButtonFilterJobs } from '../components/buttons/button-filter-jobs'
 import { CardJob } from '../components/jobs/card-job/card-job'
 
 import { workshopService } from '../../core/services'

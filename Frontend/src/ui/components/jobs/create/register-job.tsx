@@ -9,10 +9,10 @@ import {
   vehicleService,
 } from '../../../../core/services'
 import { useRegisterJobContext } from '../../../context/register-job-context'
-import { ButtonClose } from '../../common/button-close-icon'
+import { ButtonClose } from '../../buttons/button-close-icon'
 import { VehicleItem } from './vehicle-item'
 import { CustomerItem } from './customer-item'
-import { ButtonSubmit } from '../../common/button-submit'
+import { ButtonSubmit } from '../../buttons/button-submit'
 import { CustomerCreateDto } from '../../../../core/dtos/customer/customer-request.dto'
 import { VehicleCreateDto } from '../../../../core/dtos/vehicle/vehicle-request.dto'
 import { triggerCoolDown } from '../../../../core/helpers/triggerCoolDown'
@@ -161,11 +161,19 @@ export const RegisterJob = () => {
           <div className="border-t border-gray-500 mt-5 mb-4"></div>
 
           <div className="mb-4">
-            <div className="flex items-center mb-4">
-              <span className="text-2xl mr-3">🚙</span>
-              <h2 className="text-xl font-semibold text-gray-800">Vehículo</h2>
+            <div className="flex justify-between items-center mb-4">
+              <div className="flex items-center">
+                <span className="text-2xl mr-3">🚙</span>
+                <h2 className="text-xl font-semibold text-gray-800">
+                  Vehículo
+                </h2>
+              </div>
               {vehicleSelected && (
-                <ButtonClose onClick={() => handleVehicleSelect(null)} />
+                <button
+                  className=" text-blue-500  border border-blue-500 rounded-lg px-3 py-1 text-sm font-medium hover:bg-blue-50 transition-colors"
+                  onClick={() => handleVehicleSelect(null)}>
+                  <span>+</span> Agregar otro vehículo
+                </button>
               )}
             </div>
 

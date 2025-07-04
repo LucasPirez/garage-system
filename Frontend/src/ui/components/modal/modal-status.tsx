@@ -1,8 +1,11 @@
 import { useEffect, useState } from 'react'
 import { JOBS_STATUS, JobStatusType } from '../../../core/constants/jobs-status'
 import { JobWithVehicleType } from '../../../core/type/job'
-import { classNameInput, classNameLabel } from '../common/class-names'
-import { status_translation } from '../common/status-translation'
+import {
+  classNameInput,
+  classNameLabel,
+} from '../../../core/constants/class-names'
+import { status_translation } from '../../../core/constants/status-translation'
 import { ModalPortal } from './modal-portal'
 import { jobService } from '../../../core/services'
 import { useToast } from '../../context/toast-context'

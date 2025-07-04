@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { ButtonLogout } from '../../components/common/button-logout'
+import { ButtonLogout } from '../../components/buttons/button-logout'
 import { NavLinks } from './nav-links'
 
 export const MobileNav = () => {

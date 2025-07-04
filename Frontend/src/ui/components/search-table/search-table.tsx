@@ -8,7 +8,7 @@ import {
 } from '../../../core/store/clients-vehicles-store'
 import { workshopService } from '../../../core/services'
 import { VehicleType } from '../../../core/type/vehicle'
-import { ButtonClose } from '../common/button-close-icon'
+import { ButtonClose } from '../buttons/button-close-icon'
 
 interface Props {
   onVisibilityChange: (visible: boolean) => void

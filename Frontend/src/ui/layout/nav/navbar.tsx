@@ -3,7 +3,7 @@ import { MobileNav } from './mobile-nav'
 // import { TabletNav } from './tablet-nav'
 // import { DesktopNav } from './desktop-nav'
 import { NavLinks } from './nav-links'
-import { ButtonLogout } from '../../components/common/button-logout'
+import { ButtonLogout } from '../../components/buttons/button-logout'
 
 export const Navbar = () => {
   return (

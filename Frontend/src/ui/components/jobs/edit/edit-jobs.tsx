@@ -6,7 +6,10 @@ import { SpareParts } from './spare-parts'
 import { jobService } from '../../../../core/services'
 import { useToast } from '../../../context/toast-context'
 import { ArrowLeft } from 'lucide-react'
-import { classNameInput, classNameLabel } from '../../common/class-names'
+import {
+  classNameInput,
+  classNameLabel,
+} from '../../../../core/constants/class-names'
 import { triggerCoolDown } from '../../../../core/helpers/triggerCoolDown'
 
 export type FormDataType = Omit<

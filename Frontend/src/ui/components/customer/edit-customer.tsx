@@ -4,7 +4,7 @@ import type {
   CustomerFormType,
   CustomerType,
 } from '../../../core/type/customer'
-import { ButtonSubmit } from '../common/button-submit'
+import { ButtonSubmit } from '../buttons/button-submit'
 import { useToast } from '../../context/toast-context'
 import { updateCustomerVehicleService } from '../../../core/services'
 import { triggerCoolDown } from '../../../core/helpers/triggerCoolDown'

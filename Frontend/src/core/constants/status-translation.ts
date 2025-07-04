@@ -1,4 +1,4 @@
-import { FILTER } from '../../../core/constants/filter-jobs-status'
+import { FILTER } from './filter-jobs-status'
 
 export const status_translation = {
   [FILTER.ALL]: 'Todos',

@@ -1,5 +1,5 @@
 import { MessageCircleIcon } from 'lucide-react'
-import { ButtonNavigate } from '../../common/button-navigate'
+import { ButtonNavigate } from '../../buttons/button-navigate'
 import { JobWithVehicleAndCustomerType } from '../../../../core/type/job'
 import { lazy, Suspense } from 'react'
 

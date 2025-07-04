@@ -1,7 +1,7 @@
 import { ChangeEvent } from 'react'
 import { JobCreateDto } from '../../../core/services/jobs-service'
 import { classNameInput } from '../../pages/register'
-import { classNameLabel } from '../common/class-names'
+import { classNameLabel } from '../../../core/constants/class-names'
 
 interface Props {
   state: Omit<JobCreateDto, 'workshopId' | 'vehicleId'>

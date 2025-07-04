@@ -1,6 +1,6 @@
 import { ChangeEvent } from 'react'
 import { classNameInput } from '../../pages/register'
-import { classNameLabel } from '../common/class-names'
+import { classNameLabel } from '../../../core/constants/class-names'
 import type { VehicleCreateDto } from '../../../core/dtos/vehicle/vehicle-request.dto'
 
 interface Props {

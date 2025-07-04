@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { SparePart } from '../../../../core/dtos/vehicleEntry/jobs-response.dto'
 import { FormDataType } from './edit-jobs'
-import { ButtonClose } from '../../common/button-close-icon'
+import { ButtonClose } from '../../buttons/button-close-icon'
 
 interface Props {
   formData: FormDataType

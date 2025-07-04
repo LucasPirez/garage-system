@@ -1,7 +1,7 @@
 import { ChangeEvent } from 'react'
 import { classNameInput } from '../../pages/register'
 import type { CustomerFormType } from '../../../core/type/customer'
-import { classNameLabel } from '../common/class-names'
+import { classNameLabel } from '../../../core/constants/class-names'
 
 interface Props {
   state: CustomerFormType
