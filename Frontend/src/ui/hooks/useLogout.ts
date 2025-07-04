@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom'
-import { localStorageService } from '../../../core/storage/storages'
-import { PATHS } from '../../../core/constants/paths'
+import { localStorageService } from '../../core/storage/storages'
+import { PATHS } from '../../core/constants/paths'
 
 export const useLogout = () => {
   const navigate = useNavigate()

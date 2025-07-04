@@ -1,11 +1,9 @@
 import { useState } from 'react'
-import { NAV_LINKS } from './nav-links'
-import { Link } from 'react-router-dom'
-import { useLogout } from '../../components/common/useLogout'
+import { ButtonLogout } from '../../components/common/button-logout'
+import { NavLinks } from './nav-links'
 
 export const MobileNav = () => {
   const [isOpen, setIsOpen] = useState(false)
-  const { handleLogout } = useLogout()
 
   const toggleMenu = () => {
     setIsOpen(!isOpen)
@@ -15,11 +13,7 @@ export const MobileNav = () => {
     <>
       <div className="max-w-7xl mx-auto px-4">
         <div className="flex justify-between h-16">
-          <div className="flex items-center">
-            <div className="flex-shrink-0 flex items-center">
-              <span className="text-xl font-bold text-gray-800">Logo</span>
-            </div>
-          </div>
+          <span className="text-xl font-bold text-gray-800 my-auto">Logo</span>
 
           <div className="flex items-center">
             <button
@@ -53,22 +47,12 @@ export const MobileNav = () => {
       </div>
 
       <div className={`${isOpen ? 'block' : 'hidden'}`}>
-        <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 ">
-          {NAV_LINKS.map((link) => (
-            <Link
-              key={link.href}
-              to={link.href}
-              className="flex justify-end text-gray-700 hover:text-gray-900 hover:bg-gray-100 px-3 py-2 rounded-md text-base font-medium"
-              onClick={() => setIsOpen(!open)}>
-              <span className="ml-3">{link.label}</span>
-            </Link>
-          ))}
-          <button
-            className="bg-red-400 hover:bg-red-600 px-4 py-2 rounded-md text-sm font-medium transition-colors"
-            onClick={handleLogout}>
-            Logout
-          </button>
-        </div>
+        <ul className="px-2 pt-2 pb-3 space-y-1 sm:px-3 ">
+          <NavLinks onClick={toggleMenu} />
+          <li>
+            <ButtonLogout />
+          </li>
+        </ul>
       </div>
     </>
   )
