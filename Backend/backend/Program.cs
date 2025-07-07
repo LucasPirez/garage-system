@@ -39,9 +39,10 @@ builder.Services.AddSwaggerGen(c =>
 });
 
 var origins =
-    builder.Configuration.GetSection("Origins").Get<string[]>()
-    ?? Environment.GetEnvironmentVariable("Origins")?.Split(",")
+Environment.GetEnvironmentVariable("Origins")?.Split(",")
+    ?? builder.Configuration.GetSection("Origins").Get<string[]>()
     ?? [];
+
 Console.WriteLine(origins);
 
 builder.Services.AddCors(options =>
