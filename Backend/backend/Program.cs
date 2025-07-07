@@ -42,6 +42,7 @@ var origins =
     builder.Configuration.GetSection("Origins").Get<string[]>()
     ?? Environment.GetEnvironmentVariable("Origins")?.Split(",")
     ?? [];
+Console.WriteLine(origins);
 
 builder.Services.AddCors(options =>
 {
@@ -71,7 +72,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI(c =>
     {
-        c.SwaggerEndpoint("/swagger/v1/swagger.json", "Mi API Mecánica v1");
+        c.SwaggerEndpoint("/swagger/v1/swagger.json", "Mi API Mecï¿½nica v1");
     });
 }
 
