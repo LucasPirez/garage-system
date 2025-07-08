@@ -39,8 +39,8 @@ builder.Services.AddSwaggerGen(c =>
 });
 
 var origins =
+    Environment.GetEnvironmentVariable("Origins")?.Split(",") ??
     builder.Configuration.GetSection("Origins").Get<string[]>()
-    ?? Environment.GetEnvironmentVariable("Origins")?.Split(",")
     ?? [];
 
 builder.Services.AddCors(options =>
@@ -71,7 +71,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI(c =>
     {
-        c.SwaggerEndpoint("/swagger/v1/swagger.json", "Mi API Mecánica v1");
+        c.SwaggerEndpoint("/swagger/v1/swagger.json", "Mi API Mecï¿½nica v1");
     });
 }
 

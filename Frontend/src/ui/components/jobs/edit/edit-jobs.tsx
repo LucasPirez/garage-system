@@ -230,7 +230,7 @@ export const EditJob = () => {
               id="presupuest"
               type="number"
               min="0"
-              step="0.01"
+              step="1000"
               value={formData.budget}
               onChange={(e) =>
                 handleInputChange('budget', Number.parseFloat(e.target.value))
@@ -247,12 +247,12 @@ export const EditJob = () => {
               id="finalAmount"
               type="number"
               min="0"
-              step="0.01"
+              step="1000"
               value={formData.finalAmount}
               onChange={(e) =>
                 handleInputChange(
                   'finalAmount',
-                  Number.parseFloat(e.target.value) || 0
+                  Number.parseFloat(e.target.value)
                 )
               }
               className={classNameInput}

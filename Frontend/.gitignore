@@ -24,6 +24,7 @@ dist-ssr
 *.sln
 *.sw?
 
+package-lock.json
 
 #Firebase
 .firebase/

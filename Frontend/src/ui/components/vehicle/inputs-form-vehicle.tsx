@@ -41,7 +41,7 @@ export const InputsFormVehicle = ({ state, onChange }: Props) => {
           minLength={2}
           maxLength={50}
           className={classNameInput}
-          placeholder="Ej: Ranger Raptor"
+          placeholder="Ej: Gol Power"
           value={state.model}
           onChange={onChange}
         />

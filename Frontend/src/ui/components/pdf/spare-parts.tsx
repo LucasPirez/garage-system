@@ -79,7 +79,7 @@ export const formatCurrency = (amount: number) => {
   return '$' + amount.toLocaleString('ES-es')
 }
 
-const HEADER_SPARE_PARTS = ['Repuesto', 'Cantidad', 'Precio Unit.', 'Total']
+const HEADER_SPARE_PARTS = ['Repuesto',  'Precio']
 
 const getStyleByIndex = (index: number) => {
   switch (index) {
@@ -116,12 +116,12 @@ export const SpareParts = ({ data }: { data: JobType['spareParts'] }) => {
           <Text style={[styles.tableCell, styles.tableCellName]}>
             {part.name}
           </Text>
-          <Text style={[styles.tableCell, styles.tableCellQuantity]}>
+          {/* <Text style={[styles.tableCell, styles.tableCellQuantity]}>
             {part.quantity}
-          </Text>
-          <Text style={[styles.tableCell, styles.tableCellPrice]}>
+          </Text> */}
+          {/* <Text style={[styles.tableCell, styles.tableCellPrice]}>
             {formatCurrency(part.price)}
-          </Text>
+          </Text> */}
           <Text style={[styles.tableCell, styles.tableCellTotal]}>
             {formatCurrency(part.price * part.quantity)}
           </Text>
@@ -135,12 +135,12 @@ export const SpareParts = ({ data }: { data: JobType['spareParts'] }) => {
             styles.tableCellName,
             styles.noBorderRight,
           ]}></Text>
-        <Text
+        {/* <Text
           style={[
             styles.tableCell,
             styles.tableCellQuantity,
             styles.noBorderRight,
-          ]}></Text>
+          ]}></Text> */}
         <Text
           style={[styles.tableCell, styles.tableCellPrice, styles.bottomLeft]}>
           Subtotal Repuestos

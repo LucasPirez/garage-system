@@ -35,6 +35,7 @@ namespace backend.Database
 
             modelBuilder.Entity<RepairOrder>().Property(k => k.Status).HasConversion<string>();
 
+
             modelBuilder
                 .Entity<WorkShop>()
                 .HasData(
@@ -43,13 +44,35 @@ namespace backend.Database
                         new WorkShop()
                         {
                             Id = new Guid(SeedData.workshopAId),
-                            Name = "Taller Jesuita",
+                            Name = "Taller Jesus",
                         },
                         new WorkShop()
                         {
                             Id = new Guid(SeedData.workshopBId),
                             Name = "Taller Silvana",
                         },
+                    }
+                );
+
+            modelBuilder
+                .Entity<Admin>()
+                .HasData(
+                    new List<Admin>()
+                    {
+                        new Admin()
+                        {
+                            Email = "email@gmail.com",
+                            Id = Guid.NewGuid(),
+                            Password = BCrypt.Net.BCrypt.HashPassword("123456"),
+                            WorkShopId = new Guid(SeedData.workshopAId),
+                        },
+                        new Admin()
+                        {
+                            Email = "email2@gmail.com",
+                            Id = Guid.NewGuid(),
+                            Password = BCrypt.Net.BCrypt.HashPassword("123456"),
+                            WorkShopId = new Guid(SeedData.workshopBId)
+                        }
                     }
                 );
 
