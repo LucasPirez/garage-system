@@ -8,7 +8,6 @@ export const getWorkshopId = (): string => {
   const workshopId = localStorageService.getItem(localKeys.WORKSHOP)?.id
 
   if (!workshopId) throw new Error()
-  console.log(workshopId)
 
   return workshopId
 }
