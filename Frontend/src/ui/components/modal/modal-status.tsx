@@ -1,10 +1,7 @@
 import { useEffect, useState } from 'react'
 import { JOBS_STATUS, JobStatusType } from '../../../core/constants/jobs-status'
 import { JobWithVehicleType } from '../../../core/type/job'
-import {
-  classNameInput,
-  classNameLabel,
-} from '../../../core/constants/class-names'
+import { classNameInput, classNameLabel } from '../../../core/constants/class-names'
 import { status_translation } from '../../../core/constants/status-translation'
 import { ModalPortal } from './modal-portal'
 import { jobService } from '../../../core/services'
@@ -36,10 +33,7 @@ export const ModalStatus = ({ closeModal, job, handleJobState }: Props) => {
 
   // Modify, this can do it with one or two handle.
   useEffect(() => {
-    if (
-      job.finalAmount !== values.finalAmount ||
-      job.status !== values.status
-    ) {
+    if (job.finalAmount !== values.finalAmount || job.status !== values.status) {
       setDisabledButton(false)
     } else {
       setDisabledButton(true)
@@ -80,7 +74,8 @@ export const ModalStatus = ({ closeModal, job, handleJobState }: Props) => {
         onClose={() => closeModal(null)}
         onSave={handleSubmit}
         title={`${job.vehicle.model}  (${job.vehicle.plate})`}
-        disabledSaveButton={disabledButton}>
+        disabledSaveButton={disabledButton}
+      >
         <div className=" mb-3 text-red-900 font-semibold">
           <span>Total en repuestos: </span>
           <span>
@@ -98,9 +93,8 @@ export const ModalStatus = ({ closeModal, job, handleJobState }: Props) => {
                 values.status === option ? 'bg-blue-600 text-white' : ''
               }`}
               key={option + Math.random()}
-              onClick={() =>
-                setValues((prev) => ({ ...prev, status: option }))
-              }>
+              onClick={() => setValues((prev) => ({ ...prev, status: option }))}
+            >
               {status_translation[option]}
             </button>
           ))}

@@ -25,7 +25,7 @@ export const SpareParts = ({ formData, setFormData, handleChange }: Props) => {
         (part) =>
           part.name.toLowerCase() === newSparePart.name.toLowerCase().trim()
       )
-      if (!exists && newSparePart.quantity) {
+      if (!exists) {
         setFormData((prev) => {
           if (!prev) return prev
           return {
@@ -35,7 +35,7 @@ export const SpareParts = ({ formData, setFormData, handleChange }: Props) => {
               {
                 name: newSparePart.name.trim(),
                 price: newSparePart.price,
-                quantity: newSparePart.quantity,
+                quantity: 1,
               },
             ],
           }
@@ -55,10 +55,10 @@ export const SpareParts = ({ formData, setFormData, handleChange }: Props) => {
     })
   }
   const classInputSpare =
-    'pl-1 w-full md:px-3 py-2 border border-gray-300 focus:max-sm:w-48 rounded-md shadow-sm bg-gray-50 text-gray-700'
+    'pl-1 w-full md:px-3 py-2 border border-gray-300  rounded-md shadow-sm bg-gray-50 text-gray-700'
 
   const classInputNumbers =
-    ' w-full sm:max-w-24  max-w-16 px-1 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-right'
+    ' w-full   max-w-20 px-1 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-right'
 
   return (
     <>
@@ -73,15 +73,16 @@ export const SpareParts = ({ formData, setFormData, handleChange }: Props) => {
             className={classInputSpare}
           />
 
-          <input
+          {/* <input
             type="text"
             value={'x ' + part.quantity}
             readOnly
             className={classInputNumbers}
-          />
+          /> */}
 
           <input
             type="text"
+            readOnly
             value={'$' + part.price}
             onChange={(e) => {
               const updatedParts = [...formData.spareParts]
@@ -105,7 +106,7 @@ export const SpareParts = ({ formData, setFormData, handleChange }: Props) => {
           className={classInputSpare}
         />
 
-        <input
+        {/* <input
           type="number"
           min="0"
           placeholder="Cantidad"
@@ -120,12 +121,12 @@ export const SpareParts = ({ formData, setFormData, handleChange }: Props) => {
             e.key === 'Enter' && (e.preventDefault(), addSparePart())
           }
           className={classInputNumbers}
-        />
+        /> */}
 
         <input
           type="number"
           min="0"
-          step="0.01"
+          step="1"
           placeholder="Precio"
           value={newSparePart.price || ''}
           onChange={(e) =>

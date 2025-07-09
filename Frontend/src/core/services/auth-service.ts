@@ -11,12 +11,7 @@ export class AuthService {
   }): Promise<AuthResponseDto> {
     const response = await this.client.post<AuthResponseDto>(
       `${this.BASE_PATH}/login`,
-      auth,
-      {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      }
+      auth
     )
 
     return response.data

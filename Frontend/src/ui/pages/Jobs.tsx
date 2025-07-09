@@ -13,6 +13,7 @@ import {
 import { JobStatusType } from '../../core/constants/jobs-status'
 import withAuth from '../components/hoc/with-auth'
 import { label_traduction } from '../../core/constants/label-traduction-status'
+import { useToast } from '../context/toast-context'
 
 const Jobs = () => {
   const [statusFilter, setStatusFilter] = useState<JobsFilterType>(FILTER.ALL)
@@ -22,6 +23,7 @@ const Jobs = () => {
   )
   const [jobModal, setJobModal] = useState<JobWithVehicleType | null>(null)
   const [seeMore, setSeeMore] = useState(6)
+  const {addToast} = useToast()
 
   useEffect(() => {
     // eslint-disable-next-line no-extra-semi
@@ -32,7 +34,11 @@ const Jobs = () => {
         setJobs(result)
         setJobsFilter(result)
       } catch (error) {
-        alert('Error')
+        addToast({
+          severity:'error',
+          message:'Intente mas tarde',
+          title:'Error'
+        })
       }
     })()
   }, [])

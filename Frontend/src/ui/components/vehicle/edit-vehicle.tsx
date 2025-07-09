@@ -23,20 +23,10 @@ export const EditVehicle = ({
     setVehicleSelect(vehicle[0])
   }, [vehicle])
 
-  const handleChange = (
-    event: ChangeEvent<HTMLSelectElement | HTMLInputElement>
-  ) => {
+  const handleChange = (event: ChangeEvent<HTMLSelectElement | HTMLInputElement>) => {
     const { name, value } = event.target
 
     setDisabled(false)
-
-    if (name === 'plate') {
-      setVehicleSelect((prev) => ({
-        ...prev,
-        [name]: value.toUpperCase(),
-      }))
-      return
-    }
 
     setVehicleSelect((prev) => ({
       ...prev,
@@ -57,10 +47,7 @@ export const EditVehicle = ({
     }
 
     try {
-      await updateCustomerVehicleService.updateVehicle(
-        vehicleSelect,
-        vehicleSelect.id
-      )
+      await updateCustomerVehicleService.updateVehicle(vehicleSelect, vehicleSelect.id)
       addToast({
         severity: 'success',
         title: 'Exito',

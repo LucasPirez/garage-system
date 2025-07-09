@@ -9,6 +9,7 @@ import {
 import { workshopService } from '../../../core/services'
 import { VehicleType } from '../../../core/type/vehicle'
 import { ButtonClose } from '../buttons/button-close-icon'
+import { useToast } from '../../context/toast-context'
 
 interface Props {
   onVisibilityChange: (visible: boolean) => void
@@ -30,6 +31,7 @@ export const SearchTable = ({
   const setStoreClients = useStoreClientsAndVehicles(
     (clients) => clients.setClients
   )
+  const {addToast } = useToast()
 
   useEffect(() => {
     // eslint-disable-next-line no-extra-semi
@@ -46,7 +48,11 @@ export const SearchTable = ({
         )
       } catch (error) {
         console.log(error)
-        alert(error)
+        addToast({
+          severity:'error',
+          title:'Error',
+          message:'Intente mas tarde',
+        })
       }
     })()
   }, [])

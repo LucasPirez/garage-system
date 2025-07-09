@@ -3,11 +3,7 @@ import { JobCreateDto } from '../../../../core/services/jobs-service'
 import { InputsFormCustomer } from '../../customer/inputs-form-customer'
 import { InputsFormVehicle } from '../../vehicle/inputs-form-vehicle'
 import { InputsFormJob } from '../inputs-form-job'
-import {
-  customerService,
-  jobService,
-  vehicleService,
-} from '../../../../core/services'
+import { customerService, jobService, vehicleService } from '../../../../core/services'
 import { useRegisterJobContext } from '../../../context/register-job-context'
 import { ButtonClose } from '../../buttons/button-close-icon'
 import { VehicleItem } from './vehicle-item'
@@ -20,10 +16,10 @@ import { useToast } from '../../../context/toast-context'
 
 type FormDataType = Omit<JobCreateDto, 'workshopId' | 'vehicleId'> &
   Omit<VehicleCreateDto, 'customerId'> &
-  Omit<
-    CustomerCreateDto,
-    'workshopId' | 'vehicleId' | 'email' | 'phoneNumber'
-  > & { email: string; phoneNumber: string }
+  Omit<CustomerCreateDto, 'workshopId' | 'vehicleId' | 'email' | 'phoneNumber'> & {
+    email: string
+    phoneNumber: string
+  }
 
 const FormInitialState: FormDataType = {
   cause: '',
@@ -40,23 +36,14 @@ const FormInitialState: FormDataType = {
 
 export const RegisterJob = () => {
   const [formData, setFormData] = useState<FormDataType>(FormInitialState)
-  const {
-    customerSelected,
-    handleCustomerSelect,
-    vehicleSelected,
-    handleVehicleSelect,
-  } = useRegisterJobContext()
+  const { customerSelected, handleCustomerSelect, vehicleSelected, handleVehicleSelect } =
+    useRegisterJobContext()
   const { addToast } = useToast()
 
   const handleChange = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
   ) => {
     const { name, value } = e.target
-
-    if (name == 'plate') {
-      setFormData((prev) => ({ ...prev, [name]: value.toUpperCase() }))
-      return
-    }
 
     setFormData((prev) => ({ ...prev, [name]: value }))
   }
@@ -164,14 +151,13 @@ export const RegisterJob = () => {
             <div className="flex justify-between items-center mb-4">
               <div className="flex items-center">
                 <span className="text-2xl mr-3">🚙</span>
-                <h2 className="text-xl font-semibold text-gray-800">
-                  Vehículo
-                </h2>
+                <h2 className="text-xl font-semibold text-gray-800">Vehículo</h2>
               </div>
               {vehicleSelected && (
                 <button
                   className=" text-blue-500  border border-blue-500 rounded-lg px-3 py-1 text-sm font-medium hover:bg-blue-50 transition-colors"
-                  onClick={() => handleVehicleSelect(null)}>
+                  onClick={() => handleVehicleSelect(null)}
+                >
                   <span>+</span> Agregar otro vehículo
                 </button>
               )}
@@ -207,7 +193,8 @@ export const RegisterJob = () => {
             <button
               type="reset"
               onClick={() => setFormData(FormInitialState)}
-              className="px-4 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50   font-medium active:scale-95">
+              className="px-4 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50   font-medium active:scale-95"
+            >
               🗑️ Limpiar Formulario
             </button>
 
