@@ -10,5 +10,7 @@ namespace backend.Modules.RepairOrderModule.Interfaces
         Task UpdateAsync(UpdateRepairOrderDto updateDto);
 
         Task UpdateStatusAndFinalAmount(UpdateAmountAndStatusDto dto);
+
+        Task UpdateSpareParts(List<UpdateSparePartDto> dto, Guid repairOrderId);
     }
 }

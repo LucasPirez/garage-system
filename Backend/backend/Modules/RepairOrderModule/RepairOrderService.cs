@@ -90,16 +90,24 @@ namespace backend.Modules.RepairOrderModule
             entity.Details = jobDto.Details ?? "";
             entity.Budget = jobDto.Budget ?? 0;
             entity.FinalAmount = jobDto.FinalAmount;
-            entity.SpareParts = jobDto.SpareParts ?? new List<SparePart>();
-            Console.WriteLine(entity.ReceptionDate);
-            Console.WriteLine(entity.ReceptionDate);
-            Console.WriteLine(entity.Cause);
             await Update(entity);
         }
 
         public Task UpdateAsync(RepairOrder entity)
         {
             throw new NotImplementedException();
+        }
+
+        public async Task UpdateSpareParts(List<UpdateSparePartDto> dto, Guid repairOrderId)
+        {
+            RepairOrder repairOrder = await _dbSet.Where(k => k.Id == repairOrderId).FirstOrDefaultAsync() ??
+                                            throw new NotFoundException("Orden de trabajo no encontrada");
+
+             if (_mapper == null) throw new Exception();
+
+            repairOrder.SpareParts = _mapper.Map<List<SparePart>>(dto);
+
+            await Update(repairOrder);
         }
 
         public async Task UpdateStatusAndFinalAmount(UpdateAmountAndStatusDto dto)
