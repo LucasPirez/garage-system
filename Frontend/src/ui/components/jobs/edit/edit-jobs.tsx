@@ -11,6 +11,7 @@ import {
   classNameLabel,
 } from '../../../../core/constants/class-names'
 import { triggerCoolDown } from '../../../../core/helpers/triggerCoolDown'
+import { useLoader } from '../../../context/loader-context'
 
 export type FormDataType = Omit<
   JobType,
@@ -34,6 +35,7 @@ export const EditJob = () => {
   const location = useLocation()
   const [formData, setFormData] = useState<FormDataType | null>(initialData)
   const toast = useToast()
+  const { hideLoader, showLoader } = useLoader()
 
   useEffect(() => {
     if (location.state) {
@@ -121,6 +123,7 @@ export const EditJob = () => {
       return
     }
 
+    showLoader()
     try {
       await jobService.update({
         ...formData,
@@ -147,6 +150,8 @@ export const EditJob = () => {
         message: 'Ocurrio un error al actualizar',
         severity: 'error',
       })
+    } finally {
+      hideLoader()
     }
   }
 
@@ -160,7 +165,7 @@ export const EditJob = () => {
       })
       return
     }
-
+    showLoader()
     try {
       if (!refId.current)
         throw new Error('Error, no se obtiene el id del trabajo.')
@@ -185,6 +190,8 @@ export const EditJob = () => {
         message: 'Ocurrio un error al los repuestos',
         severity: 'error',
       })
+    } finally {
+      hideLoader()
     }
   }
 
