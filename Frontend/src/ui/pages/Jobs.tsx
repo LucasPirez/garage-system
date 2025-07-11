@@ -14,6 +14,7 @@ import { JobStatusType } from '../../core/constants/jobs-status'
 import withAuth from '../components/hoc/with-auth'
 import { label_traduction } from '../../core/constants/label-traduction-status'
 import { useToast } from '../context/toast-context'
+import { useLoader } from '../context/loader-context'
 
 const Jobs = () => {
   const [statusFilter, setStatusFilter] = useState<JobsFilterType>(FILTER.ALL)
@@ -23,22 +24,26 @@ const Jobs = () => {
   )
   const [jobModal, setJobModal] = useState<JobWithVehicleType | null>(null)
   const [seeMore, setSeeMore] = useState(6)
-  const {addToast} = useToast()
+  const { addToast } = useToast()
+  const { showLoader, hideLoader } = useLoader()
 
   useEffect(() => {
     // eslint-disable-next-line no-extra-semi
     ;(async () => {
       try {
+        showLoader()
         const result = await workshopService.getAllVehicleEntries()
 
         setJobs(result)
         setJobsFilter(result)
       } catch (error) {
         addToast({
-          severity:'error',
-          message:'Intente mas tarde',
-          title:'Error'
+          severity: 'error',
+          message: 'Intente mas tarde',
+          title: 'Error',
         })
+      } finally {
+        hideLoader()
       }
     })()
   }, [])
@@ -135,7 +140,8 @@ const Jobs = () => {
         <div className="w-full flex justify-center">
           <button
             className="m-auto px-10 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors active:scale-95 text-lg my-8"
-            onClick={() => setSeeMore(seeMore + 6)}>
+            onClick={() => setSeeMore(seeMore + 6)}
+          >
             Ver más
           </button>
         </div>

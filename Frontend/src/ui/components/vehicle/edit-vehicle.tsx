@@ -7,6 +7,7 @@ import { ButtonSubmit } from '../buttons/button-submit'
 import { triggerCoolDown } from '../../../core/helpers/triggerCoolDown'
 import { ModalDeleteVehicle } from '../modal/modal-delete'
 import { SelectVehicle } from './select-vehicle'
+import { useLoader } from '../../context/loader-context'
 
 export const EditVehicle = ({
   vehicle,
@@ -19,11 +20,15 @@ export const EditVehicle = ({
   const [disabled, setDisabled] = useState(true)
   const [deleteVehicle, setDeleteVehicle] = useState<VehicleType | null>(null)
   const { addToast } = useToast()
+  const { showLoader, hideLoader } = useLoader()
+
   useEffect(() => {
     setVehicleSelect(vehicle[0])
   }, [vehicle])
 
-  const handleChange = (event: ChangeEvent<HTMLSelectElement | HTMLInputElement>) => {
+  const handleChange = (
+    event: ChangeEvent<HTMLSelectElement | HTMLInputElement>
+  ) => {
     const { name, value } = event.target
 
     setDisabled(false)
@@ -45,9 +50,12 @@ export const EditVehicle = ({
       })
       return
     }
-
+    showLoader()
     try {
-      await updateCustomerVehicleService.updateVehicle(vehicleSelect, vehicleSelect.id)
+      await updateCustomerVehicleService.updateVehicle(
+        vehicleSelect,
+        vehicleSelect.id
+      )
       addToast({
         severity: 'success',
         title: 'Exito',
@@ -62,6 +70,8 @@ export const EditVehicle = ({
         title: 'Error',
         message: 'Error al actualizar el vehiculo',
       })
+    } finally {
+      hideLoader()
     }
   }
 

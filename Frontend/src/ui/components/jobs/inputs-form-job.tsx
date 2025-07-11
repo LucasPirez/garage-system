@@ -14,7 +14,7 @@ export const InputsFormJob = ({ state, onChange }: Props) => {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 gap-y-3">
         <div>
           <label htmlFor="receptionDate" className={classNameLabel}>
-            Fecha de Recepción
+            Fecha de Recepción <span className="text-red-700 ">*</span>
           </label>
           <input
             type="date"
@@ -34,7 +34,7 @@ export const InputsFormJob = ({ state, onChange }: Props) => {
 
         <div>
           <label htmlFor="plate" className={classNameLabel}>
-            Motivo
+            Motivo <span className="text-red-700 ">*</span>
           </label>
           <input
             type="text"
@@ -61,7 +61,8 @@ export const InputsFormJob = ({ state, onChange }: Props) => {
           className={classNameInput + 'resize-none'}
           placeholder="Describa cualquier detalle adicional sobre el vehículo o el servicio requerido..."
           value={state.details}
-          onChange={onChange}></textarea>
+          onChange={onChange}
+        ></textarea>
         <div className="flex justify-between items-center mt-1">
           <p className="text-xs text-gray-500">Máximo 500 caracteres</p>
         </div>

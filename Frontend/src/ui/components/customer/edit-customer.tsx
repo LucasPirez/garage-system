@@ -8,6 +8,7 @@ import { ButtonSubmit } from '../buttons/button-submit'
 import { useToast } from '../../context/toast-context'
 import { updateCustomerVehicleService } from '../../../core/services'
 import { triggerCoolDown } from '../../../core/helpers/triggerCoolDown'
+import { useLoader } from '../../context/loader-context'
 
 export const EditCustomer = ({
   customer,
@@ -18,6 +19,7 @@ export const EditCustomer = ({
     useState<CustomerFormType>(customer)
   const [disabled, setDisabled] = useState(true)
   const { addToast } = useToast()
+  const { showLoader, hideLoader } = useLoader()
 
   const handleChange = (
     event: ChangeEvent<HTMLSelectElement | HTMLInputElement>
@@ -43,6 +45,7 @@ export const EditCustomer = ({
       return
     }
 
+    showLoader()
     try {
       await updateCustomerVehicleService.updateCustomer(
         customerSelected,
@@ -61,6 +64,8 @@ export const EditCustomer = ({
         title: 'Error',
         message: 'Error al actualizar el cliente',
       })
+    } finally {
+      hideLoader()
     }
   }
 

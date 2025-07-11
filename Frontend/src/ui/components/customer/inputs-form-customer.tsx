@@ -13,7 +13,7 @@ export const InputsFormCustomer = ({ state, onChange }: Props) => {
     <div className="grid grid-cols-1 md:grid-cols-2 gap-6 gap-y-3">
       <div>
         <label htmlFor="customerName" className={classNameLabel}>
-          Nombre
+          Nombre <span className="text-red-700 ">*</span>
         </label>
         <input
           type="text"

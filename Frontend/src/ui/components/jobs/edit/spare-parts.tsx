@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { SparePart } from '../../../../core/dtos/vehicleEntry/jobs-response.dto'
 import { ButtonClose } from '../../buttons/button-close-icon'
+import { Plus } from 'lucide-react'
 
 interface Props {
   spareParts: SparePart[]
@@ -127,9 +128,9 @@ export const SpareParts = ({ spareParts, handleSpareParts }: Props) => {
           type="button"
           onClick={addSparePart}
           disabled={!newSparePart.name.trim()}
-          className="ml-2 p-2 py-2 border border-gray-300 rounded-md shadow-sm bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 disabled:opacity-50 disabled:cursor-not-allowed text-green-600"
+          className="ml-2 p-2 py-2 border-2 border-green-700 rounded-md shadow-sm bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 disabled:opacity-50 disabled:cursor-not-allowed text-green-600"
         >
-          +
+          <Plus />
         </button>
       </div>
 
