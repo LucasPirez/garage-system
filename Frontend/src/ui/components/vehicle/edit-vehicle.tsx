@@ -21,7 +21,7 @@ export const EditVehicle = ({
   const [disabled, setDisabled] = useState(true)
   const [deleteVehicle, setDeleteVehicle] = useState<VehicleType | null>(null)
   const { updateVehicle } = useStoreClientsAndVehicles()
-  const { addToast } = useToast()
+  const { showToast } = useToast()
   const { showLoader, hideLoader } = useLoader()
 
   useEffect(() => {
@@ -45,9 +45,7 @@ export const EditVehicle = ({
     event.preventDefault()
 
     if (!triggerCoolDown()) {
-      addToast({
-        severity: 'error',
-        title: 'Error',
+      showToast.error({
         message: 'Demasiadas solicitudes, por favor espere un momento.',
       })
       return
@@ -58,18 +56,14 @@ export const EditVehicle = ({
         vehicleSelect,
         vehicleSelect.id
       )
-      addToast({
-        severity: 'success',
-        title: 'Exito',
+      showToast.success({
         message: 'Vehiculo actualizado correctamente',
       })
       setVehicle(vehicleSelect)
       updateVehicle(vehicleSelect)
       setDisabled(true)
     } catch (error) {
-      addToast({
-        severity: 'error',
-        title: 'Error',
+      showToast.error({
         message: 'Error al actualizar el vehiculo',
       })
     } finally {

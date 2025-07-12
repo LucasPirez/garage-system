@@ -20,7 +20,7 @@ export const EditCustomer = ({
     useState<CustomerFormType>(customer)
   const [disabled, setDisabled] = useState(true)
   const { updateCustomer } = useStoreClientsAndVehicles()
-  const { addToast } = useToast()
+  const { showToast } = useToast()
   const { showLoader, hideLoader } = useLoader()
 
   const handleChange = (
@@ -39,9 +39,7 @@ export const EditCustomer = ({
     event.preventDefault()
 
     if (!triggerCoolDown()) {
-      addToast({
-        severity: 'error',
-        title: 'Error',
+      showToast.error({
         message: 'Demasiadas solicitudes, por favor espere un momento.',
       })
       return
@@ -53,17 +51,13 @@ export const EditCustomer = ({
         customerSelected,
         customer.id
       )
-      addToast({
-        severity: 'success',
-        title: 'Exito',
+      showToast.success({
         message: 'Cliente actualizado correctamente',
       })
       updateCustomer({ ...customerSelected, id: customer.id })
       setDisabled(true)
     } catch (error) {
-      addToast({
-        severity: 'error',
-        title: 'Error',
+      showToast.error({
         message: 'Error al actualizar el cliente',
       })
     } finally {

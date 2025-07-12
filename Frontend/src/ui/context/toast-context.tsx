@@ -6,6 +6,41 @@ const ToastContext = createContext<ToastContextType | undefined>(undefined)
 export function ToastProvider({ children }: { children: React.ReactNode }) {
   const [toasts, setToasts] = useState<Toast[]>([])
 
+  const createToast = (toast: Omit<Toast, 'id'>) => {
+    const id = Math.random().toString(36).substring(2, 9)
+
+    setToasts((prev) => [...prev, { ...toast, id }])
+
+    setTimeout(() => {
+      removeToast(id)
+    }, toast.duration)
+  }
+
+  const showToast = {
+    success: useCallback((toast: Partial<Omit<Toast, 'id' | 'severity'>>) => {
+      const newToast: Omit<Toast, 'id'> = {
+        duration: toast.duration || 5000,
+        title: 'Exito',
+        message: 'Accion realizada con exito.',
+        severity: 'success',
+        ...toast,
+      }
+
+      createToast(newToast)
+    }, []),
+    error: useCallback((toast: Partial<Omit<Toast, 'id' | 'severity'>>) => {
+      const newToast: Omit<Toast, 'id'> = {
+        duration: toast.duration || 5000,
+        title: 'Error',
+        message: 'Ocurrio un error.',
+        severity: 'error',
+        ...toast,
+      }
+
+      createToast(newToast)
+    }, []),
+  }
+
   const addToast = useCallback((toast: Omit<Toast, 'id'>) => {
     const id = Math.random().toString(36).substring(2, 9)
     const newToast: Toast = {
@@ -31,7 +66,8 @@ export function ToastProvider({ children }: { children: React.ReactNode }) {
 
   return (
     <ToastContext.Provider
-      value={{ toasts, addToast, removeToast, clearAllToasts }}>
+      value={{ toasts, addToast, removeToast, clearAllToasts, showToast }}
+    >
       {children}
     </ToastContext.Provider>
   )

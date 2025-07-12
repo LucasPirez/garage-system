@@ -11,6 +11,10 @@ export interface Toast {
 export interface ToastContextType {
   toasts: Toast[]
   addToast: (toast: Omit<Toast, 'id'>) => void
+  showToast: {
+    success: (toast: Partial<Omit<Toast, 'id' | 'severity'>>) => void
+    error: (toast: Partial<Omit<Toast, 'id' | 'severity'>>) => void
+  }
   removeToast: (id: string) => void
   clearAllToasts: () => void
 }
