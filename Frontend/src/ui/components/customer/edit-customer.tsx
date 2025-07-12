@@ -9,6 +9,7 @@ import { useToast } from '../../context/toast-context'
 import { updateCustomerVehicleService } from '../../../core/services'
 import { triggerCoolDown } from '../../../core/helpers/triggerCoolDown'
 import { useLoader } from '../../context/loader-context'
+import { useStoreClientsAndVehicles } from '../../../core/store/clients-vehicles-store'
 
 export const EditCustomer = ({
   customer,
@@ -18,6 +19,7 @@ export const EditCustomer = ({
   const [customerSelected, setCustomerSelected] =
     useState<CustomerFormType>(customer)
   const [disabled, setDisabled] = useState(true)
+  const { updateCustomer } = useStoreClientsAndVehicles()
   const { addToast } = useToast()
   const { showLoader, hideLoader } = useLoader()
 
@@ -56,7 +58,7 @@ export const EditCustomer = ({
         title: 'Exito',
         message: 'Cliente actualizado correctamente',
       })
-
+      updateCustomer({ ...customerSelected, id: customer.id })
       setDisabled(true)
     } catch (error) {
       addToast({

@@ -2,39 +2,61 @@ import { create } from 'zustand'
 import { VehicleType } from '../type/vehicle'
 import { CustomerType } from '../type/customer'
 
-export type CustomerAndVehicleType = CustomerType & { vehicle: VehicleType[] }
+export type CustomerAndVehicleType = CustomerType & { vehicles: VehicleType[] }
 
 export interface ClientsAndVehiclesStoreType {
-  clients: CustomerAndVehicleType[]
-  addVehicle: (vehicleData: VehicleType, clientId: string) => void
-  setVehicles: (vehicleData: VehicleType[], clientId: string) => void
-  setClients: (clients: CustomerAndVehicleType[]) => void
+  customers: CustomerAndVehicleType[]
+  addVehicle: (vehicleData: VehicleType, customerId: string) => void
+  setVehicles: (vehicleData: VehicleType[], customerId: string) => void
+  setCustomers: (customers: CustomerAndVehicleType[]) => void
+  updateVehicle: (vehicle: VehicleType) => void
+  updateCustomer: (customer: CustomerType) => void
 }
 
 export const useStoreClientsAndVehicles = create<ClientsAndVehiclesStoreType>(
   (set) => ({
-    clients: [],
-    setVehicles: (vehicles: VehicleType[], clientId: string) =>
+    customers: [],
+    setVehicles: (vehicles: VehicleType[], customerId: string) =>
       set((state) => ({
         ...state,
-        clients: state.clients.map((client) =>
-          client.id === clientId ? { ...client, vehicles } : client
+        customers: state.customers.map((customer) =>
+          customer.id === customerId ? { ...customer, vehicles } : customer
         ),
       })),
-    addVehicle: (vehicle: VehicleType, clientId: string) =>
+    addVehicle: (vehicle: VehicleType, customerId: string) =>
       set((state) => ({
         ...state,
-        clients: state.clients.map((client) =>
-          client.id === clientId
-            ? { ...client, vehicles: [...client.vehicle, vehicle] }
-            : client
+        customers: state.customers.map((customer) =>
+          customer.id === customerId
+            ? { ...customer, vehicles: [...customer.vehicles, vehicle] }
+            : customer
         ),
       })),
 
-    setClients: (clients: CustomerAndVehicleType[]) =>
+    setCustomers: (customers: CustomerAndVehicleType[]) =>
       set((state) => ({
         ...state,
-        clients,
+        customers,
+      })),
+    updateCustomer: (customerPayload: CustomerType) =>
+      set((state) => ({
+        ...state,
+        customers: state.customers.map((customer) =>
+          customer.id === customerPayload.id
+            ? { ...customerPayload, vehicles: customer.vehicles }
+            : customer
+        ),
+      })),
+    updateVehicle: (vehiclePayload: VehicleType) =>
+      set((state) => ({
+        ...state,
+        customers: state.customers.map((customer) => {
+          const vehicles = customer.vehicles.map((vehicle) =>
+            vehicle.id === vehiclePayload.id ? vehiclePayload : vehicle
+          )
+
+          return { ...customer, vehicles }
+        }),
       })),
   })
 )

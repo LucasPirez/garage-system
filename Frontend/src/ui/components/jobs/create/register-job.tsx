@@ -182,7 +182,7 @@ export const RegisterJob = () => {
 
             {vehicleSelected ? (
               <div className="flex gap-2 flex-wrap ">
-                {customerSelected?.vehicle.map((vehicle) => (
+                {customerSelected?.vehicles.map((vehicle) => (
                   <VehicleItem
                     onClick={() => handleVehicleSelect(vehicle)}
                     selected={vehicleSelected?.id === vehicle.id}

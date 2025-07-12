@@ -15,7 +15,7 @@ export const useSelectCustomerVehicle = () => {
       alert('error en la seleccion del cliente y vehiculo')
       return
     }
-    const { vehicle, ...customer } = select
+    const { vehicles, ...customer } = select
 
     setCustomer({
       ...customer,
@@ -23,7 +23,7 @@ export const useSelectCustomerVehicle = () => {
       email: customer.email,
     })
 
-    setVehicles(vehicle)
+    setVehicles(vehicles)
   }
 
   const handleUpdateVehicle = (vehicleUpdate: VehicleType) => {

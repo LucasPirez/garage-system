@@ -8,6 +8,7 @@ import { triggerCoolDown } from '../../../core/helpers/triggerCoolDown'
 import { ModalDeleteVehicle } from '../modal/modal-delete'
 import { SelectVehicle } from './select-vehicle'
 import { useLoader } from '../../context/loader-context'
+import { useStoreClientsAndVehicles } from '../../../core/store/clients-vehicles-store'
 
 export const EditVehicle = ({
   vehicle,
@@ -19,6 +20,7 @@ export const EditVehicle = ({
   const [vehicleSelect, setVehicleSelect] = useState<VehicleType>(vehicle[0])
   const [disabled, setDisabled] = useState(true)
   const [deleteVehicle, setDeleteVehicle] = useState<VehicleType | null>(null)
+  const { updateVehicle } = useStoreClientsAndVehicles()
   const { addToast } = useToast()
   const { showLoader, hideLoader } = useLoader()
 
@@ -62,7 +64,7 @@ export const EditVehicle = ({
         message: 'Vehiculo actualizado correctamente',
       })
       setVehicle(vehicleSelect)
-
+      updateVehicle(vehicleSelect)
       setDisabled(true)
     } catch (error) {
       addToast({

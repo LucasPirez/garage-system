@@ -25,33 +25,34 @@ export const SearchTable = ({
   handleVehicleSelect,
 }: Props) => {
   const [clientsSearch, setClientsSearch] = useState<
-    ClientsAndVehiclesStoreType['clients']
+    ClientsAndVehiclesStoreType['customers']
   >([])
-  const clients = useStoreClientsAndVehicles((clients) => clients.clients)
-  const setStoreClients = useStoreClientsAndVehicles(
-    (clients) => clients.setClients
+  const customers = useStoreClientsAndVehicles((state) => state.customers)
+  const setStoreCustomers = useStoreClientsAndVehicles(
+    (customers) => customers.setCustomers
   )
-  const {addToast } = useToast()
+  const { addToast } = useToast()
 
   useEffect(() => {
-    // eslint-disable-next-line no-extra-semi
+    if (customers.length) return // eslint-disable-next-line no-extra-semi
     ;(async () => {
       try {
         const result = await workshopService.getAllCustomers()
 
-        setStoreClients(
+        setStoreCustomers(
           result.map((client) => ({
             ...client,
             phoneNumber: client.phoneNumber?.[0] || '',
             email: client.email?.[0] || '',
+            vehicles: client.vehicle,
           }))
         )
       } catch (error) {
         console.log(error)
         addToast({
-          severity:'error',
-          title:'Error',
-          message:'Intente mas tarde',
+          severity: 'error',
+          title: 'Error',
+          message: 'Intente mas tarde',
         })
       }
     })()
@@ -67,13 +68,14 @@ export const SearchTable = ({
     onVisibilityChange(true)
 
     // Optimize this.
-    const filteredClients = clients
-      .filter((client) => {
-        const fullName = `${client.firstName} ${client.lastName}`.toLowerCase()
+    const filteredClients = customers
+      .filter((customer) => {
+        const fullName =
+          `${customer.firstName} ${customer.lastName}`.toLowerCase()
         return (
           fullName.includes(value.toLowerCase()) ||
-          client.phoneNumber[0]?.includes(value) ||
-          client.vehicle.some((vehicle) =>
+          customer.phoneNumber[0]?.includes(value) ||
+          customer.vehicles.some((vehicle) =>
             vehicle.plate.toLowerCase().includes(value.toLowerCase())
           )
         )
@@ -99,7 +101,8 @@ export const SearchTable = ({
                 className="w-5 h-5 text-gray-400"
                 fill="none"
                 stroke="currentColor"
-                viewBox="0 0 24 24">
+                viewBox="0 0 24 24"
+              >
                 <path
                   strokeLinecap="round"
                   strokeLinejoin="round"
@@ -119,7 +122,8 @@ export const SearchTable = ({
           <table
             className={`min-w-full divide-y divide-gray-200  ${
               isVisible ? '' : 'hidden'
-            }`}>
+            }`}
+          >
             <Head />
             <Body
               data={clientsSearch}
