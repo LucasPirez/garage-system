@@ -39,57 +39,19 @@ export const EditJob = () => {
 
   useEffect(() => {
     if (location.state) {
-      const {
-        budget,
-        cause,
-        deliveryDate,
-        details,
-        finalAmount,
-        id,
-        notificationSent,
-        receptionDate,
-        spareParts,
-      } = location.state as JobType
+      const { id, ...job } = location.state as JobType
       refId.current = id
-      setFormData({
-        budget,
-        cause,
-        deliveryDate,
-        details,
-        finalAmount,
-        notificationSent,
-        receptionDate,
-        spareParts,
-      })
+      setFormData(job)
     } else {
       const id =
         location.pathname.split('/')[location.pathname.split('/').length - 1]
       if (id?.length) {
         // eslint-disable-next-line no-extra-semi
         ;(async () => {
-          const {
-            budget,
-            cause,
-            deliveryDate,
-            details,
-            finalAmount,
-            notificationSent,
-            receptionDate,
-            spareParts,
-          } = await jobService.getById(id)
-
+          const jobResponse = await jobService.getById(id)
           refId.current = id
 
-          setFormData({
-            budget,
-            cause,
-            deliveryDate,
-            details,
-            finalAmount,
-            notificationSent,
-            receptionDate,
-            spareParts,
-          })
+          setFormData(jobResponse)
         })()
       }
     }

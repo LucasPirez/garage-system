@@ -12,18 +12,15 @@ import { ButtonClose } from '../buttons/button-close-icon'
 import { useToast } from '../../context/toast-context'
 
 interface Props {
-  onVisibilityChange: (visible: boolean) => void
-  isVisible: boolean
   handleClientSelect?: (clientSelected: CustomerAndVehicleType | null) => void
   handleVehicleSelect?: (vehicle: VehicleType | null) => void
 }
 
 export const SearchTable = ({
-  isVisible,
-  onVisibilityChange,
   handleClientSelect,
   handleVehicleSelect,
 }: Props) => {
+  const [visible, setVisible] = useState(false)
   const [clientsSearch, setClientsSearch] = useState<
     ClientsAndVehiclesStoreType['customers']
   >([])
@@ -62,10 +59,10 @@ export const SearchTable = ({
     const { value } = event.target
 
     if (!value.trim()?.length) {
-      onVisibilityChange(false)
+      setVisible(false)
       return
     }
-    onVisibilityChange(true)
+    setVisible(true)
 
     // Optimize this.
     const filteredClients = customers
@@ -93,10 +90,11 @@ export const SearchTable = ({
             type="text"
             placeholder="Buscar por nombre, Telefono o Patente"
             onChange={handleChange}
+            onFocus={() => setVisible(true)}
             className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
           />
           <div className="absolute inset-y-0 right-0 flex items-center pr-3">
-            {!isVisible ? (
+            {!visible ? (
               <svg
                 className="w-5 h-5 text-gray-400"
                 fill="none"
@@ -111,7 +109,7 @@ export const SearchTable = ({
                 />
               </svg>
             ) : (
-              <ButtonClose onClick={() => onVisibilityChange(false)} />
+              <ButtonClose onClick={() => setVisible(false)} />
             )}
           </div>
         </div>
@@ -121,13 +119,13 @@ export const SearchTable = ({
         <div className="overflow-x-auto">
           <table
             className={`min-w-full divide-y divide-gray-200  ${
-              isVisible ? '' : 'hidden'
+              visible ? '' : 'hidden'
             }`}
           >
             <Head />
             <Body
               data={clientsSearch}
-              onVisibilityChange={onVisibilityChange}
+              onVisibilityChange={setVisible}
               handleClientSelect={handleClientSelect}
               handleVehicleSelect={handleVehicleSelect}
             />

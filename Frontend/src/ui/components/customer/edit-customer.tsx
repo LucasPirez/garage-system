@@ -1,4 +1,4 @@
-import { ChangeEvent, useState } from 'react'
+import { ChangeEvent, useEffect, useState } from 'react'
 import { InputsFormCustomer } from './inputs-form-customer'
 import type {
   CustomerFormType,
@@ -22,6 +22,10 @@ export const EditCustomer = ({
   const { updateCustomer } = useStoreClientsAndVehicles()
   const { showToast } = useToast()
   const { showLoader, hideLoader } = useLoader()
+
+  useEffect(() => {
+    setCustomerSelected(customer)
+  }, [customer])
 
   const handleChange = (
     event: ChangeEvent<HTMLSelectElement | HTMLInputElement>
