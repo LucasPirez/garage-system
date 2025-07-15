@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import { SearchTable } from '../components/search-table/search-table'
 import withAuth from '../components/hoc/with-auth'
 import { EditCustomer } from '../components/customer/edit-customer'
@@ -6,17 +5,12 @@ import { EditVehicle } from '../components/vehicle/edit-vehicle'
 import { useSelectCustomerVehicle } from '../hooks/useSelectCustomerVehicle'
 
 const Edits = () => {
-  const [visible, setVisible] = useState(false)
   const { customer, handleSelect, handleUpdateVehicle, vehicles } =
     useSelectCustomerVehicle()
 
   return (
     <section className="lg:px-6 sm:px-4">
-      <SearchTable
-        isVisible={visible}
-        onVisibilityChange={setVisible}
-        handleClientSelect={handleSelect}
-      />
+      <SearchTable handleClientSelect={handleSelect} />
       {!customer && !vehicles && (
         <h2 className="text-2xl text-gray-500 text-center font-semibold mt-10">
           Selecciona un cliente para editar

@@ -11,6 +11,7 @@ import {
   classNameLabel,
 } from '../../../../core/constants/class-names'
 import { triggerCoolDown } from '../../../../core/helpers/triggerCoolDown'
+import { useLoader } from '../../../context/loader-context'
 
 export type FormDataType = Omit<
   JobType,
@@ -29,65 +30,28 @@ const initialData: FormDataType = {
 }
 
 export const EditJob = () => {
-  const refId = useRef<string>('')
+  const refId = useRef<string | null>(null)
   const navigate = useNavigate()
   const location = useLocation()
   const [formData, setFormData] = useState<FormDataType | null>(initialData)
   const toast = useToast()
+  const { hideLoader, showLoader } = useLoader()
 
   useEffect(() => {
     if (location.state) {
-      const {
-        budget,
-        cause,
-        deliveryDate,
-        details,
-        finalAmount,
-        id,
-        notificationSent,
-        receptionDate,
-        spareParts,
-      } = location.state as JobType
+      const { id, ...job } = location.state as JobType
       refId.current = id
-      setFormData({
-        budget,
-        cause,
-        deliveryDate,
-        details,
-        finalAmount,
-        notificationSent,
-        receptionDate,
-        spareParts,
-      })
+      setFormData(job)
     } else {
       const id =
         location.pathname.split('/')[location.pathname.split('/').length - 1]
       if (id?.length) {
         // eslint-disable-next-line no-extra-semi
         ;(async () => {
-          const {
-            budget,
-            cause,
-            deliveryDate,
-            details,
-            finalAmount,
-            notificationSent,
-            receptionDate,
-            spareParts,
-          } = await jobService.getById(id)
-
+          const jobResponse = await jobService.getById(id)
           refId.current = id
 
-          setFormData({
-            budget,
-            cause,
-            deliveryDate,
-            details,
-            finalAmount,
-            notificationSent,
-            receptionDate,
-            spareParts,
-          })
+          setFormData(jobResponse)
         })()
       }
     }
@@ -121,10 +85,11 @@ export const EditJob = () => {
       return
     }
 
+    showLoader()
     try {
       await jobService.update({
         ...formData,
-        id: refId.current,
+        id: refId.current ?? '',
         deliveryDate: formData.deliveryDate
           ? new Date(formData.deliveryDate).toISOString()
           : null,
@@ -138,7 +103,7 @@ export const EditJob = () => {
 
       toast.addToast({
         title: 'Actualizado',
-        message: 'Actualizado con exito',
+        message: 'Actualizado con exitooooo',
         severity: 'success',
       })
     } catch (error) {
@@ -147,6 +112,48 @@ export const EditJob = () => {
         message: 'Ocurrio un error al actualizar',
         severity: 'error',
       })
+    } finally {
+      hideLoader()
+    }
+  }
+
+  const handleUpdateSpareParts = async (payload: SparePart[]) => {
+    if (!triggerCoolDown()) {
+      toast.addToast({
+        severity: 'error',
+        title: 'Error',
+        message: 'Demasiadas solicitudes, por favor espere un momento.',
+        duration: 1000,
+      })
+      return
+    }
+    showLoader()
+    try {
+      if (!refId.current)
+        throw new Error('Error, no se obtiene el id del trabajo.')
+
+      await jobService.updateSpareParts(payload, refId.current)
+
+      handleInputChange('spareParts', payload)
+
+      navigate('.', {
+        replace: true,
+        state: { ...{ ...formData, spareParts: payload }, id: refId.current },
+      })
+
+      toast.addToast({
+        title: 'Actualizada',
+        message: 'Se agrego o elimino con exito el repuesto',
+        severity: 'success',
+      })
+    } catch (error) {
+      toast.addToast({
+        title: 'Error',
+        message: 'Ocurrio un error al los repuestos',
+        severity: 'error',
+      })
+    } finally {
+      hideLoader()
     }
   }
 
@@ -161,120 +168,124 @@ export const EditJob = () => {
         </div>
       </div>
 
-      <form onSubmit={handleSubmit} className="mb-12 py-4  md:p-6 space-y-6">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div className="space-y-2">
-            <label htmlFor="receptionDate" className={classNameLabel}>
-              Fecha de Recepción
-            </label>
-            <input
-              id="receptionDate"
-              type="date"
-              value={formData.receptionDate.split('T')[0]}
-              onChange={(e) =>
-                handleInputChange('receptionDate', e.target.value)
-              }
-              required
-              className={classNameInput}
-            />
+      <section className="py-4  md:p-6 ">
+        <form onSubmit={handleSubmit} className="mb-3 space-y-6  ">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <label htmlFor="receptionDate" className={classNameLabel}>
+                Fecha de Recepción
+              </label>
+              <input
+                id="receptionDate"
+                type="date"
+                value={formData.receptionDate.split('T')[0]}
+                onChange={(e) =>
+                  handleInputChange('receptionDate', e.target.value)
+                }
+                required
+                className={classNameInput}
+              />
+            </div>
+            <div className="space-y-2">
+              <label htmlFor="deliveryDate" className={classNameLabel}>
+                Fecha de Finalizado
+              </label>
+              <input
+                id="deliveryDate"
+                type="date"
+                value={formData.deliveryDate?.split('T')[0] ?? ''}
+                onChange={(e) =>
+                  handleInputChange('deliveryDate', e.target.value || null)
+                }
+                className={classNameInput}
+              />
+            </div>
           </div>
-          <div className="space-y-2">
-            <label htmlFor="deliveryDate" className={classNameLabel}>
-              Fecha de Finalizado
-            </label>
-            <input
-              id="deliveryDate"
-              type="date"
-              value={formData.deliveryDate?.split('T')[0] ?? ''}
-              onChange={(e) =>
-                handleInputChange('deliveryDate', e.target.value || null)
-              }
-              className={classNameInput}
-            />
-          </div>
-        </div>
 
-        <div className="space-y-2">
-          <label htmlFor="cause" className={classNameLabel}>
-            Causa
-          </label>
-          <input
-            id="cause"
-            type="text"
-            value={formData.cause}
-            onChange={(e) => handleInputChange('cause', e.target.value)}
-            placeholder="Motivo del servicio"
-            required
-            className={classNameInput}
-          />
-        </div>
-        <div className="space-y-2">
-          <label htmlFor="details" className={classNameLabel}>
-            Detalles
-          </label>
-          <textarea
-            id="details"
-            value={formData.details}
-            onChange={(e) => handleInputChange('details', e.target.value)}
-            placeholder="Descripción detallada del servicio"
-            rows={3}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 resize-vertical"
-          />
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="space-y-2">
-            <label htmlFor="presupuest" className={classNameLabel}>
-              Presupuesto
+            <label htmlFor="cause" className={classNameLabel}>
+              Causa
             </label>
             <input
-              id="presupuest"
-              type="number"
-              min="0"
-              step="1000"
-              value={formData.budget}
-              onChange={(e) =>
-                handleInputChange('budget', Number.parseFloat(e.target.value))
-              }
+              id="cause"
+              type="text"
+              value={formData.cause}
+              onChange={(e) => handleInputChange('cause', e.target.value)}
+              placeholder="Motivo del servicio"
               required
               className={classNameInput}
             />
           </div>
           <div className="space-y-2">
-            <label htmlFor="finalAmount" className={classNameLabel}>
-              Monto Final
+            <label htmlFor="details" className={classNameLabel}>
+              Detalles
             </label>
-            <input
-              id="finalAmount"
-              type="number"
-              min="0"
-              step="1000"
-              value={formData.finalAmount}
-              onChange={(e) =>
-                handleInputChange(
-                  'finalAmount',
-                  Number.parseFloat(e.target.value)
-                )
-              }
-              className={classNameInput}
+            <textarea
+              id="details"
+              value={formData.details}
+              onChange={(e) => handleInputChange('details', e.target.value)}
+              placeholder="Descripción detallada del servicio"
+              rows={3}
+              className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 resize-vertical"
             />
           </div>
-        </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <label htmlFor="presupuest" className={classNameLabel}>
+                Presupuesto
+              </label>
+              <input
+                id="presupuest"
+                type="number"
+                min="0"
+                step="1000"
+                value={formData.budget}
+                onChange={(e) =>
+                  handleInputChange('budget', Number.parseFloat(e.target.value))
+                }
+                required
+                className={classNameInput}
+              />
+            </div>
+            <div className="space-y-2">
+              <label htmlFor="finalAmount" className={classNameLabel}>
+                Monto Final
+              </label>
+              <input
+                id="finalAmount"
+                type="number"
+                min="0"
+                step="1000"
+                value={formData.finalAmount}
+                onChange={(e) =>
+                  handleInputChange(
+                    'finalAmount',
+                    Number.parseFloat(e.target.value)
+                  )
+                }
+                className={classNameInput}
+              />
+            </div>
+          </div>
+          <div className="border-b border-gray-400 flex justify-end pb-3">
+            <button
+              type="submit"
+              className="  bg-blue-600 text-white py-2 px-4 rounded-md shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 font-medium "
+            >
+              Guardar Cambios
+            </button>
+          </div>
+        </form>
         <div className="space-y-2">
           <label className={classNameLabel}>Repuestos</label>
           <div className="space-y-2">
             <SpareParts
-              formData={formData}
-              handleChange={handleInputChange}
-              setFormData={setFormData}
+              spareParts={formData.spareParts}
+              handleSpareParts={handleUpdateSpareParts}
             />
           </div>
         </div>
-        <button
-          type="submit"
-          className="  bg-blue-600 text-white py-2 px-4 rounded-md shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 font-medium float-end">
-          Guardar Cambios
-        </button>
-      </form>
+      </section>
     </>
   )
 }

@@ -9,22 +9,25 @@ import { PATHS } from '../../core/constants/paths'
 import { Login } from '../pages/login'
 import { Edits } from '../pages/Edits'
 import { Historical } from '../pages/Historical'
+import { LoaderProvider } from '../context/loader-context'
 
 function App() {
   return (
     <ToastProvider>
       <ToastContainer />
-      <Routes>
-        <Route path="/" element={<Navbar />}>
-          <Route path={`${PATHS.JOBS}/:id`} element={<EditJob />}></Route>
-          <Route path={`${PATHS.JOBS}`} element={<Jobs />}></Route>
-          <Route path={`${PATHS.REGISTER}`} element={<RegisterPage />} />
-          <Route path={`${PATHS.EDITS}`} element={<Edits />} />
-          <Route path={`${PATHS.LOGIN}`} element={<Login />} />
-          <Route path={`${PATHS.HISTORICAL}`} element={<Historical />} />
-          <Route path="*" element={<h1>404 not found</h1>} />
-        </Route>
-      </Routes>
+      <LoaderProvider>
+        <Routes>
+          <Route path="/" element={<Navbar />}>
+            <Route path={`${PATHS.JOBS}/:id`} element={<EditJob />}></Route>
+            <Route path={`${PATHS.JOBS}`} element={<Jobs />}></Route>
+            <Route path={`${PATHS.REGISTER}`} element={<RegisterPage />} />
+            <Route path={`${PATHS.EDITS}`} element={<Edits />} />
+            <Route path={`${PATHS.LOGIN}`} element={<Login />} />
+            <Route path={`${PATHS.HISTORICAL}`} element={<Historical />} />
+            <Route path="*" element={<h1>404 not found</h1>} />
+          </Route>
+        </Routes>
+      </LoaderProvider>
     </ToastProvider>
   )
 }

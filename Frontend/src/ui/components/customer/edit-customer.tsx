@@ -1,4 +1,4 @@
-import { ChangeEvent, useState } from 'react'
+import { ChangeEvent, useEffect, useState } from 'react'
 import { InputsFormCustomer } from './inputs-form-customer'
 import type {
   CustomerFormType,
@@ -8,6 +8,8 @@ import { ButtonSubmit } from '../buttons/button-submit'
 import { useToast } from '../../context/toast-context'
 import { updateCustomerVehicleService } from '../../../core/services'
 import { triggerCoolDown } from '../../../core/helpers/triggerCoolDown'
+import { useLoader } from '../../context/loader-context'
+import { useStoreClientsAndVehicles } from '../../../core/store/clients-vehicles-store'
 
 export const EditCustomer = ({
   customer,
@@ -17,7 +19,13 @@ export const EditCustomer = ({
   const [customerSelected, setCustomerSelected] =
     useState<CustomerFormType>(customer)
   const [disabled, setDisabled] = useState(true)
-  const { addToast } = useToast()
+  const { updateCustomer } = useStoreClientsAndVehicles()
+  const { showToast } = useToast()
+  const { showLoader, hideLoader } = useLoader()
+
+  useEffect(() => {
+    setCustomerSelected(customer)
+  }, [customer])
 
   const handleChange = (
     event: ChangeEvent<HTMLSelectElement | HTMLInputElement>
@@ -35,32 +43,29 @@ export const EditCustomer = ({
     event.preventDefault()
 
     if (!triggerCoolDown()) {
-      addToast({
-        severity: 'error',
-        title: 'Error',
+      showToast.error({
         message: 'Demasiadas solicitudes, por favor espere un momento.',
       })
       return
     }
 
+    showLoader()
     try {
       await updateCustomerVehicleService.updateCustomer(
         customerSelected,
         customer.id
       )
-      addToast({
-        severity: 'success',
-        title: 'Exito',
+      showToast.success({
         message: 'Cliente actualizado correctamente',
       })
-
+      updateCustomer({ ...customerSelected, id: customer.id })
       setDisabled(true)
     } catch (error) {
-      addToast({
-        severity: 'error',
-        title: 'Error',
+      showToast.error({
         message: 'Error al actualizar el cliente',
       })
+    } finally {
+      hideLoader()
     }
   }
 

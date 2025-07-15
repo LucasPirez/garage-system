@@ -46,5 +46,14 @@ namespace backend.Modules.RepairOrderModule
             await _vehicleEntryService.UpdateStatusAndFinalAmount(updateDto);
             return StatusCode(StatusCodes.Status200OK);
         }
+
+        [SwaggerRequestExample(typeof(List<UpdateSparePartDto>), typeof(List<PatchSparePartDto>))]
+        [HttpPatch("{id}/spare-parts")]
+        public async Task<IActionResult> PatchSpareParts([FromRoute] Guid id,[FromBody] List<UpdateSparePartDto> dto)
+        {
+            await _vehicleEntryService.UpdateSpareParts(dto, id);
+
+            return StatusCode(StatusCodes.Status200OK);
+        }
     }
 }

@@ -9,7 +9,7 @@ namespace backend.Database.Repository
     {
         protected readonly AppDbContext _context;
         protected readonly DbSet<T> _dbSet;
-        private readonly IMapper? _mapper;
+        protected readonly IMapper? _mapper;
 
         public Repository(AppDbContext database)
         {

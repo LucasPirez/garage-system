@@ -1,21 +1,17 @@
-import { useState } from 'react'
 import withAuth from '../components/hoc/with-auth'
 import { SearchTable } from '../components/search-table/search-table'
 import { useSelectCustomerVehicle } from '../hooks/useSelectCustomerVehicle'
 import { Vehicles } from '../components/historical/vehicles'
+import { ButtonNavigate } from '../components/buttons/button-navigate'
+import { PATHS } from '../../core/constants/paths'
 
 const Historical = () => {
-  const [visible, setVisible] = useState(false)
   const { customer, handleSelect, vehicles } = useSelectCustomerVehicle()
 
   return (
     <>
       <section className="lg:px-6 sm:px-4">
-        <SearchTable
-          isVisible={visible}
-          onVisibilityChange={setVisible}
-          handleClientSelect={handleSelect}
-        />
+        <SearchTable handleClientSelect={handleSelect} />
       </section>
 
       {!customer ? (
@@ -27,6 +23,7 @@ const Historical = () => {
           <h2 className="text-2xl text-gray-800 font-semibold mb-3 text-center">
             {customer.firstName} {customer.lastName}
           </h2>
+          <ButtonNavigate path={PATHS.EDITS} label="Editar" />
         </section>
       )}
 

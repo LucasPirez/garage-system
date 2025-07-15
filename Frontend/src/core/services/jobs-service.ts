@@ -1,5 +1,8 @@
 import { AxiosInstance } from 'axios'
-import { JobsResponseDto } from '../dtos/vehicleEntry/jobs-response.dto'
+import {
+  JobsResponseDto,
+  SparePart,
+} from '../dtos/vehicleEntry/jobs-response.dto'
 import { JobUpdateDto } from '../dtos/vehicleEntry/job-update.dto'
 import { JOBS_STATUS } from '../constants/jobs-status'
 import { getWorkshopId } from './worshop-service'
@@ -64,6 +67,10 @@ export class JobsService {
     if (response.status !== 200) {
       alert('Error al actualizar el trabajo')
     }
+  }
+
+  async updateSpareParts(payload: SparePart[], id: string): Promise<void> {
+    await this.client.patch(`${this.BASE_PATH}/${id}/spare-parts`, payload)
   }
 }
 

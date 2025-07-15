@@ -41,7 +41,7 @@ export const InputsFormVehicle = ({ state, onChange }: Props) => {
     <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
       <div>
         <label htmlFor="plate" className={classNameLabel}>
-          Patente
+          Patente <span className="text-red-700 ">*</span>
         </label>
         <input
           type="text"
@@ -87,7 +87,7 @@ export const InputsFormVehicle = ({ state, onChange }: Props) => {
 
       <div>
         <label htmlFor="model" className={classNameLabel}>
-          Modelo
+          Modelo <span className="text-red-700 ">*</span>
         </label>
         <input
           type="text"

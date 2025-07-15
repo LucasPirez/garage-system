@@ -70,6 +70,18 @@ namespace backend.Swagger
             };
     }
 
+    public class PatchSparePartDto : IExamplesProvider<UpdateSparePartDto>
+    {
+        UpdateSparePartDto IExamplesProvider<UpdateSparePartDto>.GetExamples() =>
+             new UpdateSparePartDto
+                    {
+                        Name = "Aceite",
+                        Price = 4500,
+                        Quantity = 1
+                    };
+        
+    }
+
     public class CreateVehicleDtoExample : IExamplesProvider<CreateVehicleDto>
     {
         public CreateVehicleDto GetExamples() =>
