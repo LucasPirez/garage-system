@@ -3,11 +3,7 @@ import { JobCreateDto } from '../../../../core/services/jobs-service'
 import { InputsFormCustomer } from '../../customer/inputs-form-customer'
 import { InputsFormVehicle } from '../../vehicle/inputs-form-vehicle'
 import { InputsFormJob } from '../inputs-form-job'
-import {
-  customerService,
-  jobService,
-  vehicleService,
-} from '../../../../core/services'
+import { jobService } from '../../../../core/services'
 import { useRegisterJobContext } from '../../../context/register-job-context'
 import { ButtonClose } from '../../buttons/button-close-icon'
 import { VehicleItem } from './vehicle-item'
@@ -18,6 +14,7 @@ import { VehicleCreateDto } from '../../../../core/dtos/vehicle/vehicle-request.
 import { triggerCoolDown } from '../../../../core/helpers/triggerCoolDown'
 import { useToast } from '../../../context/toast-context'
 import { useLoader } from '../../../context/loader-context'
+import { CustomError } from '../../../../core/helpers/custom-error'
 
 type FormDataType = Omit<JobCreateDto, 'workshopId' | 'vehicleId'> &
   Omit<VehicleCreateDto, 'customerId'> &
@@ -61,6 +58,14 @@ export const RegisterJob = () => {
     setFormData((prev) => ({ ...prev, [name]: value }))
   }
 
+  const handleSuccess = () => {
+    setFormData(FormInitialState)
+    addToast({
+      severity: 'success',
+      title: 'Éxito',
+      message: 'Servicio registrado correctamente',
+    })
+  }
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     const {
@@ -76,9 +81,6 @@ export const RegisterJob = () => {
       receptionDate,
     } = formData
     try {
-      let customerId: string | undefined = customerSelected?.id
-      let vehicleId: string | undefined = vehicleSelected?.id
-
       if (!triggerCoolDown()) {
         addToast({
           severity: 'error',
@@ -88,44 +90,64 @@ export const RegisterJob = () => {
         return
       }
       showLoader()
-      if (!customerSelected?.firstName) {
-        const customerResponse = await customerService.create({
-          email: [email],
-          firstName,
-          lastName,
-          phoneNumber: [phoneNumber],
-        })
-        customerId = customerResponse
-      }
 
-      if (!customerId) throw new Error('Id del customer es' + typeof vehicleId)
+      const receptionDateISO = new Date(receptionDate).toISOString()
 
-      if (!vehicleSelected) {
-        const vehicleResponse = await vehicleService.create({
-          color,
-          customerId: customerId,
-          model,
-          plate,
-        })
-        vehicleId = vehicleResponse
-      }
-
-      if (!vehicleId) throw new Error('Id del vehiculo es' + typeof vehicleId)
-
-      await jobService.create({
+      const basePayload = {
         cause,
         details,
-        receptionDate: new Date(receptionDate).toISOString(),
-        vehicleId,
+        receptionDate: receptionDateISO,
+      }
+
+      if (!customerSelected && !vehicleSelected) {
+        await jobService.createWithVehicleAndCustomer({
+          ...basePayload,
+          vehicleDto: { color, model, plate },
+          customerDto: {
+            email: [email],
+            firstName,
+            lastName,
+            phoneNumber: [phoneNumber],
+          },
+        })
+        handleSuccess()
+        return
+      }
+
+      if (!vehicleSelected && customerSelected) {
+        await jobService.createWithVehicle({
+          ...basePayload,
+          vehicleDto: {
+            color,
+            model,
+            plate,
+            customerId: customerSelected.id,
+          },
+        })
+        handleSuccess()
+
+        return
+      }
+
+      if (!vehicleSelected) {
+        throw new Error('Vehículo no seleccionado')
+      }
+
+      await jobService.create({
+        ...basePayload,
+        vehicleId: vehicleSelected.id,
       })
 
-      setFormData(FormInitialState)
-      addToast({
-        severity: 'success',
-        title: 'Éxito',
-        message: 'Servicio registrado correctamente',
-      })
+      handleSuccess()
     } catch (error) {
+      if (error instanceof CustomError) {
+        addToast({
+          severity: 'error',
+          title: 'Error',
+          message: error.message,
+        })
+        return
+      }
       addToast({
         severity: 'error',
         title: 'Error',
