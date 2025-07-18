@@ -1,4 +1,6 @@
 ﻿using backend.Database.Entites;
+using backend.Modules.CustomerModule.Dtos;
+using backend.Modules.VehicleModule.Dtos;
 
 namespace backend.Modules.RepairOrderModule.Dtos
 {
@@ -15,20 +17,31 @@ namespace backend.Modules.RepairOrderModule.Dtos
         public string WorkshopId { get; set; }
     }
 
-    public class UpdateRepairOrderDto
+    public class CreateRepairOrderWithVehicleDto
     {
-        public string Id { get; set; }
         public required DateTime ReceptionDate { get; set; } = DateTime.UtcNow;
 
         public required string Cause { get; set; } = string.Empty;
 
-        public required string? Details { get; set; } = string.Empty;
-        public required double? Budget { get; set; }
-        public DateTime? DeliveryDate { get; set; }
-        public bool NotificationSent { get; set; }
+        public string? Details { get; set; } = string.Empty;
 
-        public double FinalAmount { get; set; }
+        public required string WorkshopId { get; set; }
 
-        public required List<SparePart>? SpareParts { get; set; } = new List<SparePart>();
+        public required CreateVehicleDto VehicleDto { get; set; }
+    }
+
+    public class CreateRepairOrderWithVehicleAndCustomerDto
+    {
+        public required DateTime ReceptionDate { get; set; } = DateTime.UtcNow;
+
+        public required string Cause { get; set; } = string.Empty;
+
+        public string? Details { get; set; } = string.Empty;
+
+        public required string WorkshopId { get; set; }
+
+        public required BaseVehicleDto VehicleDto { get; set; }
+
+        public required BaseCustomerDto CustomerDto { get; set; }
     }
 }

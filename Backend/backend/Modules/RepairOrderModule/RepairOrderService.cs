@@ -3,8 +3,10 @@ using backend.Common.Exceptions;
 using backend.Database;
 using backend.Database.Entites;
 using backend.Database.Repository;
+using backend.Modules.CustomerModule.Dtos;
 using backend.Modules.RepairOrderModule.Dtos;
 using backend.Modules.RepairOrderModule.Interfaces;
+using backend.Modules.VehicleModule.Dtos;
 using Microsoft.EntityFrameworkCore;
 
 namespace backend.Modules.RepairOrderModule
@@ -13,6 +15,107 @@ namespace backend.Modules.RepairOrderModule
     {
         public RepairOrderService(AppDbContext database, IMapper mapper)
             : base(database, mapper) { }
+
+        public async Task AddRepairOrder(CreateRepairOrderWithVehicleDto dto)
+        {
+
+            await IsPlateRegisteredInWorkshopAsync(dto.VehicleDto.Plate, Guid.Parse(dto.WorkshopId));
+            var transaction = await _context.Database.BeginTransactionAsync();
+            try
+            {
+                Guid vehicleId = Guid.NewGuid();
+
+                Vehicle vehicle = new Vehicle()
+                {
+                    Id = vehicleId,
+                    CustomerId = Guid.Parse(dto.VehicleDto.CustomerId),
+                    Plate = dto.VehicleDto.Plate,
+                    Color = dto.VehicleDto.Color,
+                    Model = dto.VehicleDto.Model
+                };
+                _context.Vehicles.Add(vehicle);
+                await _context.SaveChangesAsync();
+
+                RepairOrder repairOrder = new RepairOrder()
+                {
+                    Id = Guid.NewGuid(),
+                    WorkShopId = new Guid(dto.WorkshopId),
+                    Cause = dto.Cause,
+                    Details = dto.Details ?? "",
+                    VehicleId = vehicleId,
+                    ReceptionDate = dto.ReceptionDate,
+                };
+
+                _dbSet.Add(repairOrder);
+                await _context.SaveChangesAsync();
+
+                await transaction.CommitAsync();
+            }
+            catch
+            {
+                await transaction.RollbackAsync();
+                throw;
+            }
+        }
+
+        public async Task AddRepairOrder(CreateRepairOrderWithVehicleAndCustomerDto dto)
+        {
+            await IsPlateRegisteredInWorkshopAsync(dto.VehicleDto.Plate, Guid.Parse(dto.WorkshopId));
+
+            var transaction = await _context.Database.BeginTransactionAsync();
+            try
+            {
+                Guid customerId = Guid.NewGuid();
+                Guid vehicleId = Guid.NewGuid();
+
+                Customer customer = new Customer()
+                {
+                    FirstName = dto.CustomerDto.FirstName,
+                    LastName = dto.CustomerDto.LastName,
+                    Id = customerId,
+                    WorkShopId = Guid.Parse(dto.WorkshopId),
+                    PhoneNumber = dto.CustomerDto.PhoneNumber,
+                    Email = dto.CustomerDto.Email,
+                    Address = dto.CustomerDto.Address,
+                    Dni = dto.CustomerDto.Dni,
+                };
+
+                _context.Customers.Add(customer);
+                await _context.SaveChangesAsync();
+
+                Vehicle vehicle = new Vehicle()
+                {
+                    Id = vehicleId,
+                    CustomerId = customerId,
+                    Plate = dto.VehicleDto.Plate,
+                    Color = dto.VehicleDto.Color,
+                    Model = dto.VehicleDto.Model
+                };
+
+                _context.Vehicles.Add(vehicle);
+                await _context.SaveChangesAsync();
+
+                RepairOrder repairOrder = new RepairOrder()
+                {
+                    Id = Guid.NewGuid(),
+                    WorkShopId = new Guid(dto.WorkshopId),
+                    Cause = dto.Cause,
+                    Details = dto.Details ?? "",
+                    VehicleId = vehicleId,
+                    ReceptionDate = dto.ReceptionDate,
+                };
+
+                _dbSet.Add(repairOrder);
+                await _context.SaveChangesAsync();
+
+                await transaction.CommitAsync();
+            }
+            catch
+            {
+                await transaction.RollbackAsync();
+                throw;
+            }
+        }
 
         public async Task<RepairOrder> CreateAsync(CreateRepairOrderDto createDto)
         {
@@ -103,7 +206,7 @@ namespace backend.Modules.RepairOrderModule
             RepairOrder repairOrder = await _dbSet.Where(k => k.Id == repairOrderId).FirstOrDefaultAsync() ??
                                             throw new NotFoundException("Orden de trabajo no encontrada");
 
-             if (_mapper == null) throw new Exception();
+            if (_mapper == null) throw new Exception();
 
             repairOrder.SpareParts = _mapper.Map<List<SparePart>>(dto);
 
@@ -135,5 +238,19 @@ namespace backend.Modules.RepairOrderModule
         {
             throw new NotImplementedException();
         }
+
+        private async Task IsPlateRegisteredInWorkshopAsync(string plate, Guid workshopId)
+        {
+            Vehicle? vehicle = await _context
+                                        .Vehicles
+                                        .Where(vehicle => vehicle.Plate == plate && vehicle.Customer.WorkShopId == workshopId)
+                                        .FirstOrDefaultAsync();
+
+            if (vehicle != null)
+            {
+                throw new ConflictException("La patente ya se encuentra registrada en el taller.");
+            }
+        }
+
     }
 }

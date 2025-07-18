@@ -11,31 +11,45 @@ namespace backend.Modules.RepairOrderModule
     [Route("repair-order")]
     public class RepairOrderController : ControllerBase
     {
-        private readonly IRepairOrderService _vehicleEntryService;
+        private readonly IRepairOrderService _repairOrderService;
 
-        public RepairOrderController(IRepairOrderService vehicleEntryService)
+        public RepairOrderController(IRepairOrderService repairOrderService)
         {
-            _vehicleEntryService = vehicleEntryService;
+            _repairOrderService = repairOrderService;
         }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById([FromRoute] string id)
         {
-            var result = await _vehicleEntryService.GetByIdAsync(Guid.Parse(id));
+            var result = await _repairOrderService.GetByIdAsync(Guid.Parse(id));
             return new OkObjectResult(result);
         }
 
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] CreateRepairOrderDto createDto)
         {
-            var result = await _vehicleEntryService.CreateAsync(createDto);
+            var result = await _repairOrderService.CreateAsync(createDto);
             return StatusCode(StatusCodes.Status201Created, result);
+        }
+
+        [HttpPost("with-vehicle")]
+        public async Task<IActionResult> CreateWithVehicle([FromBody] CreateRepairOrderWithVehicleDto createDto)
+        {
+            await _repairOrderService.AddRepairOrder(createDto);
+            return StatusCode(StatusCodes.Status201Created);
+        }
+
+        [HttpPost("with-vehicle-and-customer")]
+        public async Task<IActionResult> CreateWithVehicle([FromBody] CreateRepairOrderWithVehicleAndCustomerDto createDto)
+        {
+            await _repairOrderService.AddRepairOrder(createDto);
+            return StatusCode(StatusCodes.Status201Created);
         }
 
         [HttpPut]
         public async Task<IActionResult> Update([FromBody] UpdateRepairOrderDto updateDto)
         {
-            await _vehicleEntryService.UpdateAsync(updateDto);
+            await _repairOrderService.UpdateAsync(updateDto);
             return StatusCode(StatusCodes.Status200OK);
         }
 
@@ -43,15 +57,15 @@ namespace backend.Modules.RepairOrderModule
         [HttpPatch]
         public async Task<IActionResult> Patch([FromBody] UpdateAmountAndStatusDto updateDto)
         {
-            await _vehicleEntryService.UpdateStatusAndFinalAmount(updateDto);
+            await _repairOrderService.UpdateStatusAndFinalAmount(updateDto);
             return StatusCode(StatusCodes.Status200OK);
         }
 
         [SwaggerRequestExample(typeof(List<UpdateSparePartDto>), typeof(List<PatchSparePartDto>))]
         [HttpPatch("{id}/spare-parts")]
-        public async Task<IActionResult> PatchSpareParts([FromRoute] Guid id,[FromBody] List<UpdateSparePartDto> dto)
+        public async Task<IActionResult> PatchSpareParts([FromRoute] Guid id, [FromBody] List<UpdateSparePartDto> dto)
         {
-            await _vehicleEntryService.UpdateSpareParts(dto, id);
+            await _repairOrderService.UpdateSpareParts(dto, id);
 
             return StatusCode(StatusCodes.Status200OK);
         }
