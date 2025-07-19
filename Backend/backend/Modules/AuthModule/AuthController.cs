@@ -17,26 +17,24 @@ namespace backend.Modules.AuthModule
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] AuthRequestDto request)
         {
-            try
-            {
-                var response = await _authService.LoginAsync(request);
-                return Ok(response);
-            }
-            catch (UnauthorizedAccessException ex)
-            {
-                return Unauthorized(new { message = ex.Message });
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(
-                    StatusCodes.Status500InternalServerError,
-                    new
-                    {
-                        message = "An error occurred while processing your request.",
-                        details = ex.Message,
-                    }
-                );
-            }
+            var response = await _authService.LoginAsync(request);
+            return Ok(response);
+        }
+
+        [HttpPatch("request-reset-password")]
+        public async Task<IActionResult> RequestResetPassword([FromBody] RequestResetPasswordDto dto)
+        {
+            await _authService.SendTokenResetPassword(dto.Email);
+
+            return Accepted();
+        }
+
+        [HttpPatch("change-password")]
+        public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordDto dto)
+        {
+            await _authService.ChangePassword(dto.ResetPasswordToken, dto.Password);
+
+            return Ok();
         }
     }
 }

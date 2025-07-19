@@ -5,6 +5,7 @@ using backend.Database;
 using backend.Modules.AuthModule;
 using backend.Modules.CustomerModule;
 using backend.Modules.CustomerModule.Interfaces;
+using backend.Modules.NotificationModule;
 using backend.Modules.RepairOrderModule;
 using backend.Modules.RepairOrderModule.Interfaces;
 using backend.Modules.VehicleModule;
@@ -62,6 +63,7 @@ builder.Services.AddScoped<IVehicleService, VehicleService>();
 builder.Services.AddScoped<IRepairOrderService, RepairOrderService>();
 builder.Services.AddScoped<ICustomerService, CustomerService>();
 builder.Services.AddScoped<AuthService>();
+builder.Services.AddScoped<INotificationService, NotificationService>();
 
 var app = builder.Build();
 
