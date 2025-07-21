@@ -10,6 +10,7 @@ import { Login } from '../pages/login'
 import { Edits } from '../pages/Edits'
 import { Historical } from '../pages/Historical'
 import { LoaderProvider } from '../context/loader-context'
+import ChangePassword from '../pages/change-password'
 
 function App() {
   return (
@@ -24,6 +25,10 @@ function App() {
             <Route path={`${PATHS.EDITS}`} element={<Edits />} />
             <Route path={`${PATHS.LOGIN}`} element={<Login />} />
             <Route path={`${PATHS.HISTORICAL}`} element={<Historical />} />
+            <Route
+              path={`${PATHS.CHANGE_PASSWORD}`}
+              element={<ChangePassword />}
+            />
             <Route path="*" element={<h1>404 not found</h1>} />
           </Route>
         </Routes>
