@@ -40,8 +40,8 @@ builder.Services.AddSwaggerGen(c =>
 });
 
 var origins =
-    Environment.GetEnvironmentVariable("Origins")?.Split(",") ??
-    builder.Configuration.GetSection("Origins").Get<string[]>()
+    Environment.GetEnvironmentVariable("Origins")?.Split(",")
+    ?? builder.Configuration.GetSection("Origins").Get<string[]>()
     ?? [];
 
 builder.Services.AddCors(options =>
@@ -57,6 +57,11 @@ builder.Services.AddSwaggerExamplesFromAssemblyOf<CreateCustomerDtoExample>();
 var connection = builder.Configuration.GetConnectionString("DefaultConnection");
 
 builder.Services.AddDbContext<AppDbContext>(options => options.UseNpgsql(connection));
+builder.Services.AddDbContextFactory<AppDbContext>(
+    options => options.UseNpgsql(connection),
+    ServiceLifetime.Scoped
+);
+
 builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
 
 builder.Services.AddScoped<IVehicleService, VehicleService>();

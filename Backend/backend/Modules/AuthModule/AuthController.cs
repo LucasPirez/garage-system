@@ -1,4 +1,5 @@
-﻿using backend.Modules.AuthModule.Dtos;
+﻿using backend.Database.Entites;
+using backend.Modules.AuthModule.Dtos;
 using Microsoft.AspNetCore.Mvc;
 
 namespace backend.Modules.AuthModule
@@ -18,13 +19,35 @@ namespace backend.Modules.AuthModule
         public async Task<IActionResult> Login([FromBody] AuthRequestDto request)
         {
             var response = await _authService.LoginAsync(request);
+
             return Ok(response);
         }
 
         [HttpPatch("request-reset-password")]
-        public async Task<IActionResult> RequestResetPassword([FromBody] RequestResetPasswordDto dto)
+        public async Task<IActionResult> RequestResetPassword(
+            [FromBody] RequestResetPasswordDto dto
+        )
         {
-            await _authService.SendTokenResetPassword(dto.Email);
+            var admin = await _authService.GetAdminByEmailAsync(dto.Email);
+
+            _ = _authService
+                .SendTokenResetPassword(dto.Email)
+                .ContinueWith(
+                    task =>
+                    {
+                        if (task.Exception != null)
+                        {
+                            Console.WriteLine(
+                                task.Exception.ToString() + "Error al enviar notificación"
+                            );
+                        }
+                        else
+                        {
+                            Console.WriteLine("Exito");
+                        }
+                    },
+                    TaskContinuationOptions.OnlyOnFaulted
+                );
 
             return Accepted();
         }
