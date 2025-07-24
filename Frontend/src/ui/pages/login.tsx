@@ -1,12 +1,10 @@
-import { useNavigate } from 'react-router-dom'
 import { authService } from '../../core/services'
-import { localStorageService } from '../../core/storage/storages'
 import { withUnauthenticated } from '../components/hoc/with-unauthenticated'
 import { useState } from 'react'
-import { PATHS } from '../../core/constants/paths'
-import { AxiosError } from 'axios'
 import { useToast } from '../context/toast-context'
 import { PasswordResetForm } from '../components/auth/password-reset-form'
+import { CustomError } from '../../core/helpers/custom-error'
+import { useAuth } from '../context/auth-context'
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -19,8 +17,8 @@ const Login = () => {
   })
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [forgotPassword, setForgotPassword] = useState(false)
-  const navigate = useNavigate()
-  const { addToast } = useToast()
+  const { showToast } = useToast()
+  const { login } = useAuth()
 
   const validateEmail = (email: string) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
@@ -72,27 +70,18 @@ const Login = () => {
 
     try {
       const response = await authService.login(formData)
-      const { workShop, ...user } = response
 
-      localStorageService.setItem(localStorageService.keys.USER, user)
-      localStorageService.setItem(localStorageService.keys.WORKSHOP, workShop)
-
-      navigate(PATHS.JOBS)
+      login(response)
     } catch (error) {
-      if (error instanceof AxiosError && error.response?.status === 401) {
-        addToast({
-          message: 'Email o contraseña incorrectos',
-          severity: 'error',
+      if (error instanceof CustomError) {
+        showToast.error({
+          message: error.message,
           title: 'No autorizado',
         })
         return
       }
 
-      addToast({
-        message: 'Ocurrio un error inesperado',
-        severity: 'error',
-        title: 'Error',
-      })
+      showToast.error({})
     } finally {
       setIsSubmitting(false)
     }
