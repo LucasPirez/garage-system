@@ -3,6 +3,7 @@ import React, { createContext, useContext, useRef, useState } from 'react'
 interface StateType {
   showLoader: ({ size }?: { size?: number }) => void
   hideLoader: () => void
+  isLoading: boolean
 }
 
 export const LoaderContext = createContext<StateType | null>(null)
@@ -33,7 +34,8 @@ export const LoaderProvider = ({ children }: { children: React.ReactNode }) => {
   }
 
   return (
-    <LoaderContext.Provider value={{ showLoader, hideLoader }}>
+    <LoaderContext.Provider
+      value={{ showLoader, hideLoader, isLoading: loader }}>
       {loader && (
         <div className={'fixed right-[43%] top-[44%] z-[9999]'}>
           <div style={loaderStyle}></div>

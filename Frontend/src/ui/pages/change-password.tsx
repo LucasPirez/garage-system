@@ -1,45 +1,22 @@
 import type React from 'react'
-
 import { useState } from 'react'
 import { authService } from '../../core/services'
 import { useSearchParams } from 'react-router-dom'
+import { useToast } from '../context/toast-context'
+import { CustomError } from '../../core/helpers/custom-error'
 
 export default function ChangePassword() {
-  const [password, setPassword] = useState('')
-  const [confirmPassword, setConfirmPassword] = useState('')
-  const [errors, setErrors] = useState<{
-    password?: string
-    confirmPassword?: string
-  }>({})
+  const [newPassword, setNewPassword] = useState({
+    password: '',
+    confirmPassword: '',
+  })
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [searchParams] = useSearchParams()
+  const { showToast } = useToast()
   const token = searchParams.get('token')
-
-  const validatePasswords = () => {
-    const newErrors: { password?: string; confirmPassword?: string } = {}
-
-    if (!password) {
-      newErrors.password = 'La contraseña es requerida'
-    } else if (password.length < 8) {
-      newErrors.password = 'La contraseña debe tener al menos 8 caracteres'
-    }
-
-    if (!confirmPassword) {
-      newErrors.confirmPassword = 'Confirma tu contraseña'
-    } else if (password !== confirmPassword) {
-      newErrors.confirmPassword = 'Las contraseñas no coinciden'
-    }
-
-    setErrors(newErrors)
-    return Object.keys(newErrors).length === 0
-  }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-
-    if (!validatePasswords()) {
-      return
-    }
 
     setIsSubmitting(true)
 
@@ -49,38 +26,57 @@ export default function ChangePassword() {
         resetPasswordToken: token ?? '',
       })
 
-      setPassword('')
-      setConfirmPassword('')
-      setErrors({})
+      showToast.success({
+        message: 'Contraseña cambiada exitosamente',
+      })
+
+      setNewPassword({ password: '', confirmPassword: '' })
     } catch (error) {
-      console.log('error')
+      if (error instanceof CustomError) {
+        showToast.error({
+          message: error.message,
+        })
+        return
+      }
+      showToast.error({
+        message: 'Error al cambiar la contraseña',
+      })
     } finally {
       setIsSubmitting(false)
     }
   }
 
   const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value
-    setPassword(value)
-
-    if (errors.password) {
-      setErrors((prev) => ({ ...prev, password: undefined }))
-    }
+    const { value, name } = e.target
+    setNewPassword((prev) => ({
+      ...prev,
+      [name]: value,
+    }))
   }
 
-  const handleConfirmPasswordChange = (
-    e: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    const value = e.target.value
-    setConfirmPassword(value)
-
-    if (errors.confirmPassword) {
-      setErrors((prev) => ({ ...prev, confirmPassword: undefined }))
-    }
+  const ConditionalShowError = ({
+    message,
+    condition,
+  }: {
+    message: string
+    condition: boolean
+  }) => {
+    return (
+      <div className="ml-2 flex items-center text-sm font-semibold">
+        <span className={condition ? 'text-green-600' : 'text-red-500'}>
+          {message}
+        </span>
+      </div>
+    )
   }
+
+  const { password, confirmPassword } = newPassword
 
   const passwordsMatch =
-    password && confirmPassword && password === confirmPassword
+    password === confirmPassword &&
+    password?.length === confirmPassword?.length &&
+    password.length > 0
+
   const isFormValid = password.length >= 8 && passwordsMatch
 
   return (
@@ -88,7 +84,7 @@ export default function ChangePassword() {
       <div className="max-w-md w-full space-y-8">
         <div>
           <h2 className=" text-center text-2xl font-semibold text-gray-900">
-            Ingresa tu nueva contraseña y confírmala
+            Ingresa tu nueva contraseña
           </h2>
         </div>
 
@@ -97,8 +93,7 @@ export default function ChangePassword() {
             <div>
               <label
                 htmlFor="password"
-                className="block text-sm font-medium text-gray-700"
-              >
+                className="block text-sm font-medium text-gray-700">
                 Nueva Contraseña
               </label>
               <input
@@ -107,21 +102,15 @@ export default function ChangePassword() {
                 type="password"
                 value={password}
                 onChange={handlePasswordChange}
-                className={`mt-1 appearance-none relative block w-full px-3 py-2 border ${
-                  errors.password ? 'border-red-300' : 'border-gray-300'
-                } placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm`}
+                className={`mt-1 appearance-none relative block w-full px-3 py-2 border placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm`}
                 placeholder="Ingresa tu nueva contraseña"
               />
-              {errors.password && (
-                <p className="mt-1 text-sm text-red-600">{errors.password}</p>
-              )}
             </div>
 
             <div>
               <label
                 htmlFor="confirmPassword"
-                className="block text-sm font-medium text-gray-700"
-              >
+                className="block text-sm font-medium text-gray-700">
                 Confirmar Contraseña
               </label>
               <input
@@ -129,22 +118,21 @@ export default function ChangePassword() {
                 name="confirmPassword"
                 type="password"
                 value={confirmPassword}
-                onChange={handleConfirmPasswordChange}
-                className={`mt-1 appearance-none relative block w-full px-3 py-2 border ${
-                  errors.confirmPassword ? 'border-red-300' : 'border-gray-300'
-                } placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm`}
+                onChange={handlePasswordChange}
+                className={`mt-1 appearance-none relative block w-full px-3 py-2 border placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm`}
                 placeholder="Confirma tu nueva contraseña"
               />
-              {errors.confirmPassword && (
-                <p className="mt-1 text-sm text-red-600">
-                  {errors.confirmPassword}
-                </p>
-              )}
-              {passwordsMatch && (
-                <p className="mt-1 text-sm text-green-600">
-                  ✓ Las contraseñas coinciden
-                </p>
-              )}
+
+              <div className="mt-4 space-y-2">
+                <ConditionalShowError
+                  message="Al menos 8 caracteres"
+                  condition={password.length >= 8}
+                />
+                <ConditionalShowError
+                  condition={passwordsMatch}
+                  message="Las contraseñas coincioden"
+                />
+              </div>
             </div>
           </div>
 
@@ -156,8 +144,7 @@ export default function ChangePassword() {
                 isFormValid && !isSubmitting
                   ? 'bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500'
                   : 'bg-gray-400 cursor-not-allowed'
-              } transition-colors duration-200`}
-            >
+              } transition-colors duration-200`}>
               {isSubmitting ? (
                 <div className="flex items-center">
                   <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
@@ -167,35 +154,6 @@ export default function ChangePassword() {
                 'Cambiar Contraseña'
               )}
             </button>
-          </div>
-
-          <div className="mt-4 space-y-2">
-            <div className="flex items-center text-sm">
-              <div
-                className={`w-2 h-2 rounded-full mr-2 ${
-                  password.length >= 8 ? 'bg-green-500' : 'bg-gray-300'
-                }`}
-              ></div>
-              <span
-                className={
-                  password.length >= 8 ? 'text-green-600' : 'text-gray-500'
-                }
-              >
-                Al menos 8 caracteres
-              </span>
-            </div>
-            <div className="flex items-center text-sm">
-              <div
-                className={`w-2 h-2 rounded-full mr-2 ${
-                  passwordsMatch ? 'bg-green-500' : 'bg-gray-300'
-                }`}
-              ></div>
-              <span
-                className={passwordsMatch ? 'text-green-600' : 'text-gray-500'}
-              >
-                Las contraseñas coinciden
-              </span>
-            </div>
           </div>
         </form>
       </div>
