@@ -5,6 +5,7 @@ using backend.Database;
 using backend.Modules.AuthModule;
 using backend.Modules.CustomerModule;
 using backend.Modules.CustomerModule.Interfaces;
+using backend.Modules.NotificationModule;
 using backend.Modules.RepairOrderModule;
 using backend.Modules.RepairOrderModule.Interfaces;
 using backend.Modules.VehicleModule;
@@ -39,8 +40,8 @@ builder.Services.AddSwaggerGen(c =>
 });
 
 var origins =
-    Environment.GetEnvironmentVariable("Origins")?.Split(",") ??
-    builder.Configuration.GetSection("Origins").Get<string[]>()
+    Environment.GetEnvironmentVariable("Origins")?.Split(",")
+    ?? builder.Configuration.GetSection("Origins").Get<string[]>()
     ?? [];
 
 builder.Services.AddCors(options =>
@@ -56,12 +57,18 @@ builder.Services.AddSwaggerExamplesFromAssemblyOf<CreateCustomerDtoExample>();
 var connection = builder.Configuration.GetConnectionString("DefaultConnection");
 
 builder.Services.AddDbContext<AppDbContext>(options => options.UseNpgsql(connection));
+builder.Services.AddDbContextFactory<AppDbContext>(
+    options => options.UseNpgsql(connection),
+    ServiceLifetime.Scoped
+);
+
 builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
 
 builder.Services.AddScoped<IVehicleService, VehicleService>();
 builder.Services.AddScoped<IRepairOrderService, RepairOrderService>();
 builder.Services.AddScoped<ICustomerService, CustomerService>();
 builder.Services.AddScoped<AuthService>();
+builder.Services.AddScoped<INotificationService, NotificationService>();
 
 var app = builder.Build();
 
