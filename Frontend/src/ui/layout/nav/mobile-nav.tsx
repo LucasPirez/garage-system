@@ -1,9 +1,11 @@
 import { useState } from 'react'
 import { ButtonLogout } from '../../components/buttons/button-logout'
 import { NavLinks } from './nav-links'
+import { useAuth } from '../../context/auth-context'
 
 export const MobileNav = () => {
   const [isOpen, setIsOpen] = useState(false)
+  const { isLoggedIn } = useAuth()
 
   const toggleMenu = () => {
     setIsOpen(!isOpen)
@@ -49,9 +51,7 @@ export const MobileNav = () => {
       <div className={`${isOpen ? 'block' : 'hidden'}`}>
         <ul className="px-2 pt-2 pb-3 space-y-1 sm:px-3 ">
           <NavLinks onClick={toggleMenu} />
-          <li>
-            <ButtonLogout />
-          </li>
+          <li>{isLoggedIn && <ButtonLogout />}</li>
         </ul>
       </div>
     </>
