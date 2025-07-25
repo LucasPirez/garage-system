@@ -12,11 +12,11 @@ namespace backend.Modules.NotificationModule
             _configuration = configuration;
         }
 
-        public async Task Notify(string message, string recipient)
+        public async Task Notify(string message, string recipient, string subject)
         {
             string? emailEmiter = _configuration.GetValue<string>("EmailConfiguration:Email");
 
-            var email = new MailMessage(emailEmiter!, recipient, "Alerta", message);
+            var email = new MailMessage(emailEmiter!, recipient, subject, message);
 
             await setSmtpClient().SendMailAsync(email);
         }
@@ -28,7 +28,11 @@ namespace backend.Modules.NotificationModule
             int port = _configuration.GetValue<int>("EmailConfiguration:Port");
             string? emailEmiter = _configuration.GetValue<string>("EmailConfiguration:Email");
 
-            if (string.IsNullOrEmpty(password) || string.IsNullOrEmpty(host) || string.IsNullOrEmpty(emailEmiter))
+            if (
+                string.IsNullOrEmpty(password)
+                || string.IsNullOrEmpty(host)
+                || string.IsNullOrEmpty(emailEmiter)
+            )
             {
                 throw new InvalidOperationException("Email configuration not set.");
             }

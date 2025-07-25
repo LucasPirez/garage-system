@@ -1,9 +1,10 @@
 import type React from 'react'
 import { useState } from 'react'
 import { authService } from '../../core/services'
-import { useSearchParams } from 'react-router-dom'
+import { useNavigate, useSearchParams } from 'react-router-dom'
 import { useToast } from '../context/toast-context'
 import { CustomError } from '../../core/helpers/custom-error'
+import { PATHS } from '../../core/constants/paths'
 
 export default function ChangePassword() {
   const [newPassword, setNewPassword] = useState({
@@ -13,6 +14,7 @@ export default function ChangePassword() {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [searchParams] = useSearchParams()
   const { showToast } = useToast()
+  const navigate = useNavigate()
   const token = searchParams.get('token')
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -27,10 +29,13 @@ export default function ChangePassword() {
       })
 
       showToast.success({
-        message: 'Contraseña cambiada exitosamente',
+        title: 'Contraseña cambiada exitosamente',
+        message: 'Redireccionando al inicio de sesión.',
       })
 
-      setNewPassword({ password: '', confirmPassword: '' })
+      setTimeout(() => {
+        navigate(PATHS.LOGIN)
+      }, 2000)
     } catch (error) {
       if (error instanceof CustomError) {
         showToast.error({
@@ -80,8 +85,8 @@ export default function ChangePassword() {
   const isFormValid = password.length >= 8 && passwordsMatch
 
   return (
-    <div className="min-h-screen flex items-start mt-8 justify-center  px-4 sm:px-6 lg:px-8">
-      <div className="max-w-md w-full space-y-8">
+    <div className=" flex items-center justify-center md:border border-gray-200 rounded-lg py-12  sm:px-6 lg:px-8">
+      <div className="max-w-md w-full space-y-8 m-auto  pt-8">
         <div>
           <h2 className=" text-center text-2xl font-semibold text-gray-900">
             Ingresa tu nueva contraseña

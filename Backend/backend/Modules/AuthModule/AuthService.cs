@@ -97,9 +97,17 @@ namespace backend.Modules.AuthModule
                 _configuration.GetValue<string>("LinkChangePassword:Link")
                 ?? throw new Exception("link env variable is null");
 
-            string text = "Click next link to change password: " + link + "?token=" + token;
+            string text =
+                "Haz click en el siguiente link para cambiar la contraseña: "
+                + link
+                + "?token="
+                + token;
 
-            await _notificationService.Notify(text, admin.Email);
+            await _notificationService.Notify(
+                message: text,
+                recipient: admin.Email,
+                subject: "Cambiar contraseña"
+            );
         }
 
         public async Task<Admin> GetAdminByEmailAsync(string email)

@@ -41,10 +41,6 @@ namespace backend.Modules.AuthModule
                                 task.Exception.ToString() + "Error al enviar notificación"
                             );
                         }
-                        else
-                        {
-                            Console.WriteLine("Exito");
-                        }
                     },
                     TaskContinuationOptions.OnlyOnFaulted
                 );
