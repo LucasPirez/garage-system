@@ -1,6 +1,0 @@
-[environment]
-runtime = "dotnet"
-version = "8.0"
-
-[phases.setup]
-nixPkgs = ["dotnet-sdk_8"]
