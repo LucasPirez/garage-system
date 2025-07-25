@@ -16,6 +16,11 @@ using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.Filters;
 using static backend.Swagger.DefaultWorksShopIdFilter;
 
+public class Program
+{
+    public static void Main(string[] args)
+    {
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -91,4 +96,6 @@ app.MapControllers();
 app.UseMiddleware<ExceptionHandlingMiddleware>();
 
 app.Run();
+    }
 
+}
