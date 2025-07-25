@@ -1,7 +1,9 @@
 import { AuthService } from './auth-service'
 import { axiosInstance } from './axios-service'
-import { CustomerService, JobsService, VehicleService } from './jobs-service'
+import { CustomerService } from './customer-service'
+import { JobsService } from './jobs-service'
 import { UpdateCustomerVehicleService } from './update-customer-vehicle-service'
+import { VehicleService } from './vehicle-service'
 import { WorkshopService } from './worshop-service'
 
 const workshopService = new WorkshopService(axiosInstance)

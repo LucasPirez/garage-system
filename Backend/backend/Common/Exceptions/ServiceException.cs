@@ -7,7 +7,7 @@ namespace backend.Common.Exceptions
         public int StatusCode { get; }
         public string ErrorMessage { get; }
 
-        public ServiceException(int statusCode, string errorMessage)
+        public ServiceException(int statusCode, string errorMessage) : base(errorMessage)
         {
             StatusCode = statusCode;
             ErrorMessage = errorMessage;

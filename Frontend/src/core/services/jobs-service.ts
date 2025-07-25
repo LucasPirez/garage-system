@@ -8,7 +8,7 @@ import { JOBS_STATUS } from '../constants/jobs-status'
 import { getWorkshopId } from './worshop-service'
 import { CustomerCreateDto } from '../dtos/customer/customer-request.dto'
 import { VehicleCreateDto } from '../dtos/vehicle/vehicle-request.dto'
-import { JobType } from '../type/job'
+import { handleRequest } from '../helpers/handle-errors'
 
 export interface JobCreateDto {
   receptionDate: string
@@ -18,20 +18,49 @@ export interface JobCreateDto {
   workshopId: string
 }
 
+export interface JobCreateWithVehicle
+  extends Omit<JobCreateDto, 'workshopId' | 'vehicleId'> {
+  vehicleDto: VehicleCreateDto
+}
+
+export interface JobCreateWithVehicleAndCustomer
+  extends Omit<JobCreateDto, 'workshopId' | 'vehicleId'> {
+  vehicleDto: Omit<VehicleCreateDto, 'customerId'>
+  customerDto: Omit<CustomerCreateDto, 'workshopId'>
+}
+
 export class JobsService {
   private readonly BASE_PATH = '/repair-order'
 
   constructor(private readonly client: AxiosInstance) {}
 
   async create(job: Omit<JobCreateDto, 'workshopId'>): Promise<void> {
-    const response = await this.client.post(this.BASE_PATH, {
-      ...job,
-      workshopId: getWorkshopId(),
-    })
+    await handleRequest(() =>
+      this.client.post(this.BASE_PATH, {
+        ...job,
+        workshopId: getWorkshopId(),
+      })
+    )
+  }
 
-    if (response.status !== 201) {
-      alert('Error al crear trabajo')
-    }
+  async createWithVehicle(job: JobCreateWithVehicle): Promise<void> {
+    await handleRequest(() =>
+      this.client.post(`${this.BASE_PATH}/with-vehicle`, {
+        ...job,
+        workshopId: getWorkshopId(),
+      })
+    )
+  }
+
+  async createWithVehicleAndCustomer(
+    job: JobCreateWithVehicleAndCustomer
+  ): Promise<void> {
+    await handleRequest(() =>
+      this.client.post(`${this.BASE_PATH}/with-vehicle-and-customer`, {
+        ...job,
+        workshopId: getWorkshopId(),
+      })
+    )
   }
 
   async getById(id: string): Promise<JobsResponseDto> {
@@ -71,43 +100,5 @@ export class JobsService {
 
   async updateSpareParts(payload: SparePart[], id: string): Promise<void> {
     await this.client.patch(`${this.BASE_PATH}/${id}/spare-parts`, payload)
-  }
-}
-
-export class VehicleService {
-  private readonly BASE_PATH = '/vehicle'
-
-  constructor(private readonly client: AxiosInstance) {}
-
-  async create(vehicle: VehicleCreateDto): Promise<string> {
-    const { data } = await this.client.post(this.BASE_PATH, vehicle)
-
-    return data.id
-  }
-
-  async getHistoryByVehicleId(vehicleId: string): Promise<JobType[]> {
-    const { data } = await this.client.get<JobType[]>(
-      `${this.BASE_PATH}/${vehicleId}/repair-orders`
-    )
-
-    return data
-  }
-}
-
-export class CustomerService {
-  private readonly PATHS = {
-    create: '/customer',
-  }
-  constructor(private readonly client: AxiosInstance) {}
-
-  async create(
-    customer: Omit<CustomerCreateDto, 'workshopId'>
-  ): Promise<string> {
-    const { data } = await this.client.post(this.PATHS.create, {
-      ...customer,
-      workshopId: getWorkshopId(),
-    })
-
-    return data.id
   }
 }

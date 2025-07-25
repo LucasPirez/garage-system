@@ -1,25 +1,17 @@
 import { ChangeEvent, useState } from 'react'
 import { JobCreateDto } from '../../../../core/services/jobs-service'
-import { InputsFormCustomer } from '../../customer/inputs-form-customer'
-import { InputsFormVehicle } from '../../vehicle/inputs-form-vehicle'
-import { InputsFormJob } from '../inputs-form-job'
-import {
-  customerService,
-  jobService,
-  vehicleService,
-} from '../../../../core/services'
+import { jobService } from '../../../../core/services'
 import { useRegisterJobContext } from '../../../context/register-job-context'
-import { ButtonClose } from '../../buttons/button-close-icon'
-import { VehicleItem } from './vehicle-item'
-import { CustomerItem } from './customer-item'
-import { ButtonSubmit } from '../../buttons/button-submit'
 import { CustomerCreateDto } from '../../../../core/dtos/customer/customer-request.dto'
 import { VehicleCreateDto } from '../../../../core/dtos/vehicle/vehicle-request.dto'
 import { triggerCoolDown } from '../../../../core/helpers/triggerCoolDown'
 import { useToast } from '../../../context/toast-context'
 import { useLoader } from '../../../context/loader-context'
+import { CustomError } from '../../../../core/helpers/custom-error'
+import { RegisterJobForm } from './register-job-form'
+import { ButtonSubmit } from '../../buttons/button-submit'
 
-type FormDataType = Omit<JobCreateDto, 'workshopId' | 'vehicleId'> &
+export type FormDataType = Omit<JobCreateDto, 'workshopId' | 'vehicleId'> &
   Omit<VehicleCreateDto, 'customerId'> &
   Omit<
     CustomerCreateDto,
@@ -44,13 +36,8 @@ const FormInitialState: FormDataType = {
 
 export const RegisterJob = () => {
   const [formData, setFormData] = useState<FormDataType>(FormInitialState)
-  const {
-    customerSelected,
-    handleCustomerSelect,
-    vehicleSelected,
-    handleVehicleSelect,
-  } = useRegisterJobContext()
-  const { addToast } = useToast()
+  const { customerSelected, vehicleSelected } = useRegisterJobContext()
+  const { showToast } = useToast()
   const { showLoader, hideLoader } = useLoader()
 
   const handleChange = (
@@ -61,6 +48,12 @@ export const RegisterJob = () => {
     setFormData((prev) => ({ ...prev, [name]: value }))
   }
 
+  const handleSuccess = () => {
+    setFormData(FormInitialState)
+    showToast.success({
+      message: 'Servicio registrado correctamente',
+    })
+  }
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     const {
@@ -76,59 +69,70 @@ export const RegisterJob = () => {
       receptionDate,
     } = formData
     try {
-      let customerId: string | undefined = customerSelected?.id
-      let vehicleId: string | undefined = vehicleSelected?.id
-
       if (!triggerCoolDown()) {
-        addToast({
-          severity: 'error',
-          title: 'Error',
+        showToast.error({
           message: 'Demasiadas solicitudes, por favor espere un momento.',
         })
         return
       }
       showLoader()
-      if (!customerSelected?.firstName) {
-        const customerResponse = await customerService.create({
-          email: [email],
-          firstName,
-          lastName,
-          phoneNumber: [phoneNumber],
-        })
-        customerId = customerResponse
-      }
 
-      if (!customerId) throw new Error('Id del customer es' + typeof vehicleId)
+      const receptionDateISO = new Date(receptionDate).toISOString()
 
-      if (!vehicleSelected) {
-        const vehicleResponse = await vehicleService.create({
-          color,
-          customerId: customerId,
-          model,
-          plate,
-        })
-        vehicleId = vehicleResponse
-      }
-
-      if (!vehicleId) throw new Error('Id del vehiculo es' + typeof vehicleId)
-
-      await jobService.create({
+      const basePayload = {
         cause,
         details,
-        receptionDate: new Date(receptionDate).toISOString(),
-        vehicleId,
+        receptionDate: receptionDateISO,
+      }
+
+      if (!customerSelected && !vehicleSelected) {
+        await jobService.createWithVehicleAndCustomer({
+          ...basePayload,
+          vehicleDto: { color, model, plate },
+          customerDto: {
+            email: [email],
+            firstName,
+            lastName,
+            phoneNumber: [phoneNumber],
+          },
+        })
+        handleSuccess()
+        return
+      }
+
+      if (!vehicleSelected && customerSelected) {
+        await jobService.createWithVehicle({
+          ...basePayload,
+          vehicleDto: {
+            color,
+            model,
+            plate,
+            customerId: customerSelected.id,
+          },
+        })
+        handleSuccess()
+
+        return
+      }
+
+      if (!vehicleSelected) {
+        throw new Error('Vehículo no seleccionado')
+      }
+
+      await jobService.create({
+        ...basePayload,
+        vehicleId: vehicleSelected.id,
       })
 
-      setFormData(FormInitialState)
-      addToast({
-        severity: 'success',
-        title: 'Éxito',
-        message: 'Servicio registrado correctamente',
-      })
+      handleSuccess()
     } catch (error) {
-      addToast({
-        severity: 'error',
-        title: 'Error',
+      if (error instanceof CustomError) {
+        showToast.error({
+          message: error.message,
+        })
+        return
+      }
+      showToast.error({
         message: 'Ocurrio un error al registrar el servicio',
       })
     } finally {
@@ -140,72 +144,7 @@ export const RegisterJob = () => {
     <>
       <div>
         <form onSubmit={handleSubmit} className="pt-9">
-          <div className="mb-3">
-            <div className="flex items-center mb-6">
-              <span className="text-2xl mr-3">👤</span>
-              <h2 className="text-xl font-semibold text-gray-800">Cliente</h2>
-            </div>
-            {customerSelected?.firstName ? (
-              <div className="inline-flex items-center gap-3 bg-white border border-gray-200 rounded-lg px-4 py-3 shadow-sm hover:shadow-md">
-                <CustomerItem customer={customerSelected} />
-
-                <ButtonClose
-                  onClick={() => {
-                    handleCustomerSelect(null)
-                    handleVehicleSelect(null)
-                  }}
-                />
-              </div>
-            ) : (
-              <InputsFormCustomer state={formData} onChange={handleChange} />
-            )}
-          </div>
-          <div className="border-t border-gray-500 mt-5 mb-4"></div>
-
-          <div className="mb-4">
-            <div className="flex justify-between items-center mb-4">
-              <div className="flex items-center">
-                <span className="text-2xl mr-3">🚙</span>
-                <h2 className="text-xl font-semibold text-gray-800">
-                  Vehículo
-                </h2>
-              </div>
-              {vehicleSelected && (
-                <button
-                  className=" text-blue-500  border border-blue-500 rounded-lg px-3 py-1 text-sm font-medium hover:bg-blue-50 transition-colors"
-                  onClick={() => handleVehicleSelect(null)}
-                >
-                  <span>+</span> Agregar otro vehículo
-                </button>
-              )}
-            </div>
-
-            {vehicleSelected ? (
-              <div className="flex gap-2 flex-wrap ">
-                {customerSelected?.vehicles.map((vehicle) => (
-                  <VehicleItem
-                    onClick={() => handleVehicleSelect(vehicle)}
-                    selected={vehicleSelected?.id === vehicle.id}
-                    vehicle={vehicle}
-                  />
-                ))}
-              </div>
-            ) : (
-              <InputsFormVehicle state={formData} onChange={handleChange} />
-            )}
-          </div>
-
-          <div className="border-t border-gray-500 mt-7 mb-4"></div>
-
-          <div className="mb-3">
-            <div className="flex items-center mb-5">
-              <span className="text-2xl mr-3">🔧</span>
-              <h2 className="text-xl font-semibold text-gray-800">Servicio</h2>
-            </div>
-
-            <InputsFormJob state={formData} onChange={handleChange} />
-          </div>
-
+          <RegisterJobForm onChange={handleChange} formData={formData} />
           <div className="flex flex-col sm:flex-row gap-4 justify-end">
             <button
               type="reset"

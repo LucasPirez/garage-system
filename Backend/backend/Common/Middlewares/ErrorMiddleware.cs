@@ -30,10 +30,18 @@ namespace backend.Common.Middlewares
             }
             catch (DbUpdateException ex) when (ex.InnerException is PostgresException pxEx)
             {
+                _logger.LogError(
+                    ex,
+                    "exception occurred while processing the request."
+                );
                 await HandlePostgresxceptionAsync(context, pxEx);
             }
             catch (ServiceException ex)
             {
+                _logger.LogError(
+                   ex,
+                   "ServiceException occurred while processing the request."
+               );
                 await HandleServicexceptionAsync(context, ex);
             }
             catch (Exception ex)
@@ -50,11 +58,12 @@ namespace backend.Common.Middlewares
         {
             context.Response.ContentType = "application/json";
             context.Response.StatusCode = StatusCodes.Status409Conflict;
+
             return context.Response.WriteAsync(
                 new ErrorData
                 {
                     StatusCode = StatusCodes.Status409Conflict,
-                    Message = exception.MessageText,
+                    Message = exception.Message,
                     Detail = exception.ConstraintName,
                 }.ToString()
             );
@@ -68,7 +77,7 @@ namespace backend.Common.Middlewares
                 new ErrorData
                 {
                     StatusCode = exception.StatusCode,
-                    Message = exception.Message,
+                    Message = exception.Message + " " + exception.InnerException?.Message,
                 }.ToString()
             );
         }

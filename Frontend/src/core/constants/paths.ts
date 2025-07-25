@@ -4,9 +4,5 @@ export const PATHS = {
   EDITS: '/editar',
   LOGIN: '/login',
   HISTORICAL: '/historial',
+  CHANGE_PASSWORD: '/change-password',
 }
-
-// <Route path="/trabajos/:id" element={<EditJob />}></Route>
-// <Route path="/trabajos" element={<Jobs />}></Route>
-// <Route path="/registrar" element={<RegisterPage />} />
-// <Route path="/clientes" element={<Clients />} />
