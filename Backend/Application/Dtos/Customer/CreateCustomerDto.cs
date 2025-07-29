@@ -1,8 +1,7 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace backend.Modules.CustomerModule.Dtos
+namespace Application.Dtos.Customer
 {
-
     public class BaseCustomerDto
     {
         public required string FirstName { get; set; }
@@ -16,11 +15,10 @@ namespace backend.Modules.CustomerModule.Dtos
         public string? Address { get; set; }
 
         public string? Dni { get; set; }
-
     }
+
     public class CreateCustomerDto : BaseCustomerDto
     {
-
         public string WorkshopId { get; set; }
     }
 }

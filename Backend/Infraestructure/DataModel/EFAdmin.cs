@@ -1,6 +1,6 @@
 ﻿namespace Infraestructure.DataModel
 {
-    public class EFAdmin
+    public class EFAdmin : Base
     {
         public required string Email { get; set; }
 

@@ -1,6 +1,4 @@
-﻿using backend.Database.Entites;
-
-namespace backend.Modules.VehicleModule.Dtos
+﻿namespace Application.Dtos.Vehicle
 {
     public class HistoricalRepairOrderDto
     {
@@ -18,6 +16,6 @@ namespace backend.Modules.VehicleModule.Dtos
         public double Budget { get; set; }
         public double FinalAmount { get; set; }
 
-        public IList<SparePart> SpareParts { get; set; } = new List<SparePart>();
+        //public IList<SparePart> SpareParts { get; set; } = new List<SparePart>();
     }
 }

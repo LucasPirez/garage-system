@@ -1,6 +1,4 @@
-﻿using backend.Database.Entites;
-
-namespace backend.Modules.AuthModule.Dtos
+﻿namespace Application.Dtos.Auth
 {
     public class AuthRequestDto
     {
@@ -12,8 +10,6 @@ namespace backend.Modules.AuthModule.Dtos
     {
         public required string Email { get; set; }
         public required string Token { get; set; }
-        public required WorkShop WorkShop { get; set; }
-
-        
+        //public required WorkShop WorkShop { get; set; }
     }
 }

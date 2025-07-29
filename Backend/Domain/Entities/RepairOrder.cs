@@ -1,4 +1,4 @@
-namespace Domain
+namespace Domain.Entities
 {
     public interface IRepairOrderRepository
     {
@@ -67,7 +67,6 @@ namespace Domain
         }
     }
 
-    [Owned]
     public class SparePart
     {
         public string Name { get; set; } = string.Empty;

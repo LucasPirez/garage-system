@@ -2,17 +2,23 @@
 
 namespace Infraestructure.Repository
 {
-    public interface IRepository<T>
+    public interface IReadRepository<T>
     {
-        Task<T> Add(T entity);
-        Task<T?> GetById(Guid id);
-        Task<List<T>> GetAll(params Expression<Func<T, object>>[] includes);
-        Task<List<T>> GetAll(Expression<Func<T, bool>>? where);
+        Task<T?> GetByIdAsync(Guid id);
+    }
 
-        Task Delete(T entity);
+    public interface IWriteRepository<T>
+    {
+        Task CreateAsync(T entity);
 
-        Task Update(T entity);
+        Task DeleteAsync(T entity);
 
-        Task<T> AddWithDto<DTO>(DTO Dto);
+        Task UpdateAsync(T entity);
+    }
+
+    public interface IReadRangeRepository<T>
+    {
+        Task<List<T>> GetAllAsync(params Expression<Func<T, object>>[] includes);
+        Task<List<T>> GetAllAsync(Expression<Func<T, bool>>? where);
     }
 }

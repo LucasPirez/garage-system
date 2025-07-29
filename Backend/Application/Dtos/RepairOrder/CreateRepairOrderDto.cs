@@ -1,8 +1,7 @@
-﻿using backend.Database.Entites;
-using backend.Modules.CustomerModule.Dtos;
-using backend.Modules.VehicleModule.Dtos;
+﻿using Application.Dtos.Customer;
+using Application.Dtos.Vehicle;
 
-namespace backend.Modules.RepairOrderModule.Dtos
+namespace Application.Dtos.RepairOrder
 {
     public class CreateRepairOrderDto
     {

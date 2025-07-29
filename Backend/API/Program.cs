@@ -1,9 +1,10 @@
-using backend.Modules.VehicleModule.Interfaces;
-using backend.Swagger;
-using Microsoft.EntityFrameworkCore;
+using API.Middlewares;
+using API.Swagger;
+using Application;
+using Infraestructure;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.Filters;
-using static backend.Swagger.DefaultWorksShopIdFilter;
+using static API.Swagger.DefaultWorksShopIdFilter;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,13 +12,16 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 
-if (builder.Environment.EnvironmentName == "Development")
-{
-    builder.WebHost.ConfigureKestrel(serverOptions =>
-    {
-        serverOptions.ListenAnyIP(7027);
-    });
-}
+//if (builder.Environment.EnvironmentName == "Development")
+//{
+//    builder.WebHost.ConfigureKestrel(serverOptions =>
+//    {
+//        serverOptions.ListenAnyIP(7027);
+//    });
+//}
+
+builder.Services.AddApplication();
+builder.Services.AddInfraestructure(builder.Configuration);
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
@@ -42,22 +46,6 @@ builder.Services.AddCors(options =>
 });
 
 builder.Services.AddSwaggerExamplesFromAssemblyOf<CreateCustomerDtoExample>();
-
-var connection = builder.Configuration.GetConnectionString("DefaultConnection");
-
-builder.Services.AddDbContext<AppDbContext>(options => options.UseNpgsql(connection));
-builder.Services.AddDbContextFactory<AppDbContext>(
-    options => options.UseNpgsql(connection),
-    ServiceLifetime.Scoped
-);
-
-//builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
-
-//builder.Services.AddScoped<IVehicleService, VehicleService>();
-//builder.Services.AddScoped<IRepairOrderService, RepairOrderService>();
-//builder.Services.AddScoped<ICustomerService, CustomerService>();
-//builder.Services.AddScoped<AuthService>();
-//builder.Services.AddScoped<INotificationService, NotificationService>();
 
 var app = builder.Build();
 

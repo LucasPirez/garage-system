@@ -1,6 +1,5 @@
-namespace backend.Modules.AuthModule.Dtos
+namespace Application.Dtos.Auth
 {
-
     public class RequestResetPasswordDto
     {
         public required string Email { get; set; }

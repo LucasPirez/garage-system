@@ -1,6 +1,4 @@
-﻿using backend.Database.Entites;
-
-namespace backend.Modules.RepairOrderModule.Dtos
+﻿namespace Application.Dtos.RepairOrder
 {
     public class ListRepairOrderDto
     {
@@ -10,14 +8,15 @@ namespace backend.Modules.RepairOrderModule.Dtos
 
         public bool NotificationSent { get; set; } = false;
 
-        public string Status { get; set; } = RepairOrderStatus.InProgress.ToString();
+        //public string Status { get; set; } = RepairOrderStatus.InProgress.ToString();
 
         public string Cause { get; set; } = string.Empty;
 
         public string Details { get; set; } = string.Empty;
         public double Budget { get; set; }
         public double FinalAmount { get; set; }
-        public IList<SparePart> SpareParts { get; set; } = new List<SparePart>();
+
+        //public IList<SparePart> SpareParts { get; set; } = new List<SparePart>();
 
         public required ListJobsVehicleDto Vehicle { get; set; }
 

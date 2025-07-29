@@ -1,78 +1,102 @@
 ﻿using System.Linq.Expressions;
 using AutoMapper;
 using Infraestructure.Context;
+using Infraestructure.DataModel;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infraestructure.Repository
 {
-    public class Repository<T> : IRepository<T>
+    public class WriteRepository<T, EFEntity> : IWriteRepository<T>
+        where EFEntity : Base
+    {
+        protected readonly AppDbContext _context;
+        protected readonly DbSet<EFEntity> _dbSet;
+        protected readonly IMapper _mapper;
+
+        public WriteRepository(AppDbContext database, IMapper mapper)
+        {
+            _context = database;
+            _dbSet = database.Set<EFEntity>();
+            _mapper = mapper;
+        }
+
+        public async Task CreateAsync(T entity)
+        {
+            EFEntity efEntity = _mapper.Map<EFEntity>(entity);
+
+            var response = await _dbSet.AddAsync(efEntity);
+
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task DeleteAsync(T entity)
+        {
+            EFEntity efEntity = _mapper.Map<EFEntity>(entity);
+
+            _dbSet.Remove(efEntity);
+
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task UpdateAsync(T entity)
+        {
+            try
+            {
+                EFEntity efEntity = _mapper.Map<EFEntity>(entity);
+                var local = _context
+                    .Set<EFEntity>()
+                    .Local.FirstOrDefault(entry => entry.Id.Equals(efEntity.Id));
+
+                if (local != null)
+                {
+                    _context.Entry(local).State = EntityState.Detached;
+                }
+                _context.Entry(efEntity).State = EntityState.Modified;
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateException dbEx)
+            {
+                throw new DbUpdateException("Error updating entity in the database, ", dbEx);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("An unexpected error occurred while updating the entity, ", ex);
+            }
+        }
+    }
+
+    public class ReadRepository<T> : IReadRepository<T>
         where T : class
     {
         protected readonly AppDbContext _context;
         protected readonly DbSet<T> _dbSet;
-        protected readonly IMapper? _mapper;
 
-        public Repository(AppDbContext database)
+        public ReadRepository(AppDbContext database)
         {
             _context = database;
             _dbSet = database.Set<T>();
         }
 
-        public Repository(AppDbContext database, IMapper mapper)
-        {
-            _context = database;
-            _dbSet = database.Set<T>();
-            _mapper = mapper;
-        }
-
-        public async Task<T> AddWithDto<CreateDTO>(CreateDTO Dto)
-        {
-            if (_mapper is null)
-                throw new Exception($"The Mapper is in {nameof(AddWithDto)} null here");
-
-            T entity = _mapper.Map<T>(Dto);
-
-            T entityCreated = await Add(entity);
-
-            return entityCreated;
-        }
-
-        public async Task<T> Add(T entity)
-        {
-            var response = await _dbSet.AddAsync(entity);
-
-            await _context.SaveChangesAsync();
-
-            return response.Entity;
-        }
-
-        public async Task<List<T>> Add(List<T> entities)
-        {
-            await _dbSet.AddRangeAsync(entities);
-            await _context.SaveChangesAsync();
-            return entities;
-        }
-
-        public async Task Delete(T entity)
-        {
-            _dbSet.Remove(entity);
-
-            await _context.SaveChangesAsync();
-        }
-
-        public async Task Delete(List<T> entities)
-        {
-            _dbSet.RemoveRange(entities);
-            await _context.SaveChangesAsync();
-        }
-
-        public async Task<T?> GetById(Guid id)
+        public async Task<T?> GetByIdAsync(Guid id)
         {
             var entity = await _dbSet.FindAsync(id);
             return entity;
         }
+    }
 
-        public async Task<List<T>> GetAll(params Expression<Func<T, object>>[] includes)
+    public class ReadRangeRepository<T> : IReadRangeRepository<T>
+        where T : class
+    {
+        protected readonly AppDbContext _context;
+        protected readonly DbSet<T> _dbSet;
+
+        public ReadRangeRepository(AppDbContext database)
+        {
+            _context = database;
+            _dbSet = database.Set<T>();
+        }
+
+        public async Task<List<T>> GetAllAsync(params Expression<Func<T, object>>[] includes)
         {
             try
             {
@@ -94,24 +118,7 @@ namespace Infraestructure.Repository
             }
         }
 
-        public async Task Update(T entity)
-        {
-            try
-            {
-                _context.Entry(entity).State = EntityState.Modified;
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateException dbEx)
-            {
-                throw new DbUpdateException("Error updating entity in the database, ", dbEx);
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("An unexpected error occurred while updating the entity, ", ex);
-            }
-        }
-
-        public async Task<List<T>> GetAll(Expression<Func<T, bool>>? where)
+        public async Task<List<T>> GetAllAsync(Expression<Func<T, bool>>? where)
         {
             try
             {

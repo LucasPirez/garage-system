@@ -1,4 +1,4 @@
-﻿namespace backend.Modules.CustomerModule.Dtos
+﻿namespace Application.Dtos.Customer
 {
     public class UpdateCustomerDto
     {

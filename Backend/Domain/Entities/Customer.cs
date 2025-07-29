@@ -1,16 +1,16 @@
-﻿namespace Domain
+﻿namespace Domain.Entities
 {
     public interface ICustomerRepository
     {
         Task<IEnumerable<Customer>> GetAllAsync(Guid workshopId);
 
-        Task<Customer> GetByIdAsync(Guid id);
+        Task<Customer?> GetByIdAsync(Guid id);
 
         Task CreateAsync(Customer entity);
 
         Task UpdateAsync(Customer entity);
 
-        Task DeleteAsync(Guid id);
+        Task DeleteAsync(Customer entity);
     }
 
     public class Customer : BaseEntity<Guid>

@@ -1,6 +1,4 @@
-﻿using backend.Database.Entites;
-
-namespace backend.Modules.RepairOrderModule.Dtos
+﻿namespace Application.Dtos.RepairOrder
 {
     public class UpdateAmountAndStatusDto
     {
@@ -32,6 +30,6 @@ namespace backend.Modules.RepairOrderModule.Dtos
 
         public double FinalAmount { get; set; }
 
-        public required List<SparePart>? SpareParts { get; set; } = new List<SparePart>();
+        //public required List<SparePart>? SpareParts { get; set; } = new List<SparePart>();
     }
 }

@@ -1,52 +1,47 @@
-﻿using Application.Dtos;
+﻿using Application.Dtos.Customer;
 using AutoMapper;
-using backend.Common.Exceptions;
-using backend.Database;
-using backend.Database.Repository;
-using backend.Modules.CustomerModule.Interfaces;
-using Domain;
-using Microsoft.EntityFrameworkCore;
+using Domain.Entities;
+using Domain.Exceptions;
 
 namespace Application.Services
 {
     public class CustomerService
     {
-        public CustomerService(AppDbContext database, IMapper mapper)
-           
+        private readonly ICustomerRepository _customerRepository;
+        private readonly IMapper _mapper;
 
-        public Task<Customer> CreateAsync(CreateCustomerDto createDto)
+        public CustomerService(ICustomerRepository customerRepository, IMapper mapper)
         {
-            return AddWithDto(createDto);
+            _customerRepository = customerRepository;
+            _mapper = mapper;
         }
 
-        public async Task<IEnumerable<Customer>> GetAllAsync(Guid workshopId)
+        public async Task<Customer> CreateAsync(CreateCustomerDto createDto)
         {
-            return await _dbSet
-                .Where(k => k.WorkShopId == workshopId)
-                .Include(k => k.Vehicle)
-                .ToListAsync();
-        }
+            Customer customer = _mapper.Map<Customer>(createDto);
 
-        public async Task<Customer> GetByIdAsync(Guid id)
-        {
-            var customer = await GetById(id);
-
-            if (customer == null)
-            {
-                throw new NotFoundException("Customer not found");
-            }
+            await _customerRepository.CreateAsync(customer);
 
             return customer;
         }
 
-        public async Task UpdateAsync(Customer entity)
+        public async Task<IEnumerable<Customer>> GetAllAsync(Guid workshopId)
         {
-            await Update(entity);
+            return await _customerRepository.GetAllAsync(workshopId);
+        }
+
+        public async Task<Customer> GetByIdAsync(Guid id)
+        {
+            Customer customer =
+                await _customerRepository.GetByIdAsync(id) ?? throw new EntityNotFoundException(id);
+
+            return customer;
         }
 
         public async Task UpdateAsync(Guid Id, UpdateCustomerDto customerDto)
         {
-            Customer customer = await GetByIdAsync(Id);
+            Customer customer =
+                await _customerRepository.GetByIdAsync(Id) ?? throw new EntityNotFoundException(Id);
 
             customer.FirstName = customerDto.FirstName;
             customer.LastName = customerDto.LastName;
@@ -60,12 +55,15 @@ namespace Application.Services
                     ? new List<string>() { customerDto.PhoneNumber }
                     : customer.PhoneNumber;
 
-            await UpdateAsync(customer);
+            await _customerRepository.UpdateAsync(customer);
         }
 
-        public async Task DeleteAsync(Guid id)
+        public async Task DeleteAsync(Guid Id)
         {
-            throw new NotImplementedException();
+            Customer customer =
+                await _customerRepository.GetByIdAsync(Id) ?? throw new EntityNotFoundException(Id);
+
+            await _customerRepository.DeleteAsync(customer);
         }
     }
 }

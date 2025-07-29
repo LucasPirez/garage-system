@@ -1,4 +1,4 @@
-﻿namespace backend.Modules.VehicleModule.Dtos
+﻿namespace Application.Dtos.Vehicle
 {
     public class UpdateVehicleDto
     {
