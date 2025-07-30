@@ -16,13 +16,11 @@ namespace Application.Services
             _mapper = mapper;
         }
 
-        public async Task<Customer> CreateAsync(CreateCustomerDto createDto)
+        public async Task CreateAsync(CreateCustomerDto createDto)
         {
             Customer customer = _mapper.Map<Customer>(createDto);
 
             await _customerRepository.CreateAsync(customer);
-
-            return customer;
         }
 
         public async Task<IEnumerable<Customer>> GetAllAsync(Guid workshopId)
@@ -43,17 +41,16 @@ namespace Application.Services
             Customer customer =
                 await _customerRepository.GetByIdAsync(Id) ?? throw new EntityNotFoundException(Id);
 
-            customer.FirstName = customerDto.FirstName;
-            customer.LastName = customerDto.LastName;
-            customer.Email =
-                customerDto.Email != null
+            customer.Update(
+                firstName: customerDto.FirstName,
+                lastName: customerDto.LastName,
+                emails: customerDto.Email != null
                     ? new List<string>() { customerDto.Email }
-                    : customer.Email;
-
-            customer.PhoneNumber =
-                customerDto.PhoneNumber != null
+                    : customer.Email,
+                phoneNumbers: customerDto.PhoneNumber != null
                     ? new List<string>() { customerDto.PhoneNumber }
-                    : customer.PhoneNumber;
+                    : customer.PhoneNumber
+            );
 
             await _customerRepository.UpdateAsync(customer);
         }

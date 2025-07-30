@@ -1,4 +1,5 @@
-﻿using Domain;
+﻿using BCrypt.Net;
+using Domain;
 using Infraestructure.DataModel;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -28,50 +29,50 @@ namespace Infraestructure.Context
 
             modelBuilder.Entity<EFRepairOrder>().Property(k => k.Status).HasConversion<string>();
 
-            //modelBuilder
-            //    .Entity<WorkShop>()
-            //    .HasData(
-            //        new List<WorkShop>()
-            //        {
-            //            new WorkShop()
-            //            {
-            //                Id = new Guid(SeedData.workshopAId),
-            //                Name = "Taller Jesus",
-            //            },
-            //            new WorkShop()
-            //            {
-            //                Id = new Guid(SeedData.workshopBId),
-            //                Name = "Taller Silvana",
-            //            },
-            //        }
-            //    );
+            modelBuilder
+                .Entity<EFWorkShop>()
+                .HasData(
+                    new List<EFWorkShop>()
+                    {
+                        new EFWorkShop()
+                        {
+                            Id = new Guid(SeedData.workshopAId),
+                            Name = "Taller Jesus",
+                        },
+                        new EFWorkShop()
+                        {
+                            Id = new Guid(SeedData.workshopBId),
+                            Name = "Taller Silvana",
+                        },
+                    }
+                );
 
-            //modelBuilder
-            //    .Entity<Admin>()
-            //    .HasData(
-            //        new List<Admin>()
-            //        {
-            //            new Admin()
-            //            {
-            //                Email = "email@gmail.com",
-            //                Id = Guid.NewGuid(),
-            //                Password = BCrypt.Net.BCrypt.HashPassword("123456"),
-            //                WorkShopId = new Guid(SeedData.workshopAId),
-            //            },
-            //            new Admin()
-            //            {
-            //                Email = "email2@gmail.com",
-            //                Id = Guid.NewGuid(),
-            //                Password = BCrypt.Net.BCrypt.HashPassword("123456"),
-            //                WorkShopId = new Guid(SeedData.workshopBId),
-            //            },
-            //        }
-            //    );
+            modelBuilder
+                .Entity<EFAdmin>()
+                .HasData(
+                    new List<EFAdmin>()
+                    {
+                        new EFAdmin()
+                        {
+                            Email = "email@gmail.com",
+                            Id = Guid.NewGuid(),
+                            Password = BCrypt.Net.BCrypt.HashPassword("123456"),
+                            WorkShopId = new Guid(SeedData.workshopAId),
+                        },
+                        new EFAdmin()
+                        {
+                            Email = "email2@gmail.com",
+                            Id = Guid.NewGuid(),
+                            Password = BCrypt.Net.BCrypt.HashPassword("123456"),
+                            WorkShopId = new Guid(SeedData.workshopBId),
+                        },
+                    }
+                );
 
             //modelBuilder
             //    .Entity<EFCustomer>()
             //    .HasData(
-            //        new List<Customer>()
+            //        new List<EFCustomer>()
             //        {
             //            new Customer()
             //            {

@@ -15,13 +15,11 @@ namespace Application.Test
 
         public CustomerServiceTest(TestStartUp testStartUp)
         {
-            _customerRepositoryMock = testStartUp
-                .Services.BuildServiceProvider()
-                .GetRequiredService<Mock<ICustomerRepository>>();
+            var services = testStartUp.Services.BuildServiceProvider();
 
-            _customerService = testStartUp
-                .Services.BuildServiceProvider()
-                .GetRequiredService<CustomerService>();
+            _customerRepositoryMock = services.GetRequiredService<Mock<ICustomerRepository>>();
+
+            _customerService = services.GetRequiredService<CustomerService>();
         }
 
         [Fact]
@@ -30,17 +28,16 @@ namespace Application.Test
             // Arrange
             var dto = new CreateCustomerDto
             {
+                Id = Guid.NewGuid(),
                 FirstName = "Customer",
                 LastName = "customer-lastName",
+                WorkshopId = Guid.NewGuid().ToString(),
             };
 
             // Act
-            var result = await _customerService.CreateAsync(dto);
+            await _customerService.CreateAsync(dto);
 
             // Assert
-            Assert.NotNull(result);
-            Assert.Equal(dto.FirstName, result.FirstName);
-            Assert.Equal(dto.LastName, result.LastName);
             _customerRepositoryMock.Verify(r => r.CreateAsync(It.IsAny<Customer>()), Times.Once);
         }
 
@@ -55,13 +52,12 @@ namespace Application.Test
                 .ReturnsAsync(
                     new List<Customer>
                     {
-                        new Customer()
-                        {
-                            Id = customerId,
-                            FirstName = "Customer",
-                            LastName = "Customer-LastNmae",
-                            WorkShopId = Guid.NewGuid(),
-                        },
+                        new Customer(
+                            id: customerId,
+                            firstName: "Customer",
+                            lastName: "Customer-LastNmae",
+                            workshopId: Guid.NewGuid()
+                        ),
                     }
                 );
 
@@ -78,13 +74,12 @@ namespace Application.Test
         {
             // Arrange
             var customerId = Guid.NewGuid();
-            var customer = new Customer
-            {
-                Id = customerId,
-                FirstName = "Customer",
-                LastName = "Customer-LastNmae",
-                WorkShopId = Guid.NewGuid(),
-            };
+            var customer = new Customer(
+                id: customerId,
+                firstName: "Customer",
+                lastName: "Customer-LastNmae",
+                workshopId: Guid.NewGuid()
+            );
 
             _customerRepositoryMock.Setup(r => r.GetByIdAsync(customerId)).ReturnsAsync(customer);
 
@@ -116,15 +111,14 @@ namespace Application.Test
         {
             // Arrange
             var customerId = Guid.NewGuid();
-            var existing = new Customer
-            {
-                Id = customerId,
-                FirstName = "Old",
-                LastName = "OldLastName",
-                Email = new List<string> { "old@email.com" },
-                PhoneNumber = new List<string> { "1111" },
-                WorkShopId = Guid.NewGuid(),
-            };
+            var existing = new Customer(
+                id: customerId,
+                firstName: "Old",
+                lastName: "OldLastName",
+                emails: new List<string> { "old@email.com" },
+                phoneNumbers: new List<string> { "1111" },
+                workshopId: Guid.NewGuid()
+            );
 
             var dto = new UpdateCustomerDto
             {
@@ -168,13 +162,12 @@ namespace Application.Test
         {
             // Arrange
             var customerId = Guid.NewGuid();
-            var customer = new Customer
-            {
-                Id = customerId,
-                FirstName = "Customer",
-                LastName = "Customer-LastNmae",
-                WorkShopId = Guid.NewGuid(),
-            };
+            var customer = new Customer(
+                id: customerId,
+                firstName: "Customer",
+                lastName: "Customer-LastNmae",
+                workshopId: Guid.NewGuid()
+            );
 
             _customerRepositoryMock.Setup(r => r.GetByIdAsync(customerId)).ReturnsAsync(customer);
 
@@ -182,7 +175,7 @@ namespace Application.Test
             await _customerService.DeleteAsync(customerId);
 
             // Assert
-            _customerRepositoryMock.Verify(r => r.DeleteAsync(customer), Times.Never);
+            _customerRepositoryMock.Verify(r => r.DeleteAsync(customer), Times.Once);
         }
 
         [Fact]

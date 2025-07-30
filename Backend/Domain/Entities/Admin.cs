@@ -12,16 +12,24 @@ namespace Domain.Entities
 
     public class Admin : BaseEntity<Guid>
     {
-        public required string Email { get; set; }
+        public string Email { get; }
 
-        public required string Password { get; set; }
+        public string Password { get; }
 
-        public int FailedAttempts { get; set; } = 0;
+        public int FailedAttempts { get; } = 0;
 
-        public string? ResetPasswordToken { get; set; }
+        public string? ResetPasswordToken { get; }
 
-        public bool IsLocked { get; set; } = false;
+        public bool IsLocked { get; } = false;
 
-        public WorkShop WorkShop { get; set; }
+        public WorkShop WorkShop { get; }
+
+        public Admin(Guid id, string email, string password, WorkShop workShop)
+            : base(id)
+        {
+            Email = email;
+            Password = password;
+            WorkShop = workShop;
+        }
     }
 }

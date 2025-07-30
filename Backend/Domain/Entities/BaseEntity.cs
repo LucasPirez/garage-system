@@ -2,8 +2,13 @@
 {
     public class BaseEntity<T>
     {
-        public required T Id { get; set; }
-        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
-        public DateTime? UpdatedAt { get; set; }
+        public T Id { get; }
+        public DateTime CreatedAt { get; } = DateTime.UtcNow;
+        public DateTime? UpdatedAt { get; }
+
+        public BaseEntity(T id)
+        {
+            Id = id;
+        }
     }
 }

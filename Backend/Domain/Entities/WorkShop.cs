@@ -12,12 +12,21 @@ namespace Domain.Entities
 
     public class WorkShop : BaseEntity<Guid>
     {
-        public string Name { get; set; } = string.Empty;
+        public string Name { get; } = string.Empty;
 
-        public string? Address { get; set; }
+        public string? Address { get; }
 
-        public string? PhoneNumber { get; set; }
+        public string? PhoneNumber { get; }
 
-        public string? Email { get; set; }
+        public string? Email { get; }
+
+        public WorkShop(Guid id, string name, string? address, string? phoneNumber, string? email)
+            : base(id)
+        {
+            Name = name;
+            Address = address;
+            PhoneNumber = phoneNumber;
+            Email = email;
+        }
     }
 }

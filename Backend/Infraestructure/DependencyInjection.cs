@@ -12,22 +12,25 @@ namespace Infraestructure
     {
         public static void AddInfraestructure(
             this IServiceCollection services,
-            IConfiguration configuration
+            IConfiguration? configuration = default
         )
         {
             services.AddAutoMapper(Assembly.GetExecutingAssembly());
 
             var env = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
 
-            var connection = configuration.GetConnectionString("DefaultConnection");
-            Console.WriteLine("ASPNETROCE_ENVIRONMENT -------------- " + env);
-            services.AddDbContext<AppDbContext>(options =>
+            if (configuration is not null)
             {
-                if (env == "Testing")
-                    options.UseSqlite(connection);
-                else
-                    options.UseNpgsql(connection);
-            });
+                var connection = configuration.GetConnectionString("DefaultConnection");
+
+                services.AddDbContext<AppDbContext>(options => options.UseNpgsql(connection));
+            }
+            else
+            {
+                Console.WriteLine(
+                    $"[Warning] Configuration is null in {nameof(AddInfraestructure)}"
+                );
+            }
 
             services.AddScoped<ICustomerRepository, EFCustomerRepository>();
         }

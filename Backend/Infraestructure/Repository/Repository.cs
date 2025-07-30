@@ -32,6 +32,12 @@ namespace Infraestructure.Repository
         public async Task DeleteAsync(T entity)
         {
             EFEntity efEntity = _mapper.Map<EFEntity>(entity);
+            var local = _dbSet.Local.FirstOrDefault(entry => entry.Id.Equals(efEntity.Id));
+
+            if (local != null)
+            {
+                _context.Entry(local).State = EntityState.Detached;
+            }
 
             _dbSet.Remove(efEntity);
 
@@ -43,9 +49,7 @@ namespace Infraestructure.Repository
             try
             {
                 EFEntity efEntity = _mapper.Map<EFEntity>(entity);
-                var local = _context
-                    .Set<EFEntity>()
-                    .Local.FirstOrDefault(entry => entry.Id.Equals(efEntity.Id));
+                var local = _dbSet.Local.FirstOrDefault(entry => entry.Id.Equals(efEntity.Id));
 
                 if (local != null)
                 {

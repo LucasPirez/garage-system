@@ -1,40 +1,28 @@
-using Domain;
-using Microsoft.EntityFrameworkCore;
+using AutoMapper;
+using Domain.Entities;
+using Infraestructure.Context;
+using Infraestructure.DataModel;
 
 namespace Infraestructure.Repository
 {
-    public class EFVehicleRepository
+    public class EFVehicleRepository : WriteRepository<Vehicle, EFVehicle>, IVehicleRepository
     {
-        //private readonly AppDbContext _context;
-        //public EFVehicleRepository(AppDbContext context) => _context = context;
+        public EFVehicleRepository(AppDbContext database, IMapper mapper)
+            : base(database, mapper) { }
 
-        //public async Task<IEnumerable<Vehicle>> GetAllAsync(Guid workshopId) =>
-        //    await _context.Vehicles.Where(v => v.CustomerId == workshopId).ToListAsync();
+        public Task DeleteAsync(Guid id)
+        {
+            throw new NotImplementedException();
+        }
 
-        //public async Task<Vehicle> GetByIdAsync(Guid id) =>
-        //    await _context.Vehicles.FindAsync(id);
+        public Task<IEnumerable<Vehicle>> GetAllAsync(Guid workshopId)
+        {
+            throw new NotImplementedException();
+        }
 
-        //public async Task<Vehicle> CreateAsync(Vehicle entity)
-        //{
-        //    _context.Vehicles.Add(entity);
-        //    await _context.SaveChangesAsync();
-        //    return entity;
-        //}
-
-        //public async Task UpdateAsync(Vehicle entity)
-        //{
-        //    _context.Vehicles.Update(entity);
-        //    await _context.SaveChangesAsync();
-        //}
-
-        //public async Task DeleteAsync(Guid id)
-        //{
-        //    var entity = await _context.Vehicles.FindAsync(id);
-        //    if (entity != null)
-        //    {
-        //        _context.Vehicles.Remove(entity);
-        //        await _context.SaveChangesAsync();
-        //    }
-        //}
+        public Task<Vehicle> GetByIdAsync(Guid id)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -12,6 +12,7 @@ namespace API.Swagger
         public CreateCustomerDto GetExamples() =>
             new()
             {
+                Id = Guid.NewGuid(),
                 WorkshopId = SeedData.workshopAId.ToString(),
                 FirstName = "Juan",
                 LastName = "Pérez",

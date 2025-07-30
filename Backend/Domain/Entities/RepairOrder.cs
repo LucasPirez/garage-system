@@ -18,26 +18,24 @@ namespace Domain.Entities
 
     public class RepairOrder : BaseEntity<Guid>
     {
-        public DateTime ReceptionDate { get; set; } = DateTime.UtcNow;
-        public DateTime? DeliveryDate { get; set; }
+        public DateTime ReceptionDate { get; } = DateTime.UtcNow;
+        public DateTime? DeliveryDate { get; }
 
-        public bool NotifycationSent { get; set; } = false;
+        public bool NotifycationSent { get; } = false;
 
-        public RepairOrderStatus Status { get; set; } = RepairOrderStatus.InProgress;
+        public RepairOrderStatus Status { get; } = RepairOrderStatus.InProgress;
 
-        public string Cause { get; set; } = string.Empty;
+        public string Cause { get; } = string.Empty;
 
-        public string Details { get; set; } = string.Empty;
-        public double Budget { get; set; }
-        public double FinalAmount { get; set; }
+        public string Details { get; } = string.Empty;
+        public double Budget { get; }
+        public double FinalAmount { get; }
 
-        public IList<SparePart> SpareParts { get; set; } = new List<SparePart>();
+        public IList<SparePart> SpareParts { get; } = new List<SparePart>();
 
-        public Vehicle Vehicle { get; set; }
+        public Vehicle Vehicle { get; }
 
-        public required Guid WorkShopId { get; set; }
-
-        public RepairOrder() { }
+        public Guid WorkShopId { get; }
 
         public RepairOrder(
             Guid id,
@@ -52,8 +50,8 @@ namespace Domain.Entities
             Guid workshopId,
             Vehicle vehicle
         )
+            : base(id)
         {
-            Id = id;
             ReceptionDate = recepcionDate;
             DeliveryDate = deliveriDate;
             NotifycationSent = notificationSent;

@@ -29,9 +29,9 @@ namespace API.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(CreateCustomerDto customerDto)
         {
-            var result = await _customerService.CreateAsync(customerDto);
+            await _customerService.CreateAsync(customerDto);
 
-            return StatusCode(StatusCodes.Status201Created, result);
+            return Created();
         }
 
         [HttpPut("{id}")]

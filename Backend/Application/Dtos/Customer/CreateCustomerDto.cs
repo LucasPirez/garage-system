@@ -4,6 +4,7 @@ namespace Application.Dtos.Customer
 {
     public class BaseCustomerDto
     {
+        public required Guid Id { get; set; }
         public required string FirstName { get; set; }
 
         public required string LastName { get; set; }
@@ -19,6 +20,6 @@ namespace Application.Dtos.Customer
 
     public class CreateCustomerDto : BaseCustomerDto
     {
-        public string WorkshopId { get; set; }
+        public required string WorkshopId { get; set; }
     }
 }

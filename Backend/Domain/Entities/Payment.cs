@@ -11,10 +11,17 @@ namespace Domain.Entities
 
     public class Payment : BaseEntity<Guid>
     {
-        public required Guid CustomerId { get; set; }
-        public Customer Customer { get; set; }
-        public string? Method { get; set; }
-        public required decimal Amount { get; set; }
-        public DateTime PaymentDate { get; set; } = DateTime.UtcNow;
+        public Customer Customer { get; }
+        public string? Method { get; }
+        public decimal Amount { get; }
+        public DateTime PaymentDate { get; } = DateTime.UtcNow;
+
+        public Payment(Guid id, Customer customer, decimal amount = 0, string? method = "")
+            : base(id)
+        {
+            Customer = customer;
+            Method = method;
+            Amount = amount;
+        }
     }
 }
