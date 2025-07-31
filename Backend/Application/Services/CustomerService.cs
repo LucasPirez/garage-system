@@ -5,7 +5,16 @@ using Domain.Exceptions;
 
 namespace Application.Services
 {
-    public class CustomerService
+    public interface ICustomerService
+    {
+        Task CreateAsync(CreateCustomerDto createDto);
+        Task DeleteAsync(Guid Id);
+        Task<IEnumerable<Customer>> GetAllAsync(Guid workshopId);
+        Task<Customer> GetByIdAsync(Guid id);
+        Task UpdateAsync(Guid Id, UpdateCustomerDto customerDto);
+    }
+
+    public class CustomerService : ICustomerService
     {
         private readonly ICustomerRepository _customerRepository;
         private readonly IMapper _mapper;

@@ -9,7 +9,7 @@ namespace Application
         public static void AddApplication(this IServiceCollection services)
         {
             services.AddAutoMapper(typeof(Application.AutoMapper.AutoMapping));
-            services.AddScoped<CustomerService>();
+            services.AddScoped<ICustomerService, CustomerService>();
         }
     }
 }
