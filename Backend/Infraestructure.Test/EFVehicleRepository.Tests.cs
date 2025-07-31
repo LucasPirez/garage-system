@@ -14,7 +14,6 @@ namespace Infraestructure.Test
     {
         private readonly DbSet<EFVehicle> _dbSetVehicle;
         private readonly AppDbContext _context;
-        private readonly TestStartup _testStartup;
         private readonly IVehicleRepository _repository;
         private static readonly Guid customerId = Guid.NewGuid();
         private readonly EFCustomer customerInDb = new EFCustomer()
@@ -36,7 +35,6 @@ namespace Infraestructure.Test
 
         public EFVehicleRepositoryTests(TestStartup testStartup)
         {
-            _testStartup = testStartup;
             var services = testStartup.Services.BuildServiceProvider();
 
             _context = services.GetRequiredService<AppDbContext>();
@@ -156,7 +154,7 @@ namespace Infraestructure.Test
 
         public void Dispose()
         {
-            _testStartup.ResetDataBase();
+            _context.ResetDatabase();
         }
     }
 }

@@ -1,11 +1,7 @@
-using System.Data.Common;
-using System.Net;
 using Domain.Entities;
 using Infraestructure.Context;
 using Infraestructure.DataModel;
-using Infraestructure.Repository;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Infraestructure.Test
@@ -16,7 +12,6 @@ namespace Infraestructure.Test
         private readonly DbSet<EFCustomer> _dbSetCustomer;
         private readonly AppDbContext _context;
         private readonly ICustomerRepository _repository;
-        private TestStartup _testStartup;
         private Customer customerTest = new Customer(
             id: Guid.NewGuid(),
             firstName: "Test",
@@ -30,8 +25,7 @@ namespace Infraestructure.Test
 
         public EFCustomerRepositoryTests(TestStartup testStartup)
         {
-            _testStartup = testStartup;
-            var services = _testStartup.Services.BuildServiceProvider();
+            var services = testStartup.Services.BuildServiceProvider();
 
             _context = services.GetRequiredService<AppDbContext>();
             _dbSetCustomer = _context.Set<EFCustomer>();
@@ -199,7 +193,7 @@ namespace Infraestructure.Test
 
         public void Dispose()
         {
-            _testStartup.ResetDataBase();
+            _context.ResetDatabase();
         }
     }
 }

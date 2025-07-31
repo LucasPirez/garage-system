@@ -5,6 +5,15 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Infraestructure.Test
 {
+    public static class ContextExtesions
+    {
+        public static void ResetDatabase(this AppDbContext context)
+        {
+            context.Database.EnsureDeleted();
+            context.Database.EnsureCreatedAsync().Wait();
+        }
+    }
+
     public class TestStartup
     {
         public IServiceCollection Services { get; } = new ServiceCollection();
@@ -21,15 +30,7 @@ namespace Infraestructure.Test
             Services.AddDbContext<AppDbContext>(options => options.UseSqlite(_connection));
 
             _context = Services.BuildServiceProvider().GetRequiredService<AppDbContext>();
-
-            _context.Database.EnsureDeleted();
-            _context.Database.EnsureCreatedAsync().Wait();
-        }
-
-        public void ResetDataBase()
-        {
-            _context.Database.EnsureDeleted();
-            _context.Database.EnsureCreatedAsync().Wait();
+            _context.ResetDatabase();
         }
     }
 
