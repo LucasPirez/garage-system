@@ -1,14 +1,16 @@
-﻿namespace Application.Dtos.Vehicle
+﻿using Domain.Entities;
+
+namespace Application.Dtos.Vehicle
 {
     public class HistoricalRepairOrderDto
     {
-        public string Id { get; set; }
+        public required string Id { get; set; }
         public DateTime ReceptionDate { get; set; } = DateTime.UtcNow;
         public DateTime? DeliveryDate { get; set; }
 
         public bool NotifycationSent { get; set; } = false;
 
-        public string Status { get; set; }
+        public required string Status { get; set; }
 
         public string Cause { get; set; } = string.Empty;
 
@@ -16,6 +18,6 @@
         public double Budget { get; set; }
         public double FinalAmount { get; set; }
 
-        //public IList<SparePart> SpareParts { get; set; } = new List<SparePart>();
+        public IList<SparePart> SpareParts { get; set; } = new List<SparePart>();
     }
 }

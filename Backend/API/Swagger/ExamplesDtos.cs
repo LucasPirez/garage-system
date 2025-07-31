@@ -87,6 +87,7 @@ namespace API.Swagger
         public CreateVehicleDto GetExamples() =>
             new()
             {
+                Id = Guid.NewGuid(),
                 CustomerId = SeedData.customerAId,
                 Plate = "ab-394-35",
                 Color = "Pink",

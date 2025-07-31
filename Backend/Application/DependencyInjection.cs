@@ -1,5 +1,4 @@
 ﻿using Application.Services;
-using Domain.Entities;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Application
@@ -10,6 +9,7 @@ namespace Application
         {
             services.AddAutoMapper(typeof(Application.AutoMapper.AutoMapping));
             services.AddScoped<ICustomerService, CustomerService>();
+            services.AddScoped<IVehicleService, VehicleService>();
         }
     }
 }

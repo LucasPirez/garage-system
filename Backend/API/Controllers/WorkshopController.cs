@@ -8,10 +8,12 @@ namespace API.Controllers
     public class WorkshopController : ControllerBase
     {
         private readonly ICustomerService _customerService;
+        private readonly IVehicleService _vehicleService;
 
-        public WorkshopController(ICustomerService customerService)
+        public WorkshopController(ICustomerService customerService, IVehicleService vehicleService)
         {
             _customerService = customerService;
+            _vehicleService = vehicleService;
         }
 
         [HttpGet("{workshopId}/customers")]
@@ -22,13 +24,13 @@ namespace API.Controllers
             return Ok(result);
         }
 
-        //[HttpGet("{workshopId}/vehicles")]
-        //public async Task<IActionResult> GetAllVehicles([FromRoute] string workshopId)
-        //{
-        //    var result = await _vehicleService.GetAllAsync(Guid.Parse(workshopId));
+        [HttpGet("{workshopId}/vehicles")]
+        public async Task<IActionResult> GetAllVehicles([FromRoute] string workshopId)
+        {
+            var result = await _vehicleService.GetAllAsync(Guid.Parse(workshopId));
 
-        //    return Ok(result);
-        //}
+            return Ok(result);
+        }
 
         //[HttpGet("{workshopId}/repair-order")]
         //public async Task<IActionResult> GetAllVehicleEntries([FromRoute] string workshopId)

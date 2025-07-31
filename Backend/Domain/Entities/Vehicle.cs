@@ -11,21 +11,26 @@ namespace Domain.Entities
 
     public class Vehicle : BaseEntity<Guid>
     {
-        public string Plate { get; }
-        public string Brand { get; }
-        public string Model { get; }
-        public int Year { get; }
+        public string Plate { get; private set; }
+        public string? Model { get; private set; }
+        public string? Color { get; private set; }
 
-        public Guid CustomerId { get; }
+        public Guid CustomerId { get; private set; }
 
-        public Vehicle(Guid id, string plate, string brand, string model, int year, Guid customerId)
+        public Vehicle(Guid id, string plate, string model, string color, Guid customerId)
             : base(id)
         {
             Plate = plate;
-            Brand = brand;
             Model = model;
-            Year = year;
+            Color = color;
             CustomerId = customerId;
+        }
+
+        public void Update(string plate, string? color, string? model)
+        {
+            Plate = plate;
+            Color = color;
+            Model = model;
         }
     }
 }

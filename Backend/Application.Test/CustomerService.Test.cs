@@ -10,7 +10,7 @@ namespace Application.Test
     [Collection("UnitTest")]
     public class CustomerServiceTest
     {
-        private readonly CustomerService _customerService;
+        private readonly ICustomerService _customerService;
         private readonly Mock<ICustomerRepository> _customerRepositoryMock;
 
         public CustomerServiceTest(TestStartUp testStartUp)
@@ -19,7 +19,7 @@ namespace Application.Test
 
             _customerRepositoryMock = services.GetRequiredService<Mock<ICustomerRepository>>();
 
-            _customerService = services.GetRequiredService<CustomerService>();
+            _customerService = services.GetRequiredService<ICustomerService>();
         }
 
         [Fact]
@@ -92,7 +92,7 @@ namespace Application.Test
         }
 
         [Fact]
-        public async Task GetByIdAsync_Should_Throw_When_NotFound()
+        public async Task GetByIdAsync_ShouldThrow_WhenNotFound()
         {
             // Arrange
             var customerId = Guid.NewGuid();

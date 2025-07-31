@@ -33,6 +33,7 @@ namespace Infraestructure
             }
 
             services.AddScoped<ICustomerRepository, EFCustomerRepository>();
+            services.AddScoped<IVehicleRepository, EFVehicleRepository>();
         }
     }
 }

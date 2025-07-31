@@ -100,7 +100,8 @@ namespace Infraestructure.Context
         public DbSet<EFWorkShop> WorkShops => Set<EFWorkShop>();
         public DbSet<EFCustomer> Customers => Set<EFCustomer>();
 
-        //public DbSet<Vehicle> Vehicles => Set<Vehicle>();
+        public DbSet<EFVehicle> Vehicles => Set<EFVehicle>();
+
         //public DbSet<RepairOrder> VehicleEntries => Set<RepairOrder>();
         //public DbSet<Payment> Payments => Set<Payment>();
         public DbSet<EFAdmin> Admins => Set<EFAdmin>();
