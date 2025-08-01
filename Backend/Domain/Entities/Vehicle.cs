@@ -4,6 +4,7 @@ namespace Domain.Entities
     {
         Task<IEnumerable<Vehicle>> GetAllAsync(Guid workshopId);
         Task<Vehicle?> GetByIdAsync(Guid id);
+        Task<Vehicle?> GetByPlateAsync(string plate, Guid workShopId);
         Task CreateAsync(Vehicle entity);
         Task UpdateAsync(Vehicle entity);
         Task DeleteAsync(Vehicle entity);

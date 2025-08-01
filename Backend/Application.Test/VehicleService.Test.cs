@@ -108,6 +108,48 @@ namespace Application.Test
         }
 
         [Fact]
+        public async Task GetByPlateAsync_houldReturnVehicle_WhenExistsInWorkShop()
+        {
+            // Arrange
+            var vehicleId = Guid.NewGuid();
+            var vehicle = new Vehicle(vehicleId, "ABC123", Guid.NewGuid(), "Sedan", "Red");
+            var workshopId = Guid.NewGuid();
+
+            _vehicleRepositoryMock
+                .Setup(r => r.GetByPlateAsync(vehicle.Plate, workshopId))
+                .ReturnsAsync(vehicle);
+
+            // Act
+            var result = await _vehicleService.GetByPlateAsync(vehicle.Plate, workshopId);
+
+            // Assert
+            Assert.NotNull(result);
+            Assert.Equal(vehicleId, result.Id);
+            _vehicleRepositoryMock.Verify(
+                r => r.GetByPlateAsync(vehicle.Plate, workshopId),
+                Times.Once
+            );
+        }
+
+        [Fact]
+        public async Task GetByPlateAsync_ShouldThrowException_WhenNotExistsInWorkshop()
+        {
+            // Arrange
+            var vehicleId = Guid.NewGuid();
+            var vehicle = new Vehicle(vehicleId, "ABC123", Guid.NewGuid(), "Sedan", "Red");
+            var workshopId = Guid.NewGuid();
+
+            _vehicleRepositoryMock
+                .Setup(r => r.GetByPlateAsync(vehicle.Plate, workshopId))
+                .ReturnsAsync((Vehicle)null);
+
+            // Act & Assert
+            await Assert.ThrowsAsync<EntityNotFoundException>(
+                () => _vehicleService.GetByIdAsync(vehicleId)
+            );
+        }
+
+        [Fact]
         public async Task UpdateAsync_ShouldUpdateVehicleSuccessfully()
         {
             // Arrange

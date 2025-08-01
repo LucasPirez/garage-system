@@ -11,6 +11,7 @@ namespace Application.Services
         Task DeleteAsync(Guid id);
         Task<IEnumerable<Vehicle>> GetAllAsync(Guid workshopId);
         Task<Vehicle> GetByIdAsync(Guid id);
+        Task<Vehicle> GetByPlateAsync(string plate, Guid workshopId);
         Task UpdateAsync(Guid Id, UpdateVehicleDto vehicleDto);
     }
 
@@ -41,6 +42,14 @@ namespace Application.Services
         {
             Vehicle vehicle =
                 await _vehicleRepository.GetByIdAsync(id) ?? throw new EntityNotFoundException(id);
+            return vehicle;
+        }
+
+        public async Task<Vehicle> GetByPlateAsync(string plate, Guid workshopId)
+        {
+            Vehicle vehicle =
+                await _vehicleRepository.GetByPlateAsync(plate, workshopId)
+                ?? throw new EntityNotFoundException(plate);
             return vehicle;
         }
 
