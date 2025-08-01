@@ -17,7 +17,13 @@ namespace Domain.Entities
 
         public Guid CustomerId { get; private set; }
 
-        public Vehicle(Guid id, string plate, string model, string color, Guid customerId)
+        public Vehicle(
+            Guid id,
+            string plate,
+            Guid customerId,
+            string? model = null,
+            string? color = null
+        )
             : base(id)
         {
             Plate = plate;

@@ -36,9 +36,9 @@ namespace Application.Test
             var vehicle = new Vehicle(
                 Guid.NewGuid(),
                 createDto.Plate,
+                Guid.Parse(createDto.CustomerId),
                 createDto.Model,
-                createDto.Color,
-                Guid.Parse(createDto.CustomerId)
+                createDto.Color
             );
             _mapperMock.Setup(m => m.Map<Vehicle>(createDto)).Returns(vehicle);
             _vehicleRepositoryMock.Setup(r => r.CreateAsync(vehicle)).Returns(Task.CompletedTask);
@@ -58,8 +58,8 @@ namespace Application.Test
             var workshopId = Guid.NewGuid();
             var vehicles = new List<Vehicle>
             {
-                new Vehicle(Guid.NewGuid(), "ABC123", "Sedan", "Red", Guid.NewGuid()),
-                new Vehicle(Guid.NewGuid(), "XYZ789", "SUV", "Blue", Guid.NewGuid()),
+                new Vehicle(Guid.NewGuid(), "ABC123", Guid.NewGuid(), "Sedan", "Red"),
+                new Vehicle(Guid.NewGuid(), "XYZ789", Guid.NewGuid(), "SUV", "Blue"),
             };
 
             _vehicleRepositoryMock.Setup(r => r.GetAllAsync(workshopId)).ReturnsAsync(vehicles);
@@ -78,7 +78,7 @@ namespace Application.Test
         {
             // Arrange
             var vehicleId = Guid.NewGuid();
-            var vehicle = new Vehicle(vehicleId, "ABC123", "Sedan", "Red", Guid.NewGuid());
+            var vehicle = new Vehicle(vehicleId, "ABC123", Guid.NewGuid(), "Sedan", "Red");
 
             _vehicleRepositoryMock.Setup(r => r.GetByIdAsync(vehicleId)).ReturnsAsync(vehicle);
 
@@ -119,7 +119,7 @@ namespace Application.Test
                 Color = "Blue",
             };
 
-            var vehicle = new Vehicle(vehicleId, "ABC123", "Sedan", "Red", Guid.NewGuid());
+            var vehicle = new Vehicle(vehicleId, "ABC123", Guid.NewGuid(), "Sedan", "Red");
             _vehicleRepositoryMock.Setup(r => r.GetByIdAsync(vehicleId)).ReturnsAsync(vehicle);
 
             // Act
