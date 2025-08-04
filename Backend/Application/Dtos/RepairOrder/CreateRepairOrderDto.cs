@@ -3,42 +3,27 @@ using Application.Dtos.Vehicle;
 
 namespace Application.Dtos.RepairOrder
 {
-    public class CreateRepairOrderDto
+    public class BaseCreateRepairOrderDto
     {
+        public required Guid Id { get; set; }
         public required DateTime ReceptionDate { get; set; } = DateTime.UtcNow;
-
         public required string Cause { get; set; } = string.Empty;
-
         public string? Details { get; set; } = string.Empty;
-
-        public required string VehicleId { get; set; }
-
-        public string WorkshopId { get; set; }
+        public required string WorkshopId { get; set; }
     }
 
-    public class CreateRepairOrderWithVehicleDto
+    public class CreateRepairOrderDto : BaseCreateRepairOrderDto
     {
-        public required DateTime ReceptionDate { get; set; } = DateTime.UtcNow;
+        public required BaseVehicleDto Vehicle { get; set; }
+    }
 
-        public required string Cause { get; set; } = string.Empty;
-
-        public string? Details { get; set; } = string.Empty;
-
-        public required string WorkshopId { get; set; }
-
+    public class CreateRepairOrderWithVehicleDto : BaseCreateRepairOrderDto
+    {
         public required CreateVehicleDto VehicleDto { get; set; }
     }
 
-    public class CreateRepairOrderWithVehicleAndCustomerDto
+    public class CreateRepairOrderWithVehicleAndCustomerDto : BaseCreateRepairOrderDto
     {
-        public required DateTime ReceptionDate { get; set; } = DateTime.UtcNow;
-
-        public required string Cause { get; set; } = string.Empty;
-
-        public string? Details { get; set; } = string.Empty;
-
-        public required string WorkshopId { get; set; }
-
         public required BaseVehicleDto VehicleDto { get; set; }
 
         public required BaseCustomerDto CustomerDto { get; set; }
