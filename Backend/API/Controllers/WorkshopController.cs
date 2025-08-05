@@ -9,11 +9,17 @@ namespace API.Controllers
     {
         private readonly ICustomerService _customerService;
         private readonly IVehicleService _vehicleService;
+        private readonly IRepairOrderService _repairOrderService;
 
-        public WorkshopController(ICustomerService customerService, IVehicleService vehicleService)
+        public WorkshopController(
+            ICustomerService customerService,
+            IVehicleService vehicleService,
+            IRepairOrderService repairOrderService
+        )
         {
             _customerService = customerService;
             _vehicleService = vehicleService;
+            _repairOrderService = repairOrderService;
         }
 
         [HttpGet("{workshopId}/customers")]
@@ -32,12 +38,12 @@ namespace API.Controllers
             return Ok(result);
         }
 
-        //[HttpGet("{workshopId}/repair-order")]
-        //public async Task<IActionResult> GetAllVehicleEntries([FromRoute] string workshopId)
-        //{
-        //    var result = await _vehicleEntryService.GetAllAsync(Guid.Parse(workshopId));
+        [HttpGet("{workshopId}/repair-order")]
+        public async Task<IActionResult> GetAllVehicleEntries([FromRoute] Guid workshopId)
+        {
+            var result = await _repairOrderService.GetAllAsync(workshopId);
 
-        //    return Ok(result);
-        //}
+            return Ok(result);
+        }
     }
 }

@@ -10,6 +10,7 @@ namespace Application
             services.AddAutoMapper(typeof(Application.AutoMapper.AutoMapping));
             services.AddScoped<ICustomerService, CustomerService>();
             services.AddScoped<IVehicleService, VehicleService>();
+            services.AddScoped<IRepairOrderService, RepairOrderService>();
         }
     }
 }

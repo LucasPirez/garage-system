@@ -28,10 +28,19 @@ namespace API.Swagger
         public CreateRepairOrderDto GetExamples() =>
             new()
             {
+                Id = Guid.NewGuid(),
                 Cause = "Cambio de aceite",
                 Details = "Cambio de aceite y filtro",
                 ReceptionDate = DateTime.UtcNow,
-                VehicleId = "",
+                WorkshopId = SeedData.workshopAId.ToString(),
+                Vehicle = new BaseVehicleDto()
+                {
+                    CustomerId = Guid.NewGuid().ToString(),
+                    Id = Guid.NewGuid(),
+                    Plate = "ab-394-35",
+                    Color = "Pink",
+                    Model = "Ranger Raptor",
+                },
             };
     }
 
@@ -60,18 +69,18 @@ namespace API.Swagger
     //        };
     //}
 
-    public class PatchRepairOrderDto : IExamplesProvider<UpdateAmountAndStatusDto>
+    public class PatchRepairOrderExample : IExamplesProvider<UpdateAmountAndStatusDto>
     {
         public UpdateAmountAndStatusDto GetExamples() =>
             new()
             {
-                Id = "",
+                Id = Guid.NewGuid(),
                 FinalAmount = 1000,
-                Status = RepairOrderStatus.InProgress.ToString(),
+                Status = EFRepairOrderStatus.InProgress.ToString(),
             };
     }
 
-    public class PatchSparePartDto : IExamplesProvider<UpdateSparePartDto>
+    public class PatchSparePartExample : IExamplesProvider<UpdateSparePartDto>
     {
         UpdateSparePartDto IExamplesProvider<UpdateSparePartDto>.GetExamples() =>
             new UpdateSparePartDto

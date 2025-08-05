@@ -9,7 +9,19 @@ using Domain.Exceptions;
 
 namespace Application.Services
 {
-    public class RepairOrderService
+    public interface IRepairOrderService
+    {
+        Task CreateRepairOrderAsync(CreateRepairOrderDto createDto);
+        Task CreateRepairOrderAsync(CreateRepairOrderWithVehicleAndCustomerDto dto);
+        Task CreateRepairOrderAsync(CreateRepairOrderWithVehicleDto dto);
+        Task<IEnumerable<ListRepairOrderDto>> GetAllAsync(Guid workShopId);
+        Task<RepairOrder> GetByIdAsync(Guid id);
+        Task UpdateAsync(UpdateRepairOrderDto dto);
+        Task UpdateSpareParts(List<UpdateSparePartDto> dto, Guid repairOrderId);
+        Task UpdateStatusAndFinalAmount(UpdateAmountAndStatusDto dto);
+    }
+
+    public class RepairOrderService : IRepairOrderService
     {
         private readonly IRepairOrderRepository _repairOrderRepository;
         private readonly ICustomerService _customerService;
