@@ -11,16 +11,6 @@ namespace Infraestructure.Context
         public AppDbContext(DbContextOptions<AppDbContext> options)
             : base(options) { }
 
-        //protected override void OnConfiguring(DbContextOptions optionsBuilder)
-        //{
-        //    if (!optionsBuilder.IsConfigured)
-        //    {
-        //        var connectionString = _configuration.GetConnectionString("DefaultConnection");
-        //        optionsBuilder.UseNpgsql(connectionString);
-        //    }
-        //    base.OnConfiguring(optionsBuilder);
-        //}
-
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<EFAdmin>().HasIndex(k => k.Email).IsUnique();
@@ -69,32 +59,32 @@ namespace Infraestructure.Context
                     }
                 );
 
-            //modelBuilder
-            //    .Entity<EFCustomer>()
-            //    .HasData(
-            //        new List<EFCustomer>()
-            //        {
-            //            new Customer()
-            //            {
-            //                Id = new Guid(SeedData.customerAId),
-            //                FirstName = "Juan ",
-            //                LastName = "Perez",
-            //                WorkShopId = new Guid(SeedData.workshopAId),
-            //                PhoneNumber = new List<string>() { "3424388239" },
-            //                Email = new List<string>() { "lucaspirez42@gmail.com" },
-            //            },
-            //            new Customer()
-            //            {
-            //                Id = new Guid(SeedData.customerBId),
-            //                FirstName = "Maria ",
-            //                LastName = "Lopez",
-            //                WorkShopId = new Guid(SeedData.workshopAId),
-            //            },
-            //        }
-            //    );
-            base.OnModelCreating(modelBuilder);
-
+            modelBuilder
+                .Entity<EFCustomer>()
+                .HasData(
+                    new List<EFCustomer>()
+                    {
+                        new EFCustomer()
+                        {
+                            Id = new Guid(SeedData.customerAId),
+                            FirstName = "Juan ",
+                            LastName = "Perez",
+                            WorkShopId = new Guid(SeedData.workshopAId),
+                            PhoneNumber = new List<string>() { "3424388239" },
+                            Email = new List<string>() { "lucaspirez42@gmail.com" },
+                        },
+                        new EFCustomer()
+                        {
+                            Id = new Guid(SeedData.customerBId),
+                            FirstName = "Maria ",
+                            LastName = "Lopez",
+                            WorkShopId = new Guid(SeedData.workshopAId),
+                        },
+                    }
+                );
             modelBuilder.Entity<EFRepairOrder>().OwnsMany(k => k.SpareParts);
+
+            base.OnModelCreating(modelBuilder);
         }
 
         public DbSet<EFWorkShop> WorkShops => Set<EFWorkShop>();
