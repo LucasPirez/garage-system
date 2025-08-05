@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using AutoMapper.Internal.Mappers;
 using Domain.Entities;
 using Infraestructure.DataModel;
 
@@ -10,7 +11,30 @@ namespace Infraestructure.AutoMapper
         {
             CreateMap<Vehicle, EFVehicle>().ReverseMap();
             CreateMap<Customer, EFCustomer>().ReverseMap();
-            CreateMap<RepairOrder, EFRepairOrder>().ReverseMap();
+
+            CreateMap<RepairOrder, EFRepairOrder>()
+                .ForMember(dest => dest.VehicleId, opt => opt.MapFrom(src => src.Vehicle.Id))
+                .ForMember(dest => dest.Vehicle, opt => opt.Ignore());
+            CreateMap<EFRepairOrder, RepairOrder>()
+                .ConstructUsing(
+                    (src, context) =>
+                        new RepairOrder(
+                            id: src.Id,
+                            recepcionDate: src.ReceptionDate,
+                            cause: src.Cause,
+                            details: src.Details,
+                            workshopId: src.WorkShopId,
+                            vehicle: context.Mapper.Map<Vehicle>(src.Vehicle),
+                            spareParts: context.Mapper.Map<List<SparePart>>(src.SpareParts),
+                            deliveryDate: src.DeliveryDate,
+                            customer: context.Mapper.Map<Customer>(src.Vehicle?.Customer),
+                            budget: src.Budget,
+                            finalAmount: src.FinalAmount,
+                            status: (RepairOrderStatus)src.Status,
+                            notifycationSent: src.NotifycationSent
+                        )
+                );
+
             CreateMap<WorkShop, EFWorkShop>();
             CreateMap<Admin, EFAdmin>();
         }

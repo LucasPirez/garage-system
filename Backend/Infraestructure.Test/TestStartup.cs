@@ -7,10 +7,10 @@ namespace Infraestructure.Test
 {
     public static class ContextExtesions
     {
-        public static void ResetDatabase(this AppDbContext context)
+        public static async Task ResetDatabase(this AppDbContext context)
         {
             context.Database.EnsureDeleted();
-            context.Database.EnsureCreatedAsync().Wait();
+            await context.Database.EnsureCreatedAsync();
         }
     }
 

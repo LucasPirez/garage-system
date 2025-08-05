@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using Domain.Common;
 using Domain.Entities;
 using Infraestructure.Context;
 using Infraestructure.Repository;
@@ -34,6 +35,8 @@ namespace Infraestructure
 
             services.AddScoped<ICustomerRepository, EFCustomerRepository>();
             services.AddScoped<IVehicleRepository, EFVehicleRepository>();
+            services.AddScoped<IRepairOrderRepository, EFRepairOrderRepository>();
+            services.AddScoped<IUnitOfWork, EFUnitOfWork>();
         }
     }
 }

@@ -1,9 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
 
 namespace Infraestructure.DataModel
 {
-    public enum RepairOrderStatus
+    public enum EFRepairOrderStatus
     {
         InProgress,
         Completed,
@@ -17,7 +16,7 @@ namespace Infraestructure.DataModel
 
         public bool NotifycationSent { get; set; } = false;
 
-        public RepairOrderStatus Status { get; set; } = RepairOrderStatus.InProgress;
+        public EFRepairOrderStatus Status { get; set; } = EFRepairOrderStatus.InProgress;
 
         public string Cause { get; set; } = string.Empty;
 
@@ -25,11 +24,11 @@ namespace Infraestructure.DataModel
         public double Budget { get; set; }
         public double FinalAmount { get; set; }
 
-        public IList<SparePart> SpareParts { get; set; } = new List<SparePart>();
+        public IList<EFSparePart> SpareParts { get; set; } = new List<EFSparePart>();
 
         public Guid VehicleId { get; set; }
 
-        public EFVehicle Vehicle { get; set; }
+        public EFVehicle? Vehicle { get; set; }
 
         public required Guid WorkShopId { get; set; }
         public EFWorkShop WorkShop { get; set; }
@@ -45,7 +44,7 @@ namespace Infraestructure.DataModel
             string details,
             double budget,
             double finalAmount,
-            List<SparePart> spareParts,
+            List<EFSparePart> spareParts,
             Guid workshopId,
             Guid vehicleId
         )
@@ -58,14 +57,14 @@ namespace Infraestructure.DataModel
             Details = details;
             Budget = budget;
             FinalAmount = finalAmount;
-            SpareParts = spareParts ?? new List<SparePart>();
+            SpareParts = spareParts ?? new List<EFSparePart>();
             WorkShopId = workshopId;
             VehicleId = vehicleId;
         }
     }
 
     [Owned]
-    public class SparePart
+    public class EFSparePart
     {
         public string Name { get; set; } = string.Empty;
         public double Price { get; set; }

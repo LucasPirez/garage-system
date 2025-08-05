@@ -33,5 +33,13 @@ namespace Infraestructure.Repository
         {
             throw new NotImplementedException();
         }
+
+        public async Task<Vehicle?> GetByPlateAsync(string plate, Guid workShopId)
+        {
+            return await _dbSet
+                .Where(v => v.Plate == plate && v.Customer.WorkShopId == workShopId)
+                .Select(k => _mapper.Map<Vehicle>(k))
+                .FirstOrDefaultAsync();
+        }
     }
 }

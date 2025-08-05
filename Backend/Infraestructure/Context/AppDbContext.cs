@@ -102,7 +102,8 @@ namespace Infraestructure.Context
 
         public DbSet<EFVehicle> Vehicles => Set<EFVehicle>();
 
-        //public DbSet<RepairOrder> VehicleEntries => Set<RepairOrder>();
+        public DbSet<EFRepairOrder> VehicleEntries => Set<EFRepairOrder>();
+
         //public DbSet<Payment> Payments => Set<Payment>();
         public DbSet<EFAdmin> Admins => Set<EFAdmin>();
     }
