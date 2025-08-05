@@ -4,8 +4,8 @@ namespace Domain.Entities
     {
         Task<IEnumerable<WorkShop>> GetAllAsync();
         Task<IEnumerable<WorkShop>> GetAllByAdminAsync(Guid adminId);
-        Task<WorkShop> GetByIdAsync(Guid id);
-        Task<WorkShop> CreateAsync(WorkShop entity);
+        Task<WorkShop?> GetByIdAsync(Guid id);
+        Task CreateAsync(WorkShop entity);
         Task UpdateAsync(WorkShop entity);
         Task DeleteAsync(Guid id);
     }
