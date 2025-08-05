@@ -54,7 +54,7 @@ namespace Application.Services
                     vehicle: vehicle,
                     recepcionDate: dto.ReceptionDate,
                     spareParts: new List<SparePart>(),
-                    deliveriDate: null
+                    deliveryDate: null
                 );
 
                 await _repairOrderRepository.CreateAsync(repairOrder);
@@ -99,7 +99,7 @@ namespace Application.Services
                     vehicle: vehicle,
                     recepcionDate: dto.ReceptionDate,
                     spareParts: new List<SparePart>(),
-                    deliveriDate: null
+                    deliveryDate: null
                 );
 
                 await _repairOrderRepository.CreateAsync(repairOrder);
@@ -123,7 +123,7 @@ namespace Application.Services
                 vehicle: _mapper.Map<Vehicle>(createDto.Vehicle),
                 recepcionDate: createDto.ReceptionDate,
                 spareParts: new List<SparePart>(),
-                deliveriDate: null
+                deliveryDate: null
             );
 
             await _repairOrderRepository.CreateAsync(repairOrder);

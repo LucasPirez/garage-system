@@ -236,7 +236,7 @@ namespace Application.Test
                 vehicle: _vehicle,
                 recepcionDate: DateTime.Now,
                 spareParts: new List<SparePart>(),
-                deliveriDate: null
+                deliveryDate: null
             );
             ;
             _repairOrderRepositoryMock.Setup(x => x.GetByIdAsync(id)).ReturnsAsync(repairOrder);
@@ -283,7 +283,7 @@ namespace Application.Test
                 vehicle: _vehicle,
                 recepcionDate: DateTime.Now,
                 spareParts: new List<SparePart>(),
-                deliveriDate: null
+                deliveryDate: null
             );
 
             _repairOrderRepositoryMock.Setup(x => x.GetByIdAsync(id)).ReturnsAsync(repairOrder);
@@ -327,7 +327,7 @@ namespace Application.Test
                 vehicle: _vehicle,
                 recepcionDate: DateTime.Now,
                 spareParts: new List<SparePart>(),
-                deliveriDate: null
+                deliveryDate: null
             );
 
             _repairOrderRepositoryMock.Setup(x => x.GetByIdAsync(id)).ReturnsAsync(repairOrder);
@@ -382,7 +382,7 @@ namespace Application.Test
                 vehicle: _vehicle,
                 recepcionDate: DateTime.Now,
                 spareParts: new List<SparePart>(),
-                deliveriDate: null
+                deliveryDate: null
             );
             _repairOrderRepositoryMock.Setup(x => x.GetByIdAsync(id)).ReturnsAsync(repairOrder);
 
