@@ -3,6 +3,7 @@ namespace Application.Dtos.Auth
     public class RequestResetPasswordDto
     {
         public required string Email { get; set; }
+        public required string Link { get; set; }
     }
 
     public class ChangePasswordDto

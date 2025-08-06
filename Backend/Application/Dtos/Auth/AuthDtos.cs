@@ -1,4 +1,6 @@
-﻿namespace Application.Dtos.Auth
+﻿using Domain.Entities;
+
+namespace Application.Dtos.Auth
 {
     public class AuthRequestDto
     {
@@ -10,6 +12,6 @@
     {
         public required string Email { get; set; }
         public required string Token { get; set; }
-        //public required WorkShop WorkShop { get; set; }
+        public required WorkShop WorkShop { get; set; }
     }
 }
