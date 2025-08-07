@@ -8,9 +8,9 @@ namespace API.Controllers
     [Route("auth")]
     public class AuthController : ControllerBase
     {
-        private readonly AuthService _authService;
+        private readonly IAuthService _authService;
 
-        public AuthController(AuthService authService)
+        public AuthController(IAuthService authService)
         {
             _authService = authService;
         }
@@ -28,10 +28,10 @@ namespace API.Controllers
             [FromBody] RequestResetPasswordDto dto
         )
         {
-            var admin = await _authService.GetAdminByEmailAsync(dto.Email);
+            string token = await _authService.GenerateAndSaveResetPasswordToken(dto.Email);
 
             _ = _authService
-                .SendTokenResetPassword(email: dto.Email, baseLink: dto.Link)
+                .SendTokenResetPassword(email: dto.Email, baseLink: dto.Link, token: token)
                 .ContinueWith(
                     task =>
                     {

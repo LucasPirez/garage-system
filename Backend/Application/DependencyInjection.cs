@@ -11,6 +11,8 @@ namespace Application
             services.AddScoped<ICustomerService, CustomerService>();
             services.AddScoped<IVehicleService, VehicleService>();
             services.AddScoped<IRepairOrderService, RepairOrderService>();
+            services.AddScoped<IAuthService, AuthService>();
+            services.AddScoped<INotificationService, NotificationService>();
         }
     }
 }

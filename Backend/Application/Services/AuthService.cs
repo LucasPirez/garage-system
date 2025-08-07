@@ -6,7 +6,16 @@ using Domain.Exceptions;
 
 namespace Application.Services
 {
-    public class AuthService
+    public interface IAuthService
+    {
+        Task ChangePassword(string token, string password);
+        Task<Admin> GetAdminByEmailAsync(string email);
+        Task<AuthResponseDto> LoginAsync(AuthRequestDto request);
+        Task SendTokenResetPassword(string email, string baseLink, string token);
+        Task<string> GenerateAndSaveResetPasswordToken(string email);
+    }
+
+    public class AuthService : IAuthService
     {
         private readonly INotificationService _notificationService;
         private readonly IAdminRepository _adminRepository;
@@ -67,9 +76,9 @@ namespace Application.Services
             await _adminRepository.UpdateAsync(admin);
         }
 
-        public async Task SendTokenResetPassword(string email, string baseLink)
+        public async Task<string> GenerateAndSaveResetPasswordToken(string email)
         {
-            Admin admin =
+            Admin? admin =
                 await _adminRepository.GetByEmailAsync(email)
                 ?? throw new EntityNotFoundException("Email no encontrado");
 
@@ -78,12 +87,17 @@ namespace Application.Services
             admin.SetResetPasswordToken(token);
             await _adminRepository.UpdateAsync(admin);
 
+            return token;
+        }
+
+        public async Task SendTokenResetPassword(string email, string baseLink, string token)
+        {
             string text =
                 "Haz click en el siguiente link para cambiar la contraseña: " + baseLink + token;
 
             await _notificationService.Notify(
                 message: text,
-                recipient: admin.Email,
+                recipient: email,
                 subject: "Cambiar contraseña"
             );
         }

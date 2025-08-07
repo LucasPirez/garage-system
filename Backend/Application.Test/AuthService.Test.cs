@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Application.Dtos.Auth;
 using Application.Exceptions;
 using Application.Services;
+using BCrypt.Net;
 using Domain.Entities;
 using Domain.Exceptions;
 using Moq;
@@ -145,7 +146,7 @@ namespace Application.Test
         }
 
         [Fact]
-        public async Task SendTokenResetPassword_ShouldSendNotification_WhenEmailExists()
+        public async Task GenerateAndSaveResetPasswordToken_ShouldReturnToken_WhenEmailExists()
         {
             // Arrange
             var admin = new Admin(
@@ -155,39 +156,66 @@ namespace Application.Test
                 new WorkShop(Guid.NewGuid(), "Taller", null, null, null)
             );
             var email = admin.Email;
-            var baseLink = "https://reset.com/?token=";
-            _adminRepositoryMock.Setup(r => r.GetByEmailAsync(email)).ReturnsAsync(admin);
-            _adminRepositoryMock.Setup(r => r.UpdateAsync(admin)).Returns(Task.CompletedTask);
-            _notificationServiceMock
-                .Setup(n => n.Notify(It.IsAny<string>(), email, "Cambiar contraseña"))
+
+            _adminRepositoryMock
+                .Setup(r => r.GetByEmailAsync(It.IsAny<string>()))
+                .ReturnsAsync(admin);
+            _adminRepositoryMock
+                .Setup(r => r.UpdateAsync(It.IsAny<Admin>()))
                 .Returns(Task.CompletedTask);
 
             // Act
-            await _authService.SendTokenResetPassword(email, baseLink);
+            var token = await _authService.GenerateAndSaveResetPasswordToken(email);
 
             // Assert
             _adminRepositoryMock.Verify(r => r.UpdateAsync(admin), Times.Once);
-            _notificationServiceMock.Verify(
-                n =>
-                    n.Notify(
-                        It.Is<string>(msg => msg.Contains(baseLink)),
-                        email,
-                        "Cambiar contraseña"
-                    ),
-                Times.Once
+            _adminRepositoryMock.Verify(r => r.GetByEmailAsync(email), Times.Once);
+            Assert.NotNull(token);
+        }
+
+        [Fact]
+        public async Task GenerateAndSaveResetPasswordToken_ShouldThrow_WhenEmailNotFound()
+        {
+            // Arrange
+            var email = "email@gmail.com";
+
+            _adminRepositoryMock
+                .Setup(r => r.GetByEmailAsync(It.IsAny<string>()))
+                .ReturnsAsync((Admin)null);
+            _adminRepositoryMock
+                .Setup(r => r.UpdateAsync(It.IsAny<Admin>()))
+                .Returns(Task.CompletedTask);
+
+            // Act  & Assert
+            await Assert.ThrowsAsync<EntityNotFoundException>(
+                () => _authService.GenerateAndSaveResetPasswordToken(email)
             );
         }
 
         [Fact]
-        public async Task SendTokenResetPassword_ShouldThrow_WhenEmailNotFound()
+        public async Task SendTokenResetPassword_ShouldSendNotification_WhenEmailExists()
         {
             // Arrange
-            var email = "notfound@mail.com";
-            _adminRepositoryMock.Setup(r => r.GetByEmailAsync(email)).ReturnsAsync((Admin)null);
+            var email = "admin@gmail.com";
+            var token = Guid.NewGuid().ToString();
+            var baseLink = "https://reset.com/?token=";
 
-            // Act & Assert
-            await Assert.ThrowsAsync<EntityNotFoundException>(
-                () => _authService.SendTokenResetPassword(email, "link")
+            _notificationServiceMock
+                .Setup(n => n.Notify(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
+                .Returns(Task.CompletedTask);
+
+            // Act
+            await _authService.SendTokenResetPassword(email, baseLink, token);
+
+            // Assert
+            _notificationServiceMock.Verify(
+                n =>
+                    n.Notify(
+                        It.Is<string>(msg => msg.Contains(baseLink) && msg.Contains(token)),
+                        email,
+                        It.IsAny<string>()
+                    ),
+                Times.Once
             );
         }
 
