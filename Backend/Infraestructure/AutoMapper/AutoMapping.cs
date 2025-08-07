@@ -35,8 +35,11 @@ namespace Infraestructure.AutoMapper
                         )
                 );
 
-            CreateMap<WorkShop, EFWorkShop>();
-            CreateMap<Admin, EFAdmin>();
+            CreateMap<WorkShop, EFWorkShop>().ReverseMap();
+            CreateMap<Admin, EFAdmin>()
+                .ForMember(dest => dest.WorkShopId, opt => opt.MapFrom(src => src.WorkShop.Id))
+                .ForMember(dest => dest.WorkShop, opt => opt.Ignore());
+            CreateMap<EFAdmin, Admin>();
         }
     }
 }
