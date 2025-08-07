@@ -22,6 +22,7 @@ namespace Infraestructure.Repository
         {
             return await _dbSet
                 .Where(adm => adm.Email == email)
+                .Include(adm => adm.WorkShop)
                 .Select(adm => _mapper.Map<Admin>(adm))
                 .FirstOrDefaultAsync();
         }
@@ -30,6 +31,7 @@ namespace Infraestructure.Repository
         {
             return await _dbSet
                 .Where(adm => adm.Id == id)
+                .Include(adm => adm.WorkShop)
                 .Select(adm => _mapper.Map<Admin>(adm))
                 .FirstOrDefaultAsync();
         }
@@ -38,6 +40,7 @@ namespace Infraestructure.Repository
         {
             return await _dbSet
                 .Where(adm => adm.ResetPasswordToken == resetPasswordToken)
+                .Include(adm => adm.WorkShop)
                 .Select(adm => _mapper.Map<Admin>(adm))
                 .FirstOrDefaultAsync();
         }
