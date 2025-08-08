@@ -156,6 +156,7 @@ namespace Application.Services
                 Cause = repairOrder.Cause,
                 Details = repairOrder.Details,
                 Budget = repairOrder.Budget,
+                SpareParts = repairOrder.SpareParts.ToList(),
                 FinalAmount = repairOrder.FinalAmount,
                 Vehicle = new BaseVehicleDto()
                 {
@@ -210,8 +211,7 @@ namespace Application.Services
                 ?? throw new EntityNotFoundException(repairOrderId);
 
             List<SparePart> spareParts = dto.Select(_mapper.Map<SparePart>).ToList();
-            if (spareParts[0]?.Name == null)
-                throw new Exception("is null");
+
             repairOrder.UpdateSpareParts(spareParts);
 
             await _repairOrderRepository.UpdateAsync(repairOrder);

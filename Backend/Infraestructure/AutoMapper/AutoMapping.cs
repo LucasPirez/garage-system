@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using AutoMapper.Internal.Mappers;
 using Domain.Entities;
 using Infraestructure.DataModel;
 
@@ -11,6 +10,7 @@ namespace Infraestructure.AutoMapper
         {
             CreateMap<Vehicle, EFVehicle>().ReverseMap();
             CreateMap<Customer, EFCustomer>().ReverseMap();
+            CreateMap<EFSparePart, SparePart>().ReverseMap();
 
             CreateMap<RepairOrder, EFRepairOrder>()
                 .ForMember(dest => dest.VehicleId, opt => opt.MapFrom(src => src.Vehicle.Id))

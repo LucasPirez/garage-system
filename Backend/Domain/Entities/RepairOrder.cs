@@ -33,7 +33,7 @@ namespace Domain.Entities
         public double Budget { get; private set; }
         public double FinalAmount { get; private set; }
 
-        public IList<SparePart> SpareParts { get; private set; } = new List<SparePart>();
+        public IList<SparePart> SpareParts { get; private set; }
 
         public Vehicle Vehicle { get; private set; }
         public Customer? Customer { get; private set; }

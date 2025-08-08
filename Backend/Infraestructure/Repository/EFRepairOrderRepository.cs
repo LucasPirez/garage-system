@@ -1,3 +1,4 @@
+using System.Linq.Expressions;
 using AutoMapper;
 using Domain;
 using Domain.Entities;
@@ -20,10 +21,22 @@ namespace Infraestructure.Repository
                 .Where(k => k.WorkShopId == workshopId)
                 .Include(k => k.SpareParts)
                 .Include(k => k.Vehicle)
+                .Include(k => k.Vehicle.Customer)
                 .OrderByDescending(repairOrder => repairOrder.ReceptionDate)
                 .ToListAsync();
 
             return _mapper.Map<List<RepairOrder>>(listJobs);
+        }
+
+        public new async Task UpdateAsync(RepairOrder entity)
+        {
+            var existingEntity = await _dbSet
+                .Include(e => e.SpareParts)
+                .FirstOrDefaultAsync(e => e.Id == entity.Id);
+
+            _mapper.Map(entity, existingEntity);
+
+            await _context.SaveChangesAsync();
         }
 
         public async Task<RepairOrder?> GetByIdAsync(Guid id)
