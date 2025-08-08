@@ -6,6 +6,8 @@ namespace Domain.Entities
     {
         Task<IEnumerable<RepairOrder>> GetAllAsync(Guid workshopId);
         Task<RepairOrder?> GetByIdAsync(Guid id);
+        Task<IEnumerable<RepairOrder>> GetByVehicleIdAsync(Guid vehicleId);
+
         Task CreateAsync(RepairOrder entity);
         Task UpdateAsync(RepairOrder entity);
         Task DeleteAsync(Guid id);

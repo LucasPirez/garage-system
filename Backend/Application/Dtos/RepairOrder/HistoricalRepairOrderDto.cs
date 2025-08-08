@@ -1,6 +1,6 @@
 ﻿using Domain.Entities;
 
-namespace Application.Dtos.Vehicle
+namespace Application.Dtos.RepairOrder
 {
     public class HistoricalRepairOrderDto
     {

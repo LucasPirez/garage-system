@@ -262,6 +262,52 @@ namespace Application.Test
         }
 
         [Fact]
+        public async Task GetByVehicleIdAsync_ReturnsHistoricalRepairOrders()
+        {
+            // Arrange
+            var vehicleId = Guid.NewGuid();
+            var limit = 2;
+
+            var repairOrders = new List<RepairOrder>
+            {
+                new RepairOrder(
+                    id: Guid.NewGuid(),
+                    recepcionDate: DateTime.UtcNow.AddDays(-2),
+                    cause: "Causa 1",
+                    details: "Detalles 1",
+                    workshopId: Guid.NewGuid(),
+                    vehicle: new Vehicle(vehicleId, "ABC123", Guid.NewGuid()),
+                    spareParts: new List<SparePart>(),
+                    deliveryDate: DateTime.UtcNow.AddDays(-1)
+                ),
+                new RepairOrder(
+                    id: Guid.NewGuid(),
+                    recepcionDate: DateTime.UtcNow.AddDays(-1),
+                    cause: "Causa 2",
+                    details: "Detalles 2",
+                    workshopId: Guid.NewGuid(),
+                    vehicle: new Vehicle(vehicleId, "DEF456", Guid.NewGuid()),
+                    spareParts: new List<SparePart>(),
+                    deliveryDate: DateTime.UtcNow
+                ),
+            };
+
+            _repairOrderRepositoryMock
+                .Setup(r => r.GetByVehicleIdAsync(vehicleId))
+                .ReturnsAsync(repairOrders);
+
+            // Act
+            var result = await _service.GetByVehicleIdAsync(vehicleId, limit);
+
+            // Assert
+            Assert.NotNull(result);
+            Assert.Equal(2, result.Count);
+            Assert.All(result, dto => Assert.IsType<HistoricalRepairOrderDto>(dto));
+            Assert.Contains(result, dto => dto.Cause == "Causa 1");
+            Assert.Contains(result, dto => dto.Cause == "Causa 2");
+        }
+
+        [Fact]
         public async Task UpdateAsync_ShouldUpdateRepairOrder()
         {
             // Arrange

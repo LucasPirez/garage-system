@@ -1,4 +1,5 @@
-﻿using System.Data;
+﻿using System.Collections.Generic;
+using System.Data;
 using Application.Dtos.Customer;
 using Application.Dtos.RepairOrder;
 using Application.Dtos.Vehicle;
@@ -19,6 +20,7 @@ namespace Application.Services
         Task UpdateAsync(UpdateRepairOrderDto dto);
         Task UpdateSpareParts(List<UpdateSparePartDto> dto, Guid repairOrderId);
         Task UpdateStatusAndFinalAmount(UpdateAmountAndStatusDto dto);
+        Task<List<HistoricalRepairOrderDto>> GetByVehicleIdAsync(Guid Id, int limit);
     }
 
     public class RepairOrderService : IRepairOrderService
@@ -232,6 +234,27 @@ namespace Application.Services
             {
                 throw new ConflictException("Invalid status provided");
             }
+        }
+
+        public async Task<List<HistoricalRepairOrderDto>> GetByVehicleIdAsync(Guid Id, int limit)
+        {
+            IEnumerable<RepairOrder> repairOrders =
+                await _repairOrderRepository.GetByVehicleIdAsync(Id);
+
+            return repairOrders
+                .Select(repairOrder => new HistoricalRepairOrderDto()
+                {
+                    Id = repairOrder.Id.ToString(),
+                    ReceptionDate = repairOrder.ReceptionDate,
+                    DeliveryDate = repairOrder.DeliveryDate,
+                    Status = repairOrder.Status.ToString(),
+                    Cause = repairOrder.Cause,
+                    Details = repairOrder.Details,
+                    Budget = repairOrder.Budget,
+                    SpareParts = repairOrder.SpareParts.ToList(),
+                    FinalAmount = repairOrder.FinalAmount,
+                })
+                .ToList();
         }
 
         private async Task IsPlateRegisteredInWorkshopAsync(string plate, Guid workshopId)

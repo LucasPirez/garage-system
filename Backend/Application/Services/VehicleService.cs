@@ -70,37 +70,5 @@ namespace Application.Services
 
             await _vehicleRepository.UpdateAsync(vehicle);
         }
-
-        //public async Task<List<HistoricalRepairOrderDto>> GetRepairOrderByVehicleIdAsync(
-        //    Guid Id,
-        //    int limit
-        //)
-        //{
-        //    return await _context
-        //        .VehicleEntries.Where(repairOrder => repairOrder.VehicleId == Id)
-        //        .Select(RepairOrder => new HistoricalRepairOrderDto()
-        //        {
-        //            Id = RepairOrder.Id.ToString(),
-        //            Budget = RepairOrder.Budget,
-        //            Cause = RepairOrder.Cause,
-        //            Details = RepairOrder.Details,
-        //            DeliveryDate = RepairOrder.DeliveryDate,
-        //            FinalAmount = RepairOrder.FinalAmount,
-        //            NotifycationSent = RepairOrder.NotifycationSent,
-        //            ReceptionDate = RepairOrder.ReceptionDate,
-        //            SpareParts = RepairOrder
-        //                .SpareParts.Select(sparePart => new SparePart
-        //                {
-        //                    Name = sparePart.Name,
-        //                    Price = sparePart.Price,
-        //                    Quantity = sparePart.Quantity,
-        //                })
-        //                .ToList(),
-        //            Status = RepairOrder.Status.ToString(),
-        //        })
-        //        .Take(limit)
-        //        .OrderByDescending(repairOrder => repairOrder.ReceptionDate)
-        //        .ToListAsync();
-        //}
     }
 }
