@@ -15,6 +15,7 @@ namespace Infraestructure.Repository
         {
             return await _dbSet
                 .Where(k => k.WorkShopId == workshopId)
+                .Include(k => k.Vehicle)
                 .Select(k => _mapper.Map<Customer>(k))
                 .ToListAsync();
         }

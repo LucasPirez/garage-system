@@ -11,10 +11,15 @@ namespace API.Controllers
     public class VehicleController : ControllerBase
     {
         private readonly IVehicleService _vehicleService;
+        private readonly IRepairOrderService _repairOrderService;
 
-        public VehicleController(IVehicleService vehicleService)
+        public VehicleController(
+            IVehicleService vehicleService,
+            IRepairOrderService repairOrderService
+        )
         {
             _vehicleService = vehicleService;
+            _repairOrderService = repairOrderService;
         }
 
         [SwaggerRequestExample(typeof(CreateVehicleDto), typeof(CreateVehicleDtoExample))]
@@ -36,15 +41,15 @@ namespace API.Controllers
             return Ok();
         }
 
-        //[HttpGet("{id}/repair-orders")]
-        //public async Task<IActionResult> GetRepairOrdersByVehicleId(
-        //    [FromRoute] Guid id,
-        //    int limit = 10
-        //)
-        //{
-        //    var result = await _vehicleService.GetRepairOrderByVehicleIdAsync(id, limit);
+        [HttpGet("{id}/repair-orders")]
+        public async Task<IActionResult> GetRepairOrdersByVehicleId(
+            [FromRoute] Guid id,
+            int limit = 10
+        )
+        {
+            var result = await _repairOrderService.GetByVehicleIdAsync(id, limit);
 
-        //    return new OkObjectResult(result);
-        //}
+            return new OkObjectResult(result);
+        }
     }
 }

@@ -1,14 +1,8 @@
-using System;
-using System.Linq;
-using System.Threading.Tasks;
-using AutoMapper;
 using Domain.Entities;
 using Infraestructure.Context;
 using Infraestructure.DataModel;
-using Infraestructure.Repository;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using Xunit;
 
 namespace Infraestructure.Test
 {
@@ -125,6 +119,69 @@ namespace Infraestructure.Test
 
             // Assert
             Assert.Null(repairOrder);
+        }
+
+        [Fact]
+        public async Task GetByVehicleIdAsync_ShouldReturnListRepairOrder()
+        {
+            // Arrange
+            var efRepairOrder1 = new EFRepairOrder
+            {
+                Id = Guid.NewGuid(),
+                ReceptionDate = DateTime.UtcNow,
+                Cause = "Motor",
+                Details = "Falla de motor",
+                Budget = 2000,
+                FinalAmount = 0,
+                WorkShopId = workshopId,
+                VehicleId = vehicleId,
+                Status = EFRepairOrderStatus.InProgress,
+            };
+            var efRepairOrder2 = new EFRepairOrder
+            {
+                Id = Guid.NewGuid(),
+                ReceptionDate = DateTime.UtcNow,
+                Cause = "Frenos",
+                Details = "Falla de frenos",
+                Budget = 1500,
+                FinalAmount = 0,
+                WorkShopId = workshopId,
+                VehicleId = vehicleId,
+                Status = EFRepairOrderStatus.InProgress,
+            };
+            EFVehicle Othervehicle = new EFVehicle()
+            {
+                Id = Guid.NewGuid(),
+                Plate = "TEST234",
+                Model = "ModeloTest",
+                Color = "Negro",
+                CustomerId = customerId,
+            };
+            var efRepairOrder3_DiferentVehicle = new EFRepairOrder
+            {
+                Id = Guid.NewGuid(),
+                ReceptionDate = DateTime.UtcNow,
+                Cause = "Frenos",
+                Details = "Falla de frenos",
+                Budget = 1500,
+                FinalAmount = 0,
+                WorkShopId = workshopId,
+                VehicleId = Othervehicle.Id,
+                Status = EFRepairOrderStatus.InProgress,
+            };
+
+            _context.Vehicles.Add(Othervehicle);
+            _dbSetRepairOrder.Add(efRepairOrder3_DiferentVehicle);
+            _dbSetRepairOrder.Add(efRepairOrder1);
+            _dbSetRepairOrder.Add(efRepairOrder2);
+            await _context.SaveChangesAsync();
+
+            // Act
+            var repairOrders = await _repository.GetByVehicleIdAsync(vehicleId);
+
+            // Assert
+            Assert.NotNull(repairOrders);
+            Assert.Equal(2, repairOrders.Count());
         }
 
         [Fact]

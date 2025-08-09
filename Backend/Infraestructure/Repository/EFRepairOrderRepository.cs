@@ -1,5 +1,6 @@
 using System.Linq.Expressions;
 using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using Domain;
 using Domain.Entities;
 using Infraestructure.Context;
@@ -48,6 +49,15 @@ namespace Infraestructure.Repository
                 .Include(k => k.Vehicle.Customer)
                 .Select(k => _mapper.Map<RepairOrder>(k))
                 .FirstOrDefaultAsync();
+        }
+
+        public async Task<IEnumerable<RepairOrder>> GetByVehicleIdAsync(Guid vehicleId)
+        {
+            return await _dbSet
+                .Where(k => k.VehicleId == vehicleId)
+                .Include(k => k.SpareParts)
+                .Select(k => _mapper.Map<RepairOrder>(k))
+                .ToListAsync();
         }
 
         public Task DeleteAsync(Guid id)
