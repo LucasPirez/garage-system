@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using Application.Dtos.Vehicle;
+using AutoMapper;
 using Domain.Entities;
 using Infraestructure.DataModel;
 
@@ -9,6 +10,7 @@ namespace Infraestructure.AutoMapper
         public AutoMapping()
         {
             CreateMap<Vehicle, EFVehicle>().ReverseMap();
+            CreateMap<Vehicle, VehicleDto>();
             CreateMap<Customer, EFCustomer>().ReverseMap();
             CreateMap<EFSparePart, SparePart>().ReverseMap();
 

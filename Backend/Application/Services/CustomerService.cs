@@ -9,20 +9,31 @@ namespace Application.Services
     {
         Task CreateAsync(CreateCustomerDto createDto);
         Task DeleteAsync(Guid Id);
-        Task<IEnumerable<BaseCustomerDto>> GetAllAsync(Guid workshopId);
+        Task<IEnumerable<CustomerWithVehiclesDto>> GetAllAsync(Guid workshopId);
         Task<BaseCustomerDto> GetByIdAsync(Guid id);
         Task UpdateAsync(Guid Id, UpdateCustomerDto customerDto);
+    }
+
+    public interface ICustomerProjectionQuery
+    {
+        Task<IEnumerable<CustomerWithVehiclesDto>> GetAllAsync(Guid workshopId);
     }
 
     public class CustomerService : ICustomerService
     {
         private readonly ICustomerRepository _customerRepository;
         private readonly IMapper _mapper;
+        private readonly ICustomerProjectionQuery _customerProjection;
 
-        public CustomerService(ICustomerRepository customerRepository, IMapper mapper)
+        public CustomerService(
+            ICustomerRepository customerRepository,
+            IMapper mapper,
+            ICustomerProjectionQuery customerProjection
+        )
         {
             _customerRepository = customerRepository;
             _mapper = mapper;
+            _customerProjection = customerProjection;
         }
 
         public async Task CreateAsync(CreateCustomerDto createDto)
@@ -32,11 +43,9 @@ namespace Application.Services
             await _customerRepository.CreateAsync(customer);
         }
 
-        public async Task<IEnumerable<BaseCustomerDto>> GetAllAsync(Guid workshopId)
+        public async Task<IEnumerable<CustomerWithVehiclesDto>> GetAllAsync(Guid workshopId)
         {
-            var customers = await _customerRepository.GetAllAsync(workshopId);
-
-            return _mapper.Map<IEnumerable<BaseCustomerDto>>(customers);
+            return await _customerProjection.GetAllAsync(workshopId);
         }
 
         public async Task<BaseCustomerDto> GetByIdAsync(Guid id)

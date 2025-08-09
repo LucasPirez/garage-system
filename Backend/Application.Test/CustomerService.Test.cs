@@ -1,25 +1,33 @@
+using Application.AutoMapper;
 using Application.Dtos.Customer;
+using Application.Dtos.Vehicle;
 using Application.Services;
+using AutoMapper;
 using Domain.Entities;
 using Domain.Exceptions;
-using Microsoft.Extensions.DependencyInjection;
 using Moq;
 
 namespace Application.Test
 {
-    [Collection("UnitTest")]
     public class CustomerServiceTest
     {
         private readonly ICustomerService _customerService;
         private readonly Mock<ICustomerRepository> _customerRepositoryMock;
+        private readonly Mock<ICustomerProjectionQuery> _customerProjectionQueryMock;
+        private readonly IMapper _mapper;
 
-        public CustomerServiceTest(TestStartUp testStartUp)
+        public CustomerServiceTest()
         {
-            var services = testStartUp.Services.BuildServiceProvider();
+            _mapper = new MapperConfiguration(cfg => cfg.AddProfile<AutoMapping>()).CreateMapper();
 
-            _customerRepositoryMock = services.GetRequiredService<Mock<ICustomerRepository>>();
+            _customerRepositoryMock = new Mock<ICustomerRepository>();
+            _customerProjectionQueryMock = new Mock<ICustomerProjectionQuery>();
 
-            _customerService = services.GetRequiredService<ICustomerService>();
+            _customerService = new CustomerService(
+                _customerRepositoryMock.Object,
+                _mapper,
+                _customerProjectionQueryMock.Object
+            );
         }
 
         [Fact]
@@ -47,17 +55,18 @@ namespace Application.Test
             // Arrange
             var customerId = Guid.NewGuid();
             var workshopId = Guid.NewGuid();
-            _customerRepositoryMock
-                .Setup(r => r.GetAllAsync(workshopId))
+            _customerProjectionQueryMock
+                .Setup(r => r.GetAllAsync(It.IsAny<Guid>()))
                 .ReturnsAsync(
-                    new List<Customer>
+                    new List<CustomerWithVehiclesDto>
                     {
-                        new Customer(
-                            id: customerId,
-                            firstName: "Customer",
-                            lastName: "Customer-LastNmae",
-                            workshopId: Guid.NewGuid()
-                        ),
+                        new CustomerWithVehiclesDto()
+                        {
+                            Id = customerId,
+                            FirstName = "Customer",
+                            LastName = "Customer-LastNmae",
+                            Vehicles = new List<BaseVehicleDto>(),
+                        },
                     }
                 );
 
@@ -67,6 +76,7 @@ namespace Application.Test
             // Assert
             Assert.NotNull(result);
             Assert.Single(result);
+            _customerProjectionQueryMock.Verify(r => r.GetAllAsync(workshopId), Times.Once);
         }
 
         [Fact]

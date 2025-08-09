@@ -1,3 +1,4 @@
+using Application.Services;
 using Domain.Entities;
 using Infraestructure.Context;
 using Infraestructure.DataModel;
@@ -12,6 +13,7 @@ namespace Infraestructure.Test
         private readonly DbSet<EFCustomer> _dbSetCustomer;
         private readonly AppDbContext _context;
         private readonly ICustomerRepository _repository;
+        private readonly ICustomerProjectionQuery _repositoryProjected;
         private Customer customerTest = new Customer(
             id: Guid.NewGuid(),
             firstName: "Test",
@@ -30,6 +32,7 @@ namespace Infraestructure.Test
             _context = services.GetRequiredService<AppDbContext>();
             _dbSetCustomer = _context.Set<EFCustomer>();
             _repository = services.GetRequiredService<ICustomerRepository>();
+            _repositoryProjected = services.GetRequiredService<ICustomerProjectionQuery>();
         }
 
         [Fact]
@@ -90,6 +93,43 @@ namespace Infraestructure.Test
             Assert.Equal(EFCustomer.Id, customer.Id);
             Assert.Equal(EFCustomer.FirstName, customer.FirstName);
             Assert.Equal(EFCustomer.LastName, customer.LastName);
+        }
+
+        [Fact]
+        public async Task GetAllCustomerProjected_ShouldReturnCustomers()
+        {
+            var worshopId = Guid.Parse(SeedData.workshopBId);
+            var EFCustomer = new EFCustomer
+            {
+                Id = Guid.NewGuid(),
+                FirstName = "other-customer",
+                LastName = "other-customer",
+                PhoneNumber = new List<string> { "123" },
+                Email = new List<string> { "test@example.com" },
+                Address = "Test Address",
+                Dni = "12345678",
+                WorkShopId = worshopId,
+            };
+            var EFCustomer2 = new EFCustomer
+            {
+                Id = Guid.NewGuid(),
+                FirstName = "other-customer",
+                LastName = "other-customer",
+                PhoneNumber = new List<string> { "123" },
+                Email = new List<string> { "test@example.com" },
+                Address = "Test Address",
+                Dni = "12345678",
+                WorkShopId = worshopId,
+            };
+
+            _dbSetCustomer.Add(EFCustomer);
+            _dbSetCustomer.Add(EFCustomer2);
+            await _context.SaveChangesAsync();
+
+            var customers = await _repositoryProjected.GetAllAsync(worshopId);
+
+            Assert.NotNull(customers);
+            Assert.Equal(2, customers.Count());
         }
 
         [Fact]

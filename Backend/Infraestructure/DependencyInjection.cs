@@ -44,6 +44,7 @@ namespace Infraestructure
             services.AddScoped<IUnitOfWork, EFUnitOfWork>();
 
             services.AddScoped<ISmtpService, SmtpService>();
+            services.AddScoped<ICustomerProjectionQuery, EFCustomerRepository>();
         }
     }
 }
