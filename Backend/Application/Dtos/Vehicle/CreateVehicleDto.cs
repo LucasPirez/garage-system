@@ -1,6 +1,6 @@
 ﻿namespace Application.Dtos.Vehicle
 {
-    public class BaseVehicleDto
+    public class VehicleDto
     {
         public required Guid Id { get; set; }
         public required string Plate { get; set; }
@@ -9,5 +9,5 @@
         public required string CustomerId { get; set; }
     }
 
-    public class CreateVehicleDto : BaseVehicleDto { }
+    public class CreateVehicleDto : VehicleDto { }
 }

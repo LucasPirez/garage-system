@@ -33,7 +33,7 @@ namespace API.Swagger
                 Details = "Cambio de aceite y filtro",
                 ReceptionDate = DateTime.UtcNow,
                 WorkshopId = SeedData.workshopAId.ToString(),
-                Vehicle = new BaseVehicleDto()
+                Vehicle = new VehicleDto()
                 {
                     CustomerId = Guid.NewGuid().ToString(),
                     Id = Guid.NewGuid(),

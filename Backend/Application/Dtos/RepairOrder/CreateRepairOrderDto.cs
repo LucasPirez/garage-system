@@ -14,7 +14,7 @@ namespace Application.Dtos.RepairOrder
 
     public class CreateRepairOrderDto : BaseCreateRepairOrderDto
     {
-        public required BaseVehicleDto Vehicle { get; set; }
+        public required VehicleDto Vehicle { get; set; }
     }
 
     public class CreateRepairOrderWithVehicleDto : BaseCreateRepairOrderDto
@@ -24,7 +24,7 @@ namespace Application.Dtos.RepairOrder
 
     public class CreateRepairOrderWithVehicleAndCustomerDto : BaseCreateRepairOrderDto
     {
-        public required BaseVehicleDto VehicleDto { get; set; }
+        public required VehicleDto VehicleDto { get; set; }
 
         public required BaseCustomerDto CustomerDto { get; set; }
     }

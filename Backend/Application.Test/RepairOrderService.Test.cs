@@ -76,13 +76,14 @@ namespace Application.Test
             _vehicleServiceMock
                 .Setup(x => x.GetByIdAsync(vehicleId))
                 .ReturnsAsync(
-                    new Vehicle(
-                        vehicleId,
-                        vehicleDto.Plate,
-                        Guid.Parse(vehicleDto.CustomerId),
-                        vehicleDto.Model,
-                        vehicleDto.Color
-                    )
+                    new VehicleDto()
+                    {
+                        Id = vehicleId,
+                        Plate = vehicleDto.Plate,
+                        CustomerId = vehicleDto.CustomerId,
+                        Model = vehicleDto.Model,
+                        Color = vehicleDto.Color,
+                    }
                 );
             _repairOrderRepositoryMock
                 .Setup(x => x.CreateAsync(It.IsAny<RepairOrder>()))
@@ -119,7 +120,7 @@ namespace Application.Test
                 Address = "Test Address",
                 Dni = "12345678",
             };
-            var vehicleDto = new BaseVehicleDto
+            var vehicleDto = new VehicleDto
             {
                 Id = vehicleId,
                 Plate = "XYZ789",
@@ -164,13 +165,14 @@ namespace Application.Test
             _vehicleServiceMock
                 .Setup(x => x.GetByIdAsync(vehicleId))
                 .ReturnsAsync(
-                    new Vehicle(
-                        vehicleId,
-                        createVehicleDto.Plate,
-                        Guid.Parse(createVehicleDto.CustomerId),
-                        createVehicleDto.Model,
-                        createVehicleDto.Color
-                    )
+                    new VehicleDto()
+                    {
+                        Id = vehicleId,
+                        Plate = vehicleDto.Plate,
+                        CustomerId = vehicleDto.CustomerId,
+                        Model = vehicleDto.Model,
+                        Color = vehicleDto.Color,
+                    }
                 );
             _repairOrderRepositoryMock
                 .Setup(x => x.CreateAsync(It.IsAny<RepairOrder>()))
@@ -208,7 +210,7 @@ namespace Application.Test
                 ReceptionDate = DateTime.UtcNow,
                 Cause = "Test cause",
                 Details = "Test details",
-                Vehicle = new Mock<BaseVehicleDto>().Object,
+                Vehicle = new Mock<VehicleDto>().Object,
                 WorkshopId = Guid.NewGuid().ToString(),
             };
 

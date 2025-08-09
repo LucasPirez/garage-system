@@ -9,8 +9,8 @@ namespace Application.Services
     {
         Task CreateAsync(CreateCustomerDto createDto);
         Task DeleteAsync(Guid Id);
-        Task<IEnumerable<Customer>> GetAllAsync(Guid workshopId);
-        Task<Customer> GetByIdAsync(Guid id);
+        Task<IEnumerable<BaseCustomerDto>> GetAllAsync(Guid workshopId);
+        Task<BaseCustomerDto> GetByIdAsync(Guid id);
         Task UpdateAsync(Guid Id, UpdateCustomerDto customerDto);
     }
 
@@ -32,17 +32,19 @@ namespace Application.Services
             await _customerRepository.CreateAsync(customer);
         }
 
-        public async Task<IEnumerable<Customer>> GetAllAsync(Guid workshopId)
+        public async Task<IEnumerable<BaseCustomerDto>> GetAllAsync(Guid workshopId)
         {
-            return await _customerRepository.GetAllAsync(workshopId);
+            var customers = await _customerRepository.GetAllAsync(workshopId);
+
+            return _mapper.Map<IEnumerable<BaseCustomerDto>>(customers);
         }
 
-        public async Task<Customer> GetByIdAsync(Guid id)
+        public async Task<BaseCustomerDto> GetByIdAsync(Guid id)
         {
             Customer customer =
                 await _customerRepository.GetByIdAsync(id) ?? throw new EntityNotFoundException(id);
 
-            return customer;
+            return _mapper.Map<BaseCustomerDto>(customer);
         }
 
         public async Task UpdateAsync(Guid Id, UpdateCustomerDto customerDto)

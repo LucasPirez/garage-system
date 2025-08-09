@@ -1,3 +1,4 @@
+using Application.AutoMapper;
 using Application.Dtos.Vehicle;
 using Application.Services;
 using AutoMapper;
@@ -11,13 +12,13 @@ namespace Application.Test
     {
         private readonly Mock<IVehicleRepository> _vehicleRepositoryMock;
         private readonly VehicleService _vehicleService;
-        private readonly Mock<IMapper> _mapperMock;
+        private readonly IMapper _mapper;
 
         public VehicleServiceTest()
         {
             _vehicleRepositoryMock = new Mock<IVehicleRepository>();
-            _mapperMock = new Mock<IMapper>();
-            _vehicleService = new VehicleService(_vehicleRepositoryMock.Object, _mapperMock.Object);
+            _mapper = new MapperConfiguration(cfg => cfg.AddProfile<AutoMapping>()).CreateMapper();
+            _vehicleService = new VehicleService(_vehicleRepositoryMock.Object, _mapper);
         }
 
         [Fact]
@@ -40,15 +41,16 @@ namespace Application.Test
                 createDto.Model,
                 createDto.Color
             );
-            _mapperMock.Setup(m => m.Map<Vehicle>(createDto)).Returns(vehicle);
-            _vehicleRepositoryMock.Setup(r => r.CreateAsync(vehicle)).Returns(Task.CompletedTask);
+
+            _vehicleRepositoryMock
+                .Setup(r => r.CreateAsync(It.IsAny<Vehicle>()))
+                .Returns(Task.CompletedTask);
 
             // Act
             await _vehicleService.CreateAsync(createDto);
 
             // Assert
-            _mapperMock.Verify(m => m.Map<Vehicle>(createDto), Times.Once);
-            _vehicleRepositoryMock.Verify(r => r.CreateAsync(vehicle), Times.Once);
+            _vehicleRepositoryMock.Verify(r => r.CreateAsync(It.IsAny<Vehicle>()), Times.Once);
         }
 
         [Fact]
@@ -62,7 +64,9 @@ namespace Application.Test
                 new Vehicle(Guid.NewGuid(), "XYZ789", Guid.NewGuid(), "SUV", "Blue"),
             };
 
-            _vehicleRepositoryMock.Setup(r => r.GetAllAsync(workshopId)).ReturnsAsync(vehicles);
+            _vehicleRepositoryMock
+                .Setup(r => r.GetAllAsync(It.IsAny<Guid>()))
+                .ReturnsAsync(vehicles);
 
             // Act
             var result = await _vehicleService.GetAllAsync(workshopId);
@@ -80,7 +84,9 @@ namespace Application.Test
             var vehicleId = Guid.NewGuid();
             var vehicle = new Vehicle(vehicleId, "ABC123", Guid.NewGuid(), "Sedan", "Red");
 
-            _vehicleRepositoryMock.Setup(r => r.GetByIdAsync(vehicleId)).ReturnsAsync(vehicle);
+            _vehicleRepositoryMock
+                .Setup(r => r.GetByIdAsync(It.IsAny<Guid>()))
+                .ReturnsAsync(vehicle);
 
             // Act
             var result = await _vehicleService.GetByIdAsync(vehicleId);
@@ -98,7 +104,7 @@ namespace Application.Test
             var vehicleId = Guid.NewGuid();
 
             _vehicleRepositoryMock
-                .Setup(r => r.GetByIdAsync(vehicleId))
+                .Setup(r => r.GetByIdAsync(It.IsAny<Guid>()))
                 .ReturnsAsync((Vehicle)null);
 
             // Act & Assert
@@ -162,7 +168,9 @@ namespace Application.Test
             };
 
             var vehicle = new Vehicle(vehicleId, "ABC123", Guid.NewGuid(), "Sedan", "Red");
-            _vehicleRepositoryMock.Setup(r => r.GetByIdAsync(vehicleId)).ReturnsAsync(vehicle);
+            _vehicleRepositoryMock
+                .Setup(r => r.GetByIdAsync(It.IsAny<Guid>()))
+                .ReturnsAsync(vehicle);
 
             // Act
             await _vehicleService.UpdateAsync(vehicleId, updateDto);

@@ -9,9 +9,9 @@ namespace Application.Services
     {
         Task CreateAsync(CreateVehicleDto createDto);
         Task DeleteAsync(Guid id);
-        Task<IEnumerable<Vehicle>> GetAllAsync(Guid workshopId);
-        Task<Vehicle> GetByIdAsync(Guid id);
-        Task<Vehicle> GetByPlateAsync(string plate, Guid workshopId);
+        Task<IEnumerable<VehicleDto>> GetAllAsync(Guid workshopId);
+        Task<VehicleDto> GetByIdAsync(Guid id);
+        Task<VehicleDto> GetByPlateAsync(string plate, Guid workshopId);
         Task UpdateAsync(Guid Id, UpdateVehicleDto vehicleDto);
     }
 
@@ -33,24 +33,29 @@ namespace Application.Services
             await _vehicleRepository.CreateAsync(vehicle);
         }
 
-        public async Task<IEnumerable<Vehicle>> GetAllAsync(Guid workshopId)
+        public async Task<IEnumerable<VehicleDto>> GetAllAsync(Guid workshopId)
         {
-            return await _vehicleRepository.GetAllAsync(workshopId);
+            IEnumerable<Vehicle> vehicles = await _vehicleRepository.GetAllAsync(workshopId);
+
+            return _mapper.Map<IEnumerable<VehicleDto>>(vehicles.ToList());
         }
 
-        public async Task<Vehicle> GetByIdAsync(Guid id)
+        public async Task<VehicleDto> GetByIdAsync(Guid id)
         {
             Vehicle vehicle =
                 await _vehicleRepository.GetByIdAsync(id) ?? throw new EntityNotFoundException(id);
-            return vehicle;
+
+            return _mapper.Map<VehicleDto>(vehicle);
+            ;
         }
 
-        public async Task<Vehicle> GetByPlateAsync(string plate, Guid workshopId)
+        public async Task<VehicleDto> GetByPlateAsync(string plate, Guid workshopId)
         {
             Vehicle vehicle =
                 await _vehicleRepository.GetByPlateAsync(plate, workshopId)
                 ?? throw new EntityNotFoundException(plate);
-            return vehicle;
+
+            return _mapper.Map<VehicleDto>(vehicle);
         }
 
         public Task DeleteAsync(Guid id)
@@ -60,7 +65,8 @@ namespace Application.Services
 
         public async Task UpdateAsync(Guid Id, UpdateVehicleDto vehicleDto)
         {
-            Vehicle vehicle = await GetByIdAsync(Id);
+            Vehicle vehicle =
+                await _vehicleRepository.GetByIdAsync(Id) ?? throw new EntityNotFoundException(Id);
 
             vehicle.Update(
                 plate: vehicleDto.Plate,

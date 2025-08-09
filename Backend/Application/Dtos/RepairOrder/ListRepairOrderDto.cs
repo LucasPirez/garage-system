@@ -22,7 +22,7 @@ namespace Application.Dtos.RepairOrder
 
         public IList<SparePart> SpareParts { get; set; } = new List<SparePart>();
 
-        public required BaseVehicleDto Vehicle { get; set; }
+        public required VehicleDto Vehicle { get; set; }
 
         public required BaseCustomerDto Client { get; set; }
     }

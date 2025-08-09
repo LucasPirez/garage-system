@@ -58,14 +58,14 @@ namespace Application.Services
             {
                 await _vehicleService.CreateAsync(dto.VehicleDto);
 
-                Vehicle vehicle = await _vehicleService.GetByIdAsync(dto.VehicleDto.Id);
+                VehicleDto vehicle = await _vehicleService.GetByIdAsync(dto.VehicleDto.Id);
 
                 RepairOrder repairOrder = new RepairOrder(
                     id: Guid.NewGuid(),
                     workshopId: new Guid(dto.WorkshopId),
                     cause: dto.Cause,
                     details: dto.Details ?? "",
-                    vehicle: vehicle,
+                    vehicle: _mapper.Map<Vehicle>(vehicle),
                     recepcionDate: dto.ReceptionDate,
                     spareParts: new List<SparePart>(),
                     deliveryDate: null
@@ -103,14 +103,14 @@ namespace Application.Services
 
                 await _vehicleService.CreateAsync(createVehicleDto);
 
-                Vehicle vehicle = await _vehicleService.GetByIdAsync(dto.VehicleDto.Id);
+                VehicleDto vehicle = await _vehicleService.GetByIdAsync(dto.VehicleDto.Id);
 
                 RepairOrder repairOrder = new RepairOrder(
                     id: dto.Id,
                     workshopId: new Guid(dto.WorkshopId),
                     cause: dto.Cause,
                     details: dto.Details ?? "",
-                    vehicle: vehicle,
+                    vehicle: _mapper.Map<Vehicle>(vehicle),
                     recepcionDate: dto.ReceptionDate,
                     spareParts: new List<SparePart>(),
                     deliveryDate: null
@@ -160,7 +160,7 @@ namespace Application.Services
                 Budget = repairOrder.Budget,
                 SpareParts = repairOrder.SpareParts.ToList(),
                 FinalAmount = repairOrder.FinalAmount,
-                Vehicle = new BaseVehicleDto()
+                Vehicle = new VehicleDto()
                 {
                     Id = repairOrder.Vehicle.Id,
                     Plate = repairOrder.Vehicle.Plate,
@@ -261,7 +261,7 @@ namespace Application.Services
         {
             try
             {
-                Vehicle vehicle = await _vehicleService.GetByPlateAsync(plate, workshopId);
+                VehicleDto vehicle = await _vehicleService.GetByPlateAsync(plate, workshopId);
 
                 if (vehicle != null)
                 {

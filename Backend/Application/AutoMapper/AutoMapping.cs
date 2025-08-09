@@ -11,14 +11,15 @@ namespace Application.AutoMapper
         public AutoMapping()
         {
             CreateMap<Customer, CreateCustomerDto>().ReverseMap();
+            CreateMap<Customer, BaseCustomerDto>().ReverseMap();
             CreateMap<BaseCustomerDto, CreateCustomerDto>().ReverseMap();
             CreateMap<Customer, UpdateCustomerDto>().ReverseMap();
 
             CreateMap<Vehicle, CreateVehicleDto>().ReverseMap();
-            CreateMap<BaseVehicleDto, CreateVehicleDto>().ReverseMap();
+            CreateMap<VehicleDto, CreateVehicleDto>().ReverseMap();
             CreateMap<Vehicle, UpdateVehicleDto>().ReverseMap();
             CreateMap<Vehicle, HistoricalRepairOrderDto>().ReverseMap();
-            CreateMap<Vehicle, BaseVehicleDto>().ReverseMap();
+            CreateMap<Vehicle, VehicleDto>().ReverseMap();
 
             CreateMap<SparePart, UpdateSparePartDto>().ReverseMap();
         }
