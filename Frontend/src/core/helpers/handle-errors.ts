@@ -7,12 +7,16 @@ export const handleRequest = async <T>(fn: () => Promise<T>): Promise<T> => {
   } catch (error) {
     if (error instanceof AxiosError) {
       if (error?.response?.data && isErrorResponse(error.response.data)) {
+        console.log(error.response.data.Message)
+        console.log(error.response.data?.Detail)
+
         throw new CustomError(
           error.response.data.Message,
           error.response.data.StatusCode,
           error.response.data?.Detail
         )
       } else {
+        console.log('Invalid error structure', error.response?.data?.errors)
         throw new Error(`Invalid error structure from backend: error structure must be {
                             StatusCode: number
                             Message: string
@@ -20,7 +24,8 @@ export const handleRequest = async <T>(fn: () => Promise<T>): Promise<T> => {
                             }`)
       }
     }
-    throw new CustomError('Ocurrio un Error inesperado.')
+    console.log(error)
+    throw new CustomError('Ocurrio un Error inesperado.', 500, error)
   }
 }
 

@@ -6,5 +6,5 @@ export interface CustomerResponseDto {
   phoneNumber: string[]
   email: string[]
   id: string
-  vehicle: VehicleResponseDto[]
+  vehicles: VehicleResponseDto[]
 }

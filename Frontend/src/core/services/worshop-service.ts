@@ -23,6 +23,7 @@ export class WorkshopService {
 
   private async get<T>(url: string): Promise<T> {
     const { data } = await this.client.get<T>(url)
+    console.log(data)
 
     return data
   }

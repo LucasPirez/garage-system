@@ -7,25 +7,29 @@ import { JobUpdateDto } from '../dtos/vehicleEntry/job-update.dto'
 import { JOBS_STATUS } from '../constants/jobs-status'
 import { getWorkshopId } from './worshop-service'
 import { CustomerCreateDto } from '../dtos/customer/customer-request.dto'
-import { VehicleCreateDto } from '../dtos/vehicle/vehicle-request.dto'
+import {
+  BaseVehicleDto,
+  VehicleCreateDto,
+} from '../dtos/vehicle/vehicle-request.dto'
 import { handleRequest } from '../helpers/handle-errors'
 
 export interface JobCreateDto {
+  id: string
   receptionDate: string
   cause: string
   details: string
-  vehicleId: string
   workshopId: string
+  vehicle: BaseVehicleDto
 }
 
 export interface JobCreateWithVehicle
-  extends Omit<JobCreateDto, 'workshopId' | 'vehicleId'> {
+  extends Omit<JobCreateDto, 'workshopId' | 'vehicle'> {
   vehicleDto: VehicleCreateDto
 }
 
 export interface JobCreateWithVehicleAndCustomer
-  extends Omit<JobCreateDto, 'workshopId' | 'vehicleId'> {
-  vehicleDto: Omit<VehicleCreateDto, 'customerId'>
+  extends Omit<JobCreateDto, 'workshopId' | 'vehicle'> {
+  vehicleDto: VehicleCreateDto
   customerDto: Omit<CustomerCreateDto, 'workshopId'>
 }
 
