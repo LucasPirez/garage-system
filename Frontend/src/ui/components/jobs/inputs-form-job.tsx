@@ -4,7 +4,7 @@ import { classNameInput } from '../../pages/register'
 import { classNameLabel } from '../../../core/constants/class-names'
 
 interface Props {
-  state: Omit<JobCreateDto, 'workshopId' | 'vehicleId'>
+  state: Omit<JobCreateDto, 'workshopId' | 'vehicle' | 'id'>
   onChange: (e: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => void
 }
 
@@ -61,8 +61,7 @@ export const InputsFormJob = ({ state, onChange }: Props) => {
           className={classNameInput + 'resize-none'}
           placeholder="Describa cualquier detalle adicional sobre el vehículo o el servicio requerido..."
           value={state.details}
-          onChange={onChange}
-        ></textarea>
+          onChange={onChange}></textarea>
         <div className="flex justify-between items-center mt-1">
           <p className="text-xs text-gray-500">Máximo 500 caracteres</p>
         </div>

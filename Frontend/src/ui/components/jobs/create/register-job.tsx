@@ -10,12 +10,13 @@ import { useLoader } from '../../../context/loader-context'
 import { CustomError } from '../../../../core/helpers/custom-error'
 import { RegisterJobForm } from './register-job-form'
 import { ButtonSubmit } from '../../buttons/button-submit'
+import { v7 } from 'uuid'
 
-export type FormDataType = Omit<JobCreateDto, 'workshopId' | 'vehicleId'> &
-  Omit<VehicleCreateDto, 'customerId'> &
+export type FormDataType = Omit<JobCreateDto, 'workshopId' | 'id' | 'vehicle'> &
+  Omit<VehicleCreateDto, 'customerId' | 'id'> &
   Omit<
     CustomerCreateDto,
-    'workshopId' | 'vehicleId' | 'email' | 'phoneNumber'
+    'workshopId' | 'vehicleId' | 'email' | 'phoneNumber' | 'id'
   > & {
     email: string
     phoneNumber: string
@@ -83,17 +84,20 @@ export const RegisterJob = () => {
         cause,
         details,
         receptionDate: receptionDateISO,
+        id: v7(),
       }
 
       if (!customerSelected && !vehicleSelected) {
+        const customerId = v7()
         await jobService.createWithVehicleAndCustomer({
           ...basePayload,
-          vehicleDto: { color, model, plate },
+          vehicleDto: { color, model, plate, id: v7(), customerId },
           customerDto: {
             email: [email],
             firstName,
             lastName,
             phoneNumber: [phoneNumber],
+            id: customerId,
           },
         })
         handleSuccess()
@@ -104,6 +108,7 @@ export const RegisterJob = () => {
         await jobService.createWithVehicle({
           ...basePayload,
           vehicleDto: {
+            id: v7(),
             color,
             model,
             plate,
@@ -115,13 +120,13 @@ export const RegisterJob = () => {
         return
       }
 
-      if (!vehicleSelected) {
-        throw new Error('Vehículo no seleccionado')
+      if (!vehicleSelected || !customerSelected) {
+        throw new Error('Vehículo o customer no seleccionado')
       }
 
       await jobService.create({
         ...basePayload,
-        vehicleId: vehicleSelected.id,
+        vehicle: { ...vehicleSelected, customerId: customerSelected.id },
       })
 
       handleSuccess()
@@ -149,8 +154,7 @@ export const RegisterJob = () => {
             <button
               type="reset"
               onClick={() => setFormData(FormInitialState)}
-              className="px-4 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50   font-medium active:scale-95"
-            >
+              className="px-4 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50   font-medium active:scale-95">
               🗑️ Limpiar Formulario
             </button>
 

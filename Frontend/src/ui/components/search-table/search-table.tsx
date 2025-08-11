@@ -41,7 +41,7 @@ export const SearchTable = ({
             ...client,
             phoneNumber: client.phoneNumber?.[0] || '',
             email: client.email?.[0] || '',
-            vehicles: client.vehicle,
+            vehicles: client.vehicles,
           }))
         )
       } catch (error) {
@@ -99,8 +99,7 @@ export const SearchTable = ({
                 className="w-5 h-5 text-gray-400"
                 fill="none"
                 stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
+                viewBox="0 0 24 24">
                 <path
                   strokeLinecap="round"
                   strokeLinejoin="round"
@@ -120,8 +119,7 @@ export const SearchTable = ({
           <table
             className={`min-w-full divide-y divide-gray-200  ${
               visible ? '' : 'hidden'
-            }`}
-          >
+            }`}>
             <Head />
             <Body
               data={clientsSearch}

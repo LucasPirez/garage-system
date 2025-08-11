@@ -6,7 +6,7 @@ import { CustomerAndVehicleType } from '../../core/store/clients-vehicles-store'
 export const useSelectCustomerVehicle = () => {
   const [customer, setCustomer] = useState<Omit<
     CustomerType,
-    'vehicle'
+    'vehicles'
   > | null>(null)
   const [vehicles, setVehicles] = useState<VehicleType[] | null>(null)
 

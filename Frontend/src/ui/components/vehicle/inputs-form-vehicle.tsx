@@ -4,7 +4,7 @@ import { classNameLabel } from '../../../core/constants/class-names'
 import type { VehicleCreateDto } from '../../../core/dtos/vehicle/vehicle-request.dto'
 
 interface Props {
-  state: Omit<VehicleCreateDto, 'customerId'>
+  state: Omit<VehicleCreateDto, 'customerId' | 'id'>
   onChange: (e: ChangeEvent<HTMLSelectElement | HTMLInputElement>) => void
 }
 
@@ -112,8 +112,7 @@ export const InputsFormVehicle = ({ state, onChange }: Props) => {
           name="color"
           className={classNameInput}
           onChange={onChange}
-          value={state.color}
-        >
+          value={state.color}>
           <option value="">Seleccionar color</option>
           <option value="Blanco">Blanco</option>
           <option value="Negro">Negro</option>

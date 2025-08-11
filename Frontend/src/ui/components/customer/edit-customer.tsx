@@ -11,11 +11,7 @@ import { triggerCoolDown } from '../../../core/helpers/triggerCoolDown'
 import { useLoader } from '../../context/loader-context'
 import { useStoreClientsAndVehicles } from '../../../core/store/clients-vehicles-store'
 
-export const EditCustomer = ({
-  customer,
-}: {
-  customer: Omit<CustomerType, 'vehicle'>
-}) => {
+export const EditCustomer = ({ customer }: { customer: CustomerType }) => {
   const [customerSelected, setCustomerSelected] =
     useState<CustomerFormType>(customer)
   const [disabled, setDisabled] = useState(true)
